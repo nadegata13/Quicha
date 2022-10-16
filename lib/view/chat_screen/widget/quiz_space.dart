@@ -1,24 +1,21 @@
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:provider/provider.dart';
-
 import '../../../viewModel/chat_viewmodel.dart';
 
 class QuizArea extends StatelessWidget {
   const QuizArea({
     Key? key,
     required this.size,
-    required this.viewModel,
   }) : super(key: key);
 
   final Size size;
-  final ChatViewModel viewModel;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return
+      Container(
         height: size.height / 3,
         padding: EdgeInsets.all(size.height / 50),
         decoration: BoxDecoration(
@@ -56,6 +53,7 @@ class QuizArea extends StatelessWidget {
               ],
             ),
 
+
             Scrollbar(
 
                 child:
@@ -63,19 +61,22 @@ class QuizArea extends StatelessWidget {
                     scrollDirection: Axis.vertical,
                     reverse: true,
                     child:
-                    AnimatedOpacity(opacity:viewModel.isVisibleQuiz ? 1 : 0 ,
-                        duration: Duration(seconds: 1),
+                    Consumer(builder: (BuildContext context, value, Widget? child) {
+                      return
+                        AnimatedOpacity(opacity:value.watch(chatProvider).isVisibleQuiz ? 1 : 0 ,
+                            duration: Duration(seconds: 1),
 
-                        child:
-                        Column(
-                          children: [
-                            SizedBox(height: size.height / 30,),
+                            child:
                             Column(
-                                children: viewModel.quizWidget
-                            ),
-                          ],
-                        )
-                    )
+                              children: [
+                                SizedBox(height: size.height / 30,),
+                                Column(
+                                    children: value.watch(chatProvider).quizWidget
+                                ),
+                              ],
+                            )
+                        );
+                    },)
                 )
             )
 
@@ -86,7 +87,7 @@ class QuizArea extends StatelessWidget {
   }
 }
 
-class _CountDownCircle extends StatelessWidget {
+class _CountDownCircle extends ConsumerWidget {
   const _CountDownCircle({
     Key? key,
   }) : super(key: key);
@@ -94,31 +95,30 @@ class _CountDownCircle extends StatelessWidget {
 
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
 
-    final ChatViewModel viewModel = Provider.of<ChatViewModel>(context);
 
     return CircularCountDownTimer(
       initialDuration: 0,
-      duration: viewModel.duration,
-      controller: viewModel.countDownController,
+      duration: ref.read(chatProvider).duration,
+      controller: ref.watch(chatProvider).countDownController,
       width: MediaQuery.of(context).size.height / 14,
       height: MediaQuery.of(context).size.height / 14,
       ringColor: Colors.grey[300]!,
-      fillColor: viewModel.countDownController.isStarted ?  viewModel.color : Colors.transparent ,
+      fillColor: ref.watch(chatProvider).countDownController.isStarted ?  ref.watch(chatProvider).color : Colors.transparent ,
       backgroundGradient: null,
       strokeWidth: MediaQuery.of(context).size.height / 200,
       strokeCap: StrokeCap.round,
       isReverse: true,
       isReverseAnimation: false,
-      isTimerTextShown: viewModel.isShowTime,
+      isTimerTextShown: ref.watch(chatProvider).isShowTime,
       autoStart: false,
       onStart: () {
         debugPrint('Countdown Started');
       },
       onComplete: () {
         debugPrint('Countdown Ended');
-        viewModel.changeColor();
+        ref.read(chatProvider).changeColor();
       },
       onChange: (String timeStamp) {
       },

@@ -1,22 +1,24 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quicha/view/chat_screen/widget/animation_text.dart';
 
 import '../../../viewModel/chat_viewmodel.dart';
 import 'chat_bubble.dart';
 
-class ButtonsForTest extends StatelessWidget {
+class ButtonsForTest extends ConsumerWidget {
   const ButtonsForTest({
     Key? key,
     required this.size,
-    required this.viewModel,
   }) : super(key: key);
 
   final Size size;
-  final ChatViewModel viewModel;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final watchProvider = ref.watch(chatProvider);
+    final readProvider = ref.read(chatProvider);
+
     return Container(
       height: size.height / 30,
       child:
@@ -26,28 +28,29 @@ class ButtonsForTest extends StatelessWidget {
 
           Expanded(child:
           ElevatedButton(onPressed: (){
-            viewModel.getQuizWidget(ChatBubble(
+            readProvider.getQuizWidget(
+                 ChatBubble(
               isLeft: true,
               color: Colors.white,
               showNip: true,
-              child: AnimationText(  string: "第" + viewModel.getQuizCount().toString() + "問",
+              child: AnimationText(  string: "第" + watchProvider.getQuizCount().toString() + "問",
                 onFinished: () {
                   //クイズの問題文
-                  viewModel.getQuizWidget(
+                  readProvider.getQuizWidget(
                       ChatBubble(
                           isLeft: true,
                           color: Colors.white,
                           showNip: false,
                           child:
-                          AnimationText(string: viewModel.currentQuiz.quizString,
+                          AnimationText(string: readProvider.currentQuiz.quizString,
                             onFinished: (){
                               //画像か音声クイズなら
-                              if(viewModel.currentQuiz.isPicture! || viewModel.currentQuiz.isSound!) {
+                              if(watchProvider.currentQuiz.isPicture! || watchProvider.currentQuiz.isSound!) {
 
                               } else {
                                 //クイズカウントダウン
-                                viewModel.startCountdown();
-                                viewModel.setVisibleTime();
+                                readProvider.startCountdown();
+                                readProvider.setVisibleTime();
                               }
 
                             },)) );
@@ -60,7 +63,7 @@ class ButtonsForTest extends StatelessWidget {
 
           Expanded(child:
           ElevatedButton(onPressed: (){
-            viewModel.clearChat();
+            readProvider.clearChat();
           }, child:
           Text("Clear"),
           ),
@@ -68,7 +71,7 @@ class ButtonsForTest extends StatelessWidget {
           ),
           Expanded(child:
           ElevatedButton(onPressed: (){
-            viewModel.increaseQuizCount();
+            readProvider.increaseQuizCount();
 
           }, child:
           Text("Next"),
@@ -78,7 +81,7 @@ class ButtonsForTest extends StatelessWidget {
           Expanded(
             child:
             ElevatedButton(onPressed: (){
-              viewModel.setQuizList();
+              readProvider.setQuizList();
 
             }, child:
             Text("Set"),
@@ -88,8 +91,8 @@ class ButtonsForTest extends StatelessWidget {
           Expanded(
             child:
             ElevatedButton(onPressed: (){
-              viewModel.addMessageFromPartner();
-              viewModel.incrementVictoryCount();
+              readProvider.addMessageFromPartner();
+              readProvider.incrementVictoryCount();
 
             }, child:
             Text("message"),

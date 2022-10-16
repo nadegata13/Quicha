@@ -1,5 +1,6 @@
 import 'package:animated_flip_counter/animated_flip_counter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:quicha/ui/character_icons.dart';
 
@@ -11,12 +12,10 @@ class ChatAppBar extends StatelessWidget {
     Key? key,
     required this.topHeight,
     required this.size,
-    required this.viewModel,
   }) : super(key: key);
 
   final double topHeight;
   final Size size;
-  final ChatViewModel viewModel;
 
   @override
   Widget build(BuildContext context) {
@@ -28,14 +27,14 @@ class ChatAppBar extends StatelessWidget {
             height: topHeight ,
             width: size.width / 3,
             child:
-            _User(size: size, viewModel: viewModel, user: TestData.user1, isMe: false,)
+            _User(size: size, user: TestData.user1, isMe: false,)
       ),
         Container(width: size.width / 10,
             alignment: Alignment.center,
             child:
             Text("x")
         ),
-        _User(size: size, viewModel: viewModel, isMe: true, user: TestData.user2)
+        _User(size: size, isMe: true, user: TestData.user2)
       ],
     );
   }
@@ -45,7 +44,6 @@ class _User extends StatelessWidget {
   const _User({
     Key? key,
     required this.size,
-    required this.viewModel,
     required this.isMe,
     required this.user,
   }) : super(key: key);
@@ -53,7 +51,6 @@ class _User extends StatelessWidget {
 
   final User user;
   final Size size;
-  final ChatViewModel viewModel;
   final isMe;
 
   @override
@@ -86,13 +83,17 @@ class _User extends StatelessWidget {
 
                 ),
                 //正解カウンター
-                Container(
-                  child: AnimatedFlipCounter(
+                Consumer(builder: (BuildContext context, WidgetRef ref, Widget? child) {
+                  return Container(
+                    child: AnimatedFlipCounter(
 
-                    duration: Duration(milliseconds: 500),
-                    textStyle: counterTextStyle,
-                    value: viewModel.victoryCount, // pass in a value like 2014
-                  ),
+                      duration: Duration(milliseconds: 500),
+                      textStyle: counterTextStyle,
+                      value: ref.watch(chatProvider).victoryCount, // pass in a value like 2014
+                    ),
+                  );
+                },
+
                 )
               ],
             )

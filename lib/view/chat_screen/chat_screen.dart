@@ -20,16 +20,12 @@ class ChatScreen extends StatelessWidget {
     final Size size = MediaQuery.of(context).size;
 
     return
-      ChangeNotifierProvider<ChatViewModel>(
-          create: (context) => ChatViewModel(),
-              child:
               GestureDetector(
                   onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
                   child:
                   _Body(size: size)
-              )
+              );
 
-      );
   }
 }
 
@@ -44,12 +40,11 @@ class _Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final ChatViewModel viewModel = Provider.of<ChatViewModel>(context);
     var topHeight = MediaQuery.of(context).padding.top + kToolbarHeight;
     return Scaffold(
         appBar: AppBar(
           title:
-          ChatAppBar(topHeight: topHeight, size: size, viewModel: viewModel),
+          ChatAppBar(topHeight: topHeight, size: size,),
         ),
         // backgroundColor: CustomColor.thinBlue,
         backgroundColor: Colors.white,
@@ -66,15 +61,15 @@ class _Body extends StatelessWidget {
                 Column(
                   children: [
                     //出題スペース
-                    QuizArea(size: size, viewModel: viewModel),
+                    QuizArea(size: size),
 
 
                     //TODO: 後で消す
                     //テスト用ボタン
-                    ButtonsForTest(size: size, viewModel: viewModel),
+                    ButtonsForTest(size: size, ),
 
                     //チャットスペース
-                    ChatArea(size: size, viewModel: viewModel),
+                    ChatArea(size: size, ),
                     //入力欄
                     ChatTextField(size: size)
 
