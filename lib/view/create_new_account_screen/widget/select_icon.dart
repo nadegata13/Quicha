@@ -1,9 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:provider/provider.dart';
-
 import '../../../ui/character_icons.dart';
 import '../../../viewModel/new_account_viewmodel.dart';
 
@@ -45,7 +44,7 @@ class SelectIcon extends StatelessWidget {
   }
 }
 
-class _DefaultIcons extends StatelessWidget {
+class _DefaultIcons extends ConsumerWidget {
   const _DefaultIcons({
     Key? key,
     required this.size,
@@ -56,16 +55,18 @@ class _DefaultIcons extends StatelessWidget {
   final CharacterIcons icons;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
 
-    final NewAccountViewModel viewModel = Provider.of<NewAccountViewModel>(context);
+    final watchProvider = ref.watch(newAccountProvider);
+    final read = ref.read(newAccountProvider);
+
 
     return
       Padding(padding: EdgeInsets.symmetric(horizontal: size.width / 50, vertical: size.height / 70),
           child:
           InkResponse(
               onTap: () {
-                viewModel.setIcon(icon: icons);
+                read.setIcon(icon: icons);
               },
               child:
               Stack(
@@ -76,7 +77,7 @@ class _DefaultIcons extends StatelessWidget {
                     width: size.height / 10,
                     height: size.height / 10,
                     child:
-                    Opacity( opacity: viewModel.selectedIcon == icons ? 0.7 : 0, child:
+                    Opacity( opacity: watchProvider.selectedIcon == icons ? 0.7 : 0, child:
                     //ぼやぼや
                     CustomPaint(foregroundPainter: _CircleBlurPainter(circleWidth: 4, blurSigma: 1.0)),
                     ),
@@ -90,7 +91,7 @@ class _DefaultIcons extends StatelessWidget {
                   ),
 
                   //選択されてない時の黒フィルター
-                  Opacity(opacity: viewModel.selectedIcon == icons ? 0 : 0.7,
+                  Opacity(opacity: watchProvider.selectedIcon == icons ? 0 : 0.7,
                     child:
                     Container(
                       height: size.height / 10,
