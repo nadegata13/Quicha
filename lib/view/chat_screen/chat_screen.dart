@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:quicha/view/chat_screen/quiz_space.dart';
+import 'package:quicha/view/chat_screen/widget/quiz_space.dart';
 import 'package:quicha/view/chat_screen/widget/chat_area.dart';
 import 'package:quicha/view/chat_screen/widget/chat_text_field.dart';
 import 'package:quicha/viewModel/chat_viewmodel.dart';
 
-import 'app_bar.dart';
-import 'button_for_test.dart';
+import 'widget/app_bar.dart';
+import 'widget/button_for_test.dart';
 
 
 class ChatScreen extends StatelessWidget {
@@ -49,7 +49,7 @@ class _Body extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           title:
-          AppBarWidget(topHeight: topHeight, size: size, viewModel: viewModel),
+          ChatAppBar(topHeight: topHeight, size: size, viewModel: viewModel),
         ),
         // backgroundColor: CustomColor.thinBlue,
         backgroundColor: Colors.white,
@@ -73,7 +73,7 @@ class _Body extends StatelessWidget {
                     //テスト用ボタン
                     ButtonsForTest(size: size, viewModel: viewModel),
 
-                    //
+                    //チャットスペース
                     ChatArea(size: size, viewModel: viewModel),
                     //入力欄
                     ChatTextField(size: size)

@@ -1,9 +1,14 @@
-import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
-import 'package:quicha/character_icons.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class HomeViewModel extends ChangeNotifier{
+
+final homePorovider = ChangeNotifierProvider((ref) {
+  return HomeNotifier();
+});
+
+
+class HomeNotifier extends ChangeNotifier {
 
   var isClicked = false;
 
@@ -22,11 +27,11 @@ class HomeViewModel extends ChangeNotifier{
 
   void clickedEntryButton() {
     isClicked = true;
+    notifyListeners();
     Future.delayed(const Duration(milliseconds: 200),() {
       isClicked = false;
       notifyListeners();
     });
-    notifyListeners();
   }
 
 

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:quicha/view/chat_screen/widget/animation_text.dart';
 
 import '../../../viewModel/chat_viewmodel.dart';
-import '../chat_bubble.dart';
+import 'chat_bubble.dart';
 
 class ButtonsForTest extends StatelessWidget {
   const ButtonsForTest({

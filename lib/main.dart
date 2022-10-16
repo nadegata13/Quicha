@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:quicha/screen/chat_screen.dart';
-import 'package:quicha/screen/home_screen.dart';
-import 'package:quicha/screen/new_account_screen.dart';
-
-import 'screen/first_screen.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:quicha/view/chat_screen/chat_screen.dart';
+import 'package:quicha/view/create_new_account_screen/new_account_screen.dart';
+import 'package:quicha/view/home_screen/home_screen.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -18,7 +17,7 @@ class MyApp extends StatelessWidget {
 
     return  MaterialApp(
       title: 'Flutter Demo',
-      home:   ChatScreen()
+      home:   HomeScreen()
     );
   }
 }

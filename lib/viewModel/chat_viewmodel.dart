@@ -1,5 +1,6 @@
 
 import 'dart:async';
+import 'dart:math';
 
 import 'package:bubble/bubble.dart';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
@@ -7,7 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:quicha/model/message.dart';
 import 'package:quicha/model/quiz_handler.dart';
-import 'package:quicha/screen/chat_screen.dart';
+import 'package:quicha/view/chat_screen/chat_screen.dart';
 import 'package:quicha/test_data.dart';
 
 class ChatViewModel extends ChangeNotifier{
@@ -16,7 +17,7 @@ class ChatViewModel extends ChangeNotifier{
   var txtController = TextEditingController();
 
   List<Widget> quizWidget = [];
-  List<ChatMessage> messageList= [ChatMessage(messageContent: "a", messageType: "a")];
+  List<ChatMessage> messageList= [];
 
   Color color = Colors.blue;
   QuizHandler _quizHandler = QuizHandler(quizList: []);
@@ -27,20 +28,38 @@ class ChatViewModel extends ChangeNotifier{
 
   final CountDownController countDownController = CountDownController();
   final int duration = 120;
+  int victoryCount = 0;
 
-  void _scrollDown() {
 
-    chatScrollController.jumpTo(chatScrollController.position.maxScrollExtent);
+  void incrementVictoryCount() {
+    victoryCount++;
+    notifyListeners();
+  }
+
+  void scrollDown() {
+
+    // chatScrollController.jumpTo(chatScrollController.position.maxScrollExtent);
+    notifyListeners();
+
+  }
+  void addMessageFromPartner(){
+    List<ChatMessage> partnerMessage = [ChatMessage(messageContent: "こんにちは！", messageType: "partner"),
+    ChatMessage(messageContent: "うーんふんどしかなあ？", messageType: "partner"),];
+
+    int random = Random().nextInt(2);
+    messageList.add(partnerMessage[random]);
     notifyListeners();
 
   }
 
   void sendMessage(){
 
-    txtController.notifyListeners();
     String message = txtController.text;
+    if(message.isEmpty) {return;}
+
     messageList.add(ChatMessage(messageContent: message, messageType: "me"));
-    _scrollDown();
+    txtController.clear();
+
     notifyListeners();
   }
 
@@ -52,14 +71,24 @@ class ChatViewModel extends ChangeNotifier{
     isShowTime = false;
     notifyListeners();
   }
+  void clearChat() {
+    messageList.clear();
+    notifyListeners();
+  }
+
   void increaseQuizCount() {
     //出題数
     _quizHandler.increaseQuizCount();
     //クイズオブジェクト配列のインデックス
     _quizHandler.increaseQuizListIndex();
     _setCurrentQuiz();
+    removeQuizWidget();
+    resetCountDown();
+    setInVisibleTime();
+
     notifyListeners();
   }
+
 
   int getQuizCount() => _quizHandler.getQuizCount();
 
