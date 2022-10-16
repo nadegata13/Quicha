@@ -4,7 +4,17 @@ enum CharacterIcons {
   default_cat,
   default_sheep,
   default_turtle,
-  default_wolf,
+  default_wolf;
+
+  static CharacterIcons  getIcon(int index){
+  for(var icon in CharacterIcons.values){
+    if(icon.index == index) {
+      return icon;
+    }
+  }
+  return CharacterIcons.default_human;
+}
+
 }
 
 extension IconsPath on CharacterIcons {
