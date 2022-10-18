@@ -1,7 +1,8 @@
 import 'package:animated_flip_counter/animated_flip_counter.dart';
+import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:lottie/lottie.dart';
 import 'package:quicha/ui/character_icons.dart';
 
 import '../../../test_data.dart';
@@ -106,6 +107,54 @@ class _User extends StatelessWidget {
   }
 }
 
+class AnimatedCirclePage extends StatefulWidget {
+  @override
+  _AnimatedCirclePageState createState() => _AnimatedCirclePageState();
+}
+
+class _AnimatedCirclePageState extends State<AnimatedCirclePage>  with SingleTickerProviderStateMixin {
+  late Animation animation;
+  late AnimationController animationController;
+
+  @override
+  void initState() {
+    super.initState();
+
+    animationController = AnimationController(
+      duration: Duration(seconds: 1),
+      vsync: this,
+    );
+    animation = Tween(begin: 100.0, end: 200.0).animate(animationController);
+    animationController.addStatusListener(animationStatusListener);
+    animationController.forward();
+  }
+  void animationStatusListener(AnimationStatus status) {
+    if (status == AnimationStatus.completed) {
+      animationController.reverse();
+    } else if (status == AnimationStatus.dismissed) {
+      animationController.forward();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return
+    AnimatedBuilder(animation: animationController, builder: (context, widget){
+      return
+        Container(
+          width: 25,
+          height: 25,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(
+              Radius.circular(25),
+            ),
+            color: Colors.red,
+          ),
+        );
+    });
+  }
+}
+
 class _UserAvatar extends StatelessWidget {
   const _UserAvatar({
     Key? key,
@@ -118,18 +167,26 @@ class _UserAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        CircleAvatar(
-          radius: size.height / 45,
-          backgroundColor: Colors.white,
-        ),
-        CircleAvatar(
-          radius: size.height / 50 ,
-          child: SvgPicture.asset(user.icon.getPath),
-        ),
-      ],
-    );
+    return
+      Container(
+          height: 30,
+          width: 30,
+          child:
+          Lottie.asset("assets/lottile/present.json", reverse: true)
+      );
+    // Container(height: 30, width: 30,
+    // child:
+    // Stack(
+    //   alignment: Alignment.center,
+    //   children: [
+    //     // AnimatedContainer(
+    //     //   height: size.height / 25,
+    //     //   width: size.height /25,
+    //     //   duration: Duration(milliseconds: 500),
+    //     //   child: SvgPicture.asset(user.icon.getPath),
+    //     // ),
+    //   ],
+    // )
+    // );
   }
 }

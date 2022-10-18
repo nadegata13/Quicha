@@ -1,18 +1,19 @@
+import 'package:quicha/model/quiz_model.dart';
 import 'package:quicha/test_data.dart';
 
 class QuizHandler {
   QuizHandler({required this.quizList});
-  List<TestQuiz> quizList;
-  int currentQuizCount = 1;
+  List<Quiz> quizList;
+  int _currentQuizCount = 1;
   int quizListIndex = 0;
 
   void increaseQuizCount() {
-    currentQuizCount++;
+    _currentQuizCount++;
   }
   int getQuizCount() {
-    return currentQuizCount;
+    return _currentQuizCount;
   }
-  void setQuizList(List<TestQuiz> quizList) {
+  void setQuizList(List<Quiz> quizList) {
     this.quizList = quizList;
     quizListIndex = 0;
   }
@@ -20,9 +21,9 @@ class QuizHandler {
     quizListIndex++;
   }
 
-  TestQuiz getOneQuiz() {
+  Quiz getOneQuiz() {
     if(quizListIndex > quizList.length - 1) {
-      return TestQuiz(quizString: "クイズがありません", quizCategory: "a", answer: "お待ちください");
+      return Quiz(quizString: "クイズがありません", quizCategory: "a", answer: "お待ちください");
     }
     return  quizList[quizListIndex];
   }

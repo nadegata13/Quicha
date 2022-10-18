@@ -2,6 +2,7 @@ import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import '../../../model/quiz_model.dart';
 import '../../../viewModel/chat_viewmodel.dart';
 
 class QuizArea extends StatelessWidget {
@@ -71,7 +72,9 @@ class QuizArea extends StatelessWidget {
                               children: [
                                 SizedBox(height: size.height / 30,),
                                 Column(
-                                    children: value.watch(chatProvider).quizWidget
+                                    children:
+
+                                    value.watch(chatProvider).quizWidget
                                 ),
                               ],
                             )
@@ -86,6 +89,48 @@ class QuizArea extends StatelessWidget {
     );
   }
 }
+
+// class _QuizManMessages extends StatelessWidget {
+//   _QuizManMessages({
+//     Key? key,
+//     required this.quizList
+// }) : super(key: key);
+//   List<Quiz> quizList;
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       child:
+//       ChatBubble(
+//         isLeft: true,
+//         color: Colors.white,
+//         showNip: true,
+//         child: AnimationText(  string: "第" + watchProvider.getQuizCount().toString() + "問",
+//           onFinished: () {
+//             //クイズの問題文
+//             readProvider.getQuizWidget(
+//                 ChatBubble(
+//                     isLeft: true,
+//                     color: Colors.white,
+//                     showNip: false,
+//                     child:
+//                     AnimationText(string: readProvider.currentQuiz.quizString,
+//                       onFinished: (){
+//                         //画像か音声クイズなら
+//                         if(watchProvider.currentQuiz.isPicture! || watchProvider.currentQuiz.isSound!) {
+//
+//                         } else {
+//                           //クイズカウントダウン
+//                           readProvider.startCountdown();
+//                           readProvider.setVisibleTime();
+//                         }
+//
+//                       },)) );
+//           },),));
+//
+//   }
+// }
+
 
 class _CountDownCircle extends ConsumerWidget {
   const _CountDownCircle({

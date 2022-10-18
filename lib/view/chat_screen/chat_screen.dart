@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:quicha/view/chat_screen/widget/quiz_space.dart';
 import 'package:quicha/view/chat_screen/widget/chat_area.dart';
 import 'package:quicha/view/chat_screen/widget/chat_text_field.dart';
-import 'package:quicha/viewModel/chat_viewmodel.dart';
 
 import 'widget/app_bar.dart';
 import 'widget/button_for_test.dart';

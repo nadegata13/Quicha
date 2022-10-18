@@ -10,6 +10,8 @@ import 'package:quicha/model/message.dart';
 import 'package:quicha/model/quiz_handler.dart';
 import 'package:quicha/test_data.dart';
 
+import '../model/quiz_model.dart';
+
 final chatProvider = ChangeNotifierProvider((ref) {
   return ChatNotifier();
 });
@@ -18,13 +20,25 @@ class ChatNotifier extends ChangeNotifier{
 
   var chatScrollController = ScrollController();
   var txtController = TextEditingController();
+  var avatarAnimation = _AvatarAnimation(resized: false, height: 0.0,);
+  void testAnime(){
+    if (avatarAnimation.resized) {
+      avatarAnimation.resized = false;
+      avatarAnimation.height = 0;
+    } else {
+      avatarAnimation.resized = true;
+      avatarAnimation.height = 10.0;
+    }
+    notifyListeners();
+
+  }
 
   List<Widget> quizWidget = [];
   List<ChatMessage> messageList= [];
 
   Color color = Colors.blue;
   QuizHandler _quizHandler = QuizHandler(quizList: []);
-  TestQuiz currentQuiz = TestQuiz(quizString: "初期値", quizCategory: "初期値",answer: "初期値");
+  Quiz currentQuiz = Quiz(quizString: "初期値", quizCategory: "初期値",answer: "初期値");
 
   bool isShowTime = false;
   bool isVisibleQuiz = true;
@@ -149,3 +163,11 @@ class ChatNotifier extends ChangeNotifier{
 
 }
 
+class _AvatarAnimation{
+  _AvatarAnimation({required this.resized, required this.height}){
+  }
+
+  var resized;
+  var height;
+
+}

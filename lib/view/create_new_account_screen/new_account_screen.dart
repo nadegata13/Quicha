@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lottie/lottie.dart';
 import 'package:quicha/ui/custom_style.dart';
 import 'package:quicha/view/create_new_account_screen/widget/select_icon.dart';
 import 'package:quicha/view/create_new_account_screen/widget/nickname_text_field.dart';
@@ -37,41 +38,54 @@ class _Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
+    var topHeight = MediaQuery.of(context).padding.top + kToolbarHeight;
 
 
     return
       Scaffold(
           backgroundColor: CustomColor.selectIconBackground,
           body:
-          SingleChildScrollView(
-              physics: ClampingScrollPhysics(),
-              child:
-              Center(
+          Stack(
+            children: [
+              Container(
+                height: size.height,
+                width: size.width,
                 child:
-                Padding(
-                  padding: EdgeInsets.all(size.height / 20),
+                Lottie.asset("assets/lottile/mountainBackground.json",
+                fit:BoxFit.fitHeight),
+              ),
+              SingleChildScrollView(
+                  physics: ClampingScrollPhysics(),
                   child:
-                  Column(
-                    children: [
-                      //アイコンを選択
-                      SelectIcon(size: size),
+                  Center(
+                    child:
+                    Padding(
+                      padding: EdgeInsets.all(size.height / 20),
+                      child:
+                      Column(
+                        children: [
+                          //アイコンを選択
+                          SelectIcon(size: size),
 
-                        SizedBox(height: size.height / 10,),
+                            SizedBox(height: size.height / 10,),
 
-                      NickNameTextField(size: size),
+                          NickNameTextField(size: size),
 
-                        SizedBox(height: size.height / 10,),
+                            SizedBox(height: size.height / 10,),
 
-                      Container(
-                          height: size.height / 18,
-                          width: size.height / 9,
-                          child:
-                          EnterButton(size: size)
-                      )
-                    ],
-                  ),
-                ),
-              )
+                          Container(
+                              height: size.height / 18,
+                              width: size.height / 9,
+                              child:
+                              EnterButton(size: size)
+                          )
+                        ],
+                      ),
+                    ),
+                  )
+              ),
+            ],
           )
       );
   }

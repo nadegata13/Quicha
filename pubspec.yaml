@@ -43,6 +43,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   animated_flip_counter: ^0.2.5
   flutter_riverpod: ^2.0.2
+  flutter_svg_provider: ^1.0.3
+  lottie: ^1.4.3
 
 dev_dependencies:
   flutter_test:
@@ -72,6 +74,7 @@ flutter:
     - assets/images/logo/
     - assets/images/character_icon/
     - assets/images/system/
+    - assets/lottile/
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

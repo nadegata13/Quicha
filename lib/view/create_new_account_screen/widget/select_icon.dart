@@ -25,19 +25,26 @@ class SelectIcon extends StatelessWidget {
           Text("アイコンを選択", style: TextStyle(color: Colors.black,fontSize: size.height / 30),),
         ),
 
-        GridView.builder(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3, //カラム数
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Colors.white.withOpacity(0.3),
           ),
-          physics: NeverScrollableScrollPhysics(),
-          itemCount: 6, //要素数
-          itemBuilder: (context, index) {
-            //要素を戻り値で返す
-            return Container(
-                child: _DefaultIcons(size: size, icons: CharacterIcons.getIcon(index),)
-            );
-          },
-          shrinkWrap: true,
+          child: GridView.builder(
+            padding: EdgeInsets.zero,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3, //カラム数
+            ),
+            physics: NeverScrollableScrollPhysics(),
+            itemCount: 6, //要素数
+            itemBuilder: (context, index) {
+              //要素を戻り値で返す
+              return Container(
+                  child: _DefaultIcons(size: size, icons: CharacterIcons.getIcon(index),)
+              );
+            },
+            shrinkWrap: true,
+          ),
         ),
       ],
     );
