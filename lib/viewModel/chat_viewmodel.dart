@@ -9,6 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quicha/model/message.dart';
 import 'package:quicha/model/quiz_handler.dart';
 import 'package:quicha/test_data.dart';
+import 'package:spring/spring.dart';
 
 import '../model/quiz_model.dart';
 
@@ -18,26 +19,17 @@ final chatProvider = ChangeNotifierProvider((ref) {
 
 class ChatNotifier extends ChangeNotifier{
 
-  var chatScrollController = ScrollController();
-  var txtController = TextEditingController();
-  var avatarAnimation = _AvatarAnimation(resized: false, height: 0.0,);
-  void testAnime(){
-    if (avatarAnimation.resized) {
-      avatarAnimation.resized = false;
-      avatarAnimation.height = 0;
-    } else {
-      avatarAnimation.resized = true;
-      avatarAnimation.height = 10.0;
-    }
-    notifyListeners();
+  QuizHandler _quizHandler = QuizHandler(quizList: []);
 
-  }
+  var chatScrollController = ScrollController();
+  var messageController = TextEditingController();
+  final myAnimeController = SpringController();
+  final partnerAnimeController = SpringController();
 
   List<Widget> quizWidget = [];
   List<ChatMessage> messageList= [];
 
   Color color = Colors.blue;
-  QuizHandler _quizHandler = QuizHandler(quizList: []);
   Quiz currentQuiz = Quiz(quizString: "初期値", quizCategory: "初期値",answer: "初期値");
 
   bool isShowTime = false;
@@ -47,6 +39,10 @@ class ChatNotifier extends ChangeNotifier{
   final int duration = 120;
   int victoryCount = 0;
 
+  void startWinEffect( SpringController controller) {
+    controller.play(motion: Motion.reverse, animDuration: Duration(milliseconds: 2000),);
+    notifyListeners();
+  }
 
   void incrementVictoryCount() {
     victoryCount++;
@@ -71,11 +67,11 @@ class ChatNotifier extends ChangeNotifier{
 
   void sendMessage(){
 
-    String message = txtController.text;
+    String message = messageController.text;
     if(message.isEmpty) {return;}
 
     messageList.add(ChatMessage(messageContent: message, messageType: "me"));
-    txtController.clear();
+    messageController.clear();
 
     notifyListeners();
   }

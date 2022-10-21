@@ -1,9 +1,11 @@
 import 'package:animated_flip_counter/animated_flip_counter.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import 'package:quicha/ui/character_icons.dart';
+import 'package:spring/spring.dart';
 
 import '../../../test_data.dart';
 import '../../../viewModel/chat_viewmodel.dart';
@@ -65,7 +67,7 @@ class _User extends StatelessWidget {
       children: [
 
         isMe ?
-        _UserAvatar(size: size, user: user) : Container(),
+        _UserAvatar(size: size, user: user, ) : Container(),
 
         Container(
             padding: isMe ? EdgeInsets.only(left: size.width / 50) : EdgeInsets.only(right: size.width / 50),
@@ -101,7 +103,7 @@ class _User extends StatelessWidget {
         ),
 
         !isMe ?
-        _UserAvatar(size: size, user: user) : Container()
+        _UserAvatar2(size: size, user: user, ) : Container()
       ],
     );
   }
@@ -155,8 +157,8 @@ class _AnimatedCirclePageState extends State<AnimatedCirclePage>  with SingleTic
   }
 }
 
-class _UserAvatar extends StatelessWidget {
-  const _UserAvatar({
+class _UserAvatar extends ConsumerWidget {
+   _UserAvatar({
     Key? key,
     required this.size,
     required this.user,
@@ -166,14 +168,90 @@ class _UserAvatar extends StatelessWidget {
   final User user;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final readProvider = ref.read(chatProvider);
+    final watchProvider = ref.watch(chatProvider);
+    final springController = readProvider.myAnimeController ;
+
+
     return
       Container(
-          height: 30,
-          width: 30,
-          child:
-          Lottie.asset("assets/lottile/present.json", reverse: true)
-      );
+        height: size.height / 20,
+          width: size.height / 20,
+          child: GestureDetector(
+            onTap: () {
+              //reverse the animation on red card click with changed curve
+              ref.read(chatProvider).startWinEffect(springController);
+            },
+            child: Spring.scale(
+              springController: springController,
+              start: 1.0, //required
+              end: 0.8, //required
+              animDuration: Duration(milliseconds: 0), //def=1s,
+              animStatus: (AnimStatus status) {
+                print(status);
+              },
+              curve: Curves.bounceOut, //def=Curves.easeInOut
+              child: Container(
+                child: SvgPicture.asset(CharacterIcons.default_human.getPath),
+              ),
+            ),
+          ));
+    // Container(height: 30, width: 30,
+    // child:
+    // Stack(
+    //   alignment: Alignment.center,
+    //   children: [
+    //     // AnimatedContainer(
+    //     //   height: size.height / 25,
+    //     //   width: size.height /25,
+    //     //   duration: Duration(milliseconds: 500),
+    //     //   child: SvgPicture.asset(user.icon.getPath),
+    //     // ),
+    //   ],
+    // )
+    // );
+  }
+}
+class _UserAvatar2 extends ConsumerWidget {
+  _UserAvatar2({
+    Key? key,
+    required this.size,
+    required this.user,
+  }) : super(key: key);
+
+  final Size size;
+  final User user;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final readProvider = ref.read(chatProvider);
+    final springController =  readProvider.partnerAnimeController;
+
+
+    return
+      Container(
+          height: size.height / 20,
+          width: size.height / 20,
+          child: GestureDetector(
+            onTap: () {
+              //reverse the animation on red card click with changed curve
+              ref.read(chatProvider).startWinEffect(springController);
+            },
+            child: Spring.scale(
+              springController: springController,
+              start: 1.0, //required
+              end: 0.8, //required
+              animDuration: Duration(milliseconds: 0), //def=1s,
+              animStatus: (AnimStatus status) {
+                print(status);
+              },
+              curve: Curves.bounceOut, //def=Curves.easeInOut
+              child: Container(
+                child: SvgPicture.asset(CharacterIcons.default_human.getPath),
+              ),
+            ),
+          ));
     // Container(height: 30, width: 30,
     // child:
     // Stack(

@@ -49,7 +49,7 @@ class ChatTextField extends StatelessWidget {
                               margin: EdgeInsets.symmetric(horizontal: size.width / 50),
                               child:
                               TextField(
-                                controller: ref.watch(chatProvider).txtController,
+                                controller: ref.watch(chatProvider).messageController,
                                 minLines: 1,
                                 maxLines: 3,
 

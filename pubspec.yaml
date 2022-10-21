@@ -45,6 +45,9 @@ dependencies:
   flutter_riverpod: ^2.0.2
   flutter_svg_provider: ^1.0.3
   lottie: ^1.4.3
+  scaled_list: ^2.0.0
+  scroll_snap_list: ^0.9.1
+  spring: ^2.0.2
 
 dev_dependencies:
   flutter_test:
@@ -101,6 +104,9 @@ flutter:
     - family: Dseg
       fonts:
         - asset: assets/fonts/DSEG7ClassicMini-Regular.ttf
+    - family: Kodomo
+      fonts:
+        - asset: assets/fonts/KodomoRounded.otf
 
 
   #   - family: Trajan Pro
