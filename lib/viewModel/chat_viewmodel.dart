@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quicha/model/message.dart';
 import 'package:quicha/model/quiz_handler.dart';
+import 'package:quicha/model/quiz_man.dart';
 import 'package:quicha/test_data.dart';
 import 'package:spring/spring.dart';
 
@@ -18,8 +19,12 @@ final chatProvider = ChangeNotifierProvider((ref) {
 });
 
 class ChatNotifier extends ChangeNotifier{
+  ChatNotifier(){
+    _quizMan= QuizMan(viewModel: this);
+  }
 
   QuizHandler _quizHandler = QuizHandler(quizList: []);
+  late QuizMan _quizMan ;
 
   var chatScrollController = ScrollController();
   var messageController = TextEditingController();
@@ -112,6 +117,11 @@ class ChatNotifier extends ChangeNotifier{
   }
   void _setCurrentQuiz() {
     currentQuiz = _quizHandler.getOneQuiz();
+    //FIXME:
+    List<String> quizStringList = ["第" + getQuizCount().toString() + "問",
+    currentQuiz.quizString];
+    _quizMan.setMessages(messages: quizStringList);
+
     notifyListeners();
   }
 
@@ -134,12 +144,13 @@ class ChatNotifier extends ChangeNotifier{
   }
 
 
-  void getQuizWidget(Widget widget) async {
+  void getQuizWidget() async {
     isVisibleQuiz = true;
     //2秒あける
     Future.delayed(Duration(seconds: 1),
             (){
-          quizWidget.add(widget);
+          quizWidget.add(_quizMan.readMesseges());
+          print(quizWidget);
           notifyListeners();
         });
   }

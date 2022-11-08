@@ -26,40 +26,13 @@ class ButtonsForTest extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
 
-          Expanded(child:
+          Expanded(flex: 1,child:
           ElevatedButton(onPressed:
               (){
-            readProvider.getQuizWidget(
-                 ChatBubble(
-              isLeft: true,
-              color: Colors.white,
-              showNip: true,
-              child: AnimationText(  string: "第" + watchProvider.getQuizCount().toString() + "問",
-                onFinished: () {
-                  //クイズの問題文
-                  readProvider.getQuizWidget(
-                      ChatBubble(
-                          isLeft: true,
-                          color: Colors.white,
-                          showNip: false,
-                          child:
-                          AnimationText(string: readProvider.currentQuiz.quizString,
-                            onFinished: (){
-                              //画像か音声クイズなら
-                              if(watchProvider.currentQuiz.isPicture! || watchProvider.currentQuiz.isSound!) {
-
-                              } else {
-                                //クイズカウントダウン
-                                readProvider.startCountdown();
-                                readProvider.setVisibleTime();
-                              }
-
-                            },)) );
-                },),));
+            readProvider.getQuizWidget();
           }, child:
           Text("Start"),
           ),
-            flex: 1,
           ),
 
           Expanded(child:
