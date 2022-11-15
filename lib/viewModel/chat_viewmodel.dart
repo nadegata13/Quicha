@@ -10,6 +10,7 @@ import 'package:quicha/model/message.dart';
 import 'package:quicha/model/quiz_handler.dart';
 import 'package:quicha/model/quiz_man.dart';
 import 'package:quicha/test_data.dart';
+import 'package:quicha/ui/custom_style.dart';
 import 'package:spring/spring.dart';
 
 import '../model/quiz_model.dart';
@@ -19,22 +20,20 @@ final chatProvider = ChangeNotifierProvider((ref) {
 });
 
 class ChatNotifier extends ChangeNotifier{
-  ChatNotifier(){
-    _quizMan= QuizMan(viewModel: this);
-  }
 
   QuizHandler _quizHandler = QuizHandler(quizList: []);
-  late QuizMan _quizMan ;
+  QuizMan _quizMan = QuizMan();
 
   var chatScrollController = ScrollController();
   var messageController = TextEditingController();
   final myAnimeController = SpringController();
   final partnerAnimeController = SpringController();
 
+  List<String> quizManMessages = [];
   List<Widget> quizWidget = [];
   List<ChatMessage> messageList= [];
 
-  Color color = Colors.blue;
+  Color color = Colors.green;
   Quiz currentQuiz = Quiz(quizString: "初期値", quizCategory: "初期値",answer: "初期値");
 
   bool isShowTime = false;
@@ -56,7 +55,7 @@ class ChatNotifier extends ChangeNotifier{
 
   void scrollDown() {
 
-    // chatScrollController.jumpTo(chatScrollController.position.maxScrollExtent);
+    // chatScrollController.jumpTo(chatScrollController.position.maxScrollExtent + 100);
     notifyListeners();
 
   }
@@ -129,12 +128,12 @@ class ChatNotifier extends ChangeNotifier{
 
 
   void changeColor() {
-    color = Colors.red;
+    color = Color(0xFFBC0707);
     notifyListeners();
   }
 
   void startCountdown()  {
-    color = Colors.blue;
+    color = Color(0xFF076003);
     countDownController.start();
     notifyListeners();
   }
@@ -149,9 +148,18 @@ class ChatNotifier extends ChangeNotifier{
     //2秒あける
     Future.delayed(Duration(seconds: 1),
             (){
-          quizWidget.add(_quizMan.readMesseges());
-          print(quizWidget);
-          notifyListeners();
+          // quizWidget.add(_quizMan.readMesseges());
+          // print(quizWidget);
+          // notifyListeners();
+
+              if(_quizMan.isLastIndex) {
+                startCountdown();
+                setVisibleTime();
+                notifyListeners();
+                return ;}
+
+              quizManMessages.add(_quizMan.getNewMessage());
+              notifyListeners();
         });
   }
 
@@ -161,7 +169,7 @@ class ChatNotifier extends ChangeNotifier{
     notifyListeners();
     Future.delayed(Duration(seconds: 1),
             (){
-          quizWidget.clear();
+          quizManMessages.clear();
           notifyListeners();
         }
     );

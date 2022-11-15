@@ -1,75 +1,31 @@
-
-import 'dart:async';
-
-import 'package:flutter/material.dart';
-import 'package:quicha/viewModel/chat_viewmodel.dart';
-
-import '../view/chat_screen/widget/animation_text.dart';
-import '../view/chat_screen/widget/chat_bubble.dart';
-
 class QuizMan{
 
-  List<String> messages = [];
-  List<Widget> bubbleList = [];
-  int index = 0;
-  StreamController controller = StreamController();
-  ChatNotifier viewModel;
+  List<String> _messages = [];
+  int _index = 0;
+  String _newMessage = "";
 
-  QuizMan({required this.viewModel});
-
+  bool isLastIndex = false;
 
   void setMessages({required List<String> messages}){
-    this.messages = messages;
+    this._messages = messages;
+    _index = 0;
+    isLastIndex = false;
   }
 
-   Widget readMesseges(){
-    if(messages.isEmpty) {return Container();}
-    return
-      ChatBubble(
-          isLeft: true,
-          color: Colors.white,
-          //最初のメッセージなら
-          showNip: index == 0,
-          child: _bubbleChild(messages[index])
-      );
+  String getNewMessage() {
+    _newMessage = _messages[_index];
+    _countUpIndex();
 
-  }
-
-  Widget _bubbleChild(String message) {
-
-
-    int lastIndex = message.length -1;
-    String filetype = message.substring(message.length <= 4 ? 0 : lastIndex - 4, lastIndex);
-
-    if(filetype == ".png"){
-      return
-        Container(height: 30, width: 30, child: Text(message));
-
-    } else if(filetype == ".mp3") {
-
-      return
-          Container(height: 30, width: 30, child: Text(message));
-
-    } else {
-
-      return
-      AnimationText(  string: message,
-        onFinished: () {
-          //クイズの問題文
-          //最後の要素なら
-          if(index == messages.length - 1){
-            print("終わり");
-            //初期化
-            index = 0;
-            //カウントダウン
-            startCountDown();
-            return;
-          }
-          index++;
-          viewModel.getQuizWidget();
-        },);
+    if(_messages.length - 1 < _index) {
+      isLastIndex = true;
     }
+    return _newMessage;
   }
+
+  void _countUpIndex(){
+    _index++;
+  }
+
 
   void startCountDown(){
     print("カウントダウン");

@@ -1,9 +1,13 @@
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
+import 'package:fading_edge_scrollview/fading_edge_scrollview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:lottie/lottie.dart';
 import '../../../model/quiz_model.dart';
 import '../../../viewModel/chat_viewmodel.dart';
+import 'animation_text.dart';
+import 'chat_bubble.dart';
 
 class QuizArea extends StatelessWidget {
   const QuizArea({
@@ -18,71 +22,88 @@ class QuizArea extends StatelessWidget {
     return
       Container(
         height: size.height / 3,
-        padding: EdgeInsets.all(size.height / 50),
-        decoration: BoxDecoration(
-            border: Border(bottom: BorderSide(color: Colors.grey, width: 0.5, strokeAlign: StrokeAlign.inside)),
-            color: Colors.yellow
-        ),
+        width: size.width,
         child:
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        Stack(
+          alignment: Alignment.center,
           children: [
-            //クイズマン及びタイマー
-            Column(
-              children: [
-                Text("クイズマン",
-                  style: TextStyle(
-                      fontSize: 10,
-                      fontFamily: 'Meiryo',
-                      fontWeight: FontWeight.bold,
-                      color: Colors.deepPurpleAccent
-                  ),),
-                SizedBox(height: size.height / 100,),
-                Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    _CountDownCircle(),
-                    //クイズマン
-                    Container(
-                      height: size.height / 15,
-                      width: size.height / 15,
-                      child:SvgPicture.asset("assets/images/character_icon/cat.svg"),
-                    ),
+            Container(
+              height: size.height,
+                width: size.width,
+                // decoration: BoxDecoration(
+                //   color: Colors.yellow,
+                //     borderRadius: BorderRadius.vertical(bottom: Radius.circular(30))
+                // ),
+                // child: Lottie.network("https://assets4.lottiefiles.com/packages/lf20_f24znioj.json",fit: BoxFit.fill)
+          ),
+            Padding(
+              padding: EdgeInsets.all(size.height / 50),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  //クイズマン及びタイマー
+                  Column(
+                    children: [
+                      Text("クイズマン",
+                        style: TextStyle(
+                            fontSize: 10,
+                            fontFamily: 'Meiryo',
+                            fontWeight: FontWeight.bold,
+                            color: Colors.deepPurpleAccent
+                        ),),
+                      SizedBox(height: size.height / 100,),
+                      Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          _CountDownCircle(),
+                          //クイズマン
+                          Container(
+                            height: size.height / 15,
+                            width: size.height / 15,
+                            child:SvgPicture.asset("assets/images/character_icon/cat.svg"),
+                          ),
 
-                  ],
-                ),
-              ],
-            ),
+                        ],
+                      ),
+                    ],
+                  ),
 
 
-            Scrollbar(
+                  FadingEdgeScrollView.fromSingleChildScrollView(
+                    gradientFractionOnStart: 0.1,
+                    child: SingleChildScrollView(
+                        controller: ScrollController(),
+                        scrollDirection: Axis.vertical,
+                        reverse: true,
+                        child:
+                        Consumer(builder: (BuildContext context, value, Widget? child) {
+                          return
+                            AnimatedOpacity(opacity:value.watch(chatProvider).isVisibleQuiz ? 1 : 0 ,
+                                duration: Duration(seconds: 1),
 
-                child:
-                SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    reverse: true,
-                    child:
-                    Consumer(builder: (BuildContext context, value, Widget? child) {
-                      return
-                        AnimatedOpacity(opacity:value.watch(chatProvider).isVisibleQuiz ? 1 : 0 ,
-                            duration: Duration(seconds: 1),
-
-                            child:
-                            Column(
-                              children: [
-                                SizedBox(height: size.height / 30,),
+                                child:
                                 Column(
-                                    children:
+                                  children: [
+                                    SizedBox(height: size.height / 30,),
+                                    Column(
+                                        children:
 
-                                    value.watch(chatProvider).quizWidget
-                                ),
-                              ],
-                            )
-                        );
-                    },)
-                )
-            )
+                                        // value.watch(chatProvider).quizManMessages.map((e) => QuizChatBabble(message: e,)).toList().cast<Widget>(),
+                                        value.watch(chatProvider).quizManMessages.asMap().entries.map((e) =>
+                                            QuizChatBabble(message: e.value,isFirst: e.key == 0,)).toList().cast<Widget>()
 
+
+                                    ),
+                                  ],
+                                )
+                            );
+                        },)
+                    ),
+                  )
+
+                ],
+              ),
+            ),
           ],
         )
 
@@ -90,46 +111,57 @@ class QuizArea extends StatelessWidget {
   }
 }
 
-// class _QuizManMessages extends StatelessWidget {
-//   _QuizManMessages({
-//     Key? key,
-//     required this.quizList
-// }) : super(key: key);
-//   List<Quiz> quizList;
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       child:
-//       ChatBubble(
-//         isLeft: true,
-//         color: Colors.white,
-//         showNip: true,
-//         child: AnimationText(  string: "第" + watchProvider.getQuizCount().toString() + "問",
-//           onFinished: () {
-//             //クイズの問題文
-//             readProvider.getQuizWidget(
-//                 ChatBubble(
-//                     isLeft: true,
-//                     color: Colors.white,
-//                     showNip: false,
-//                     child:
-//                     AnimationText(string: readProvider.currentQuiz.quizString,
-//                       onFinished: (){
-//                         //画像か音声クイズなら
-//                         if(watchProvider.currentQuiz.isPicture! || watchProvider.currentQuiz.isSound!) {
-//
-//                         } else {
-//                           //クイズカウントダウン
-//                           readProvider.startCountdown();
-//                           readProvider.setVisibleTime();
-//                         }
-//
-//                       },)) );
-//           },),));
-//
-//   }
-// }
+class QuizChatBabble extends StatelessWidget {
+  QuizChatBabble({required this.message, required this.isFirst, });
+
+  final String message;
+  final bool isFirst;
+  @override
+  Widget build(BuildContext context) {
+    return ChatBubble(
+        isLeft: true,
+        color: Colors.white,
+//最初のメッセージなら
+        showNip: isFirst,
+        child: _bubbleChild(message),
+    );
+  }
+  Widget _bubbleChild(String message) {
+
+
+    int lastIndex = message.length -1;
+    String filetype = message.substring(message.length <= 4 ? 0 : lastIndex - 4, lastIndex);
+
+    if(filetype == ".png"){
+      return
+        Container(height: 30, width: 30, child: Text(message));
+
+    } else if(filetype == ".mp3") {
+
+      return
+        Container(height: 30, width: 30, child: Text(message));
+
+    } else {
+
+      return
+      Consumer(builder: (BuildContext context, WidgetRef ref, Widget? child) {
+        final viewModel = ref.read(chatProvider);
+        return
+        AnimationText(  string: message,
+          onFinished: () {
+            //クイズの問題文
+            //最後の要素なら
+             viewModel.getQuizWidget();
+          },);
+      },
+      );
+    }
+  }
+
+}
+
+
+
 
 
 class _CountDownCircle extends ConsumerWidget {

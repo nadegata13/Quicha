@@ -67,6 +67,7 @@ class ChatTextField extends StatelessWidget {
                               Icon(Icons.send,color: Colors.blue,),
                               onTap: () {
                                 ref.read(chatProvider).sendMessage();
+                                ref.read(chatProvider).scrollDown();
                               },
                             )
 

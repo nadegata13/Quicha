@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quicha/ui/custom_style.dart';
 import 'package:quicha/view/chat_screen/widget/quiz_space.dart';
 import 'package:quicha/view/chat_screen/widget/chat_area.dart';
 import 'package:quicha/view/chat_screen/widget/chat_text_field.dart';
@@ -54,6 +55,7 @@ class _Body extends StatelessWidget {
             scrollDirection: Axis.vertical,
             child:
             Container(
+              color: Colors.blue,
                 height: size.height - topHeight,
                 child:
                 Column(
@@ -64,7 +66,7 @@ class _Body extends StatelessWidget {
 
                     //TODO: 後で消す
                     //テスト用ボタン
-                    ButtonsForTest(size: size, ),
+                    // ButtonsForTest(size: size, ),
 
                     //チャットスペース
                     ChatArea(size: size, ),

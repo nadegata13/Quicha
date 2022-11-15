@@ -26,6 +26,8 @@ class CustomColor{
   static Color userIconFrame = Color(0xFFa4a0a0);
   static Color selectIconBackground = Color(0xFFaab9bc);
   static Color darkBlue = Color(0xFF667984);
+  static Color myBubbleColor = Colors.yellow;
+  static Color yourBubbleColor = Color(0xFFfca562);
 
 
 }
