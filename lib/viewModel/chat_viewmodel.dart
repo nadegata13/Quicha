@@ -124,6 +124,7 @@ class ChatNotifier extends ChangeNotifier{
 
   void changeColor() {
     color = Colors.red;
+
     notifyListeners();
   }
 
