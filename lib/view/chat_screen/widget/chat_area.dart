@@ -48,6 +48,7 @@ class ChatArea extends StatelessWidget {
 
 
                           return
+                          //吹き出し
                             Row(
                               mainAxisAlignment: isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
                               children: [
