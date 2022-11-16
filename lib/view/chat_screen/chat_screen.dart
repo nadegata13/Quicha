@@ -44,6 +44,7 @@ class _Body extends StatelessWidget {
         appBar: AppBar(
           title:
           ChatAppBar(topHeight: topHeight, size: size,),
+          backgroundColor: CustomColor.appBarTheme,
         ),
         // backgroundColor: CustomColor.thinBlue,
         backgroundColor: Colors.white,

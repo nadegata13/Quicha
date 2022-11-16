@@ -268,3 +268,67 @@ class _UserAvatar2 extends ConsumerWidget {
     // );
   }
 }
+
+class MyHomePage extends StatefulWidget {
+  MyHomePage();
+
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMixin {
+  late Animation<double> animation;
+  late AnimationController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    final quick =  Duration(milliseconds: 1000);
+    final scaleTween = Tween(begin: 0.5, end: 1.0);
+    controller = AnimationController(duration: quick, vsync: this);
+    animation = scaleTween.animate(
+      CurvedAnimation(
+        parent: controller,
+        curve: Curves.bounceIn,
+      ),
+    )..addListener(() {
+      setState(() => scale = animation.value);
+    });
+
+
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  void _animate() {
+    animation
+      ..addStatusListener((AnimationStatus status) {
+      });
+    controller.repeat(reverse: true);
+  }
+
+  double scale = 0.0;
+  @override
+  Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
+    return Scaffold(
+        body: Center(
+          child: Transform.scale(
+            scale: scale,
+            child: CircleAvatar(child: SvgPicture.asset(CharacterIcons.default_wolf.getPath),)
+          ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            _animate();
+          },
+          child: Icon(Icons.favorite_rounded),
+        )
+    );
+  }
+}
+
