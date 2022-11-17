@@ -59,6 +59,11 @@ class ChatNotifier extends ChangeNotifier{
     notifyListeners();
 
   }
+
+  void startBoundAnime(AnimationController controller) {
+    controller.repeat();
+    notifyListeners();
+  }
   void addMessageFromPartner(){
     List<ChatMessage> partnerMessage = [ChatMessage(messageContent: "こんにちは！", messageType: "partner"),
       ChatMessage(messageContent: "うーんふんどしかなあ？", messageType: "partner"),];

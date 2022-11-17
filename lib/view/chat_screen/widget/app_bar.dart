@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import 'package:quicha/ui/character_icons.dart';
+import 'package:quicha/ui/custom_style.dart';
 import 'package:spring/spring.dart';
 
 import '../../../test_data.dart';
@@ -103,7 +104,7 @@ class _User extends StatelessWidget {
         ),
 
         !isMe ?
-        _UserAvatar2(size: size, user: user, ) : Container()
+        _UserAvatar(size: size, user: user, ) : Container()
       ],
     );
   }
@@ -156,9 +157,9 @@ class _AnimatedCirclePageState extends State<AnimatedCirclePage>  with SingleTic
     });
   }
 }
+class _UserAvatar extends StatefulWidget {
 
-class _UserAvatar extends ConsumerWidget {
-   _UserAvatar({
+  _UserAvatar({
     Key? key,
     required this.size,
     required this.user,
@@ -168,123 +169,29 @@ class _UserAvatar extends ConsumerWidget {
   final User user;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final readProvider = ref.read(chatProvider);
-    final watchProvider = ref.watch(chatProvider);
-    final springController = readProvider.myAnimeController ;
-
-
-    return
-      Container(
-        height: size.height / 20,
-          width: size.height / 20,
-          child: GestureDetector(
-            onTap: () {
-              //reverse the animation on red card click with changed curve
-              ref.read(chatProvider).startWinEffect(springController);
-            },
-            child: Spring.scale(
-              springController: springController,
-              start: 1.0, //required
-              end: 0.8, //required
-              animDuration: Duration(milliseconds: 0), //def=1s,
-              animStatus: (AnimStatus status) {
-                print(status);
-              },
-              curve: Curves.bounceOut, //def=Curves.easeInOut
-              child: Container(
-                child: SvgPicture.asset(CharacterIcons.default_human.getPath),
-              ),
-            ),
-          ));
-    // Container(height: 30, width: 30,
-    // child:
-    // Stack(
-    //   alignment: Alignment.center,
-    //   children: [
-    //     // AnimatedContainer(
-    //     //   height: size.height / 25,
-    //     //   width: size.height /25,
-    //     //   duration: Duration(milliseconds: 500),
-    //     //   child: SvgPicture.asset(user.icon.getPath),
-    //     // ),
-    //   ],
-    // )
-    // );
-  }
-}
-class _UserAvatar2 extends ConsumerWidget {
-  _UserAvatar2({
-    Key? key,
-    required this.size,
-    required this.user,
-  }) : super(key: key);
-
-  final Size size;
-  final User user;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final readProvider = ref.read(chatProvider);
-    final springController =  readProvider.partnerAnimeController;
-
-
-    return
-      Container(
-          height: size.height / 20,
-          width: size.height / 20,
-          child: GestureDetector(
-            onTap: () {
-              //reverse the animation on red card click with changed curve
-              ref.read(chatProvider).startWinEffect(springController);
-            },
-            child: Spring.scale(
-              springController: springController,
-              start: 1.0, //required
-              end: 0.8, //required
-              animDuration: Duration(milliseconds: 0), //def=1s,
-              animStatus: (AnimStatus status) {
-                print(status);
-              },
-              curve: Curves.bounceOut, //def=Curves.easeInOut
-              child: Container(
-                child: SvgPicture.asset(CharacterIcons.default_human.getPath),
-              ),
-            ),
-          ));
-    // Container(height: 30, width: 30,
-    // child:
-    // Stack(
-    //   alignment: Alignment.center,
-    //   children: [
-    //     // AnimatedContainer(
-    //     //   height: size.height / 25,
-    //     //   width: size.height /25,
-    //     //   duration: Duration(milliseconds: 500),
-    //     //   child: SvgPicture.asset(user.icon.getPath),
-    //     // ),
-    //   ],
-    // )
-    // );
-  }
+  __USerAvatarState createState() => __USerAvatarState();
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage();
+class __USerAvatarState extends State<_UserAvatar> with SingleTickerProviderStateMixin {
 
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMixin {
   late Animation<double> animation;
   late AnimationController controller;
+  var isAnimation = false;
+
+
+
+  @override
+  void dispose(){
+    controller.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
     super.initState();
-    final quick =  Duration(milliseconds: 1000);
-    final scaleTween = Tween(begin: 0.5, end: 1.0);
+    final quick =  Duration(milliseconds: 800);
+    final scaleTween = Tween(begin: 1.0, end: 1.5);
+
     controller = AnimationController(duration: quick, vsync: this);
     animation = scaleTween.animate(
       CurvedAnimation(
@@ -298,37 +205,49 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
 
   }
 
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
 
+  void _stopAnimate() {
+
+  }
   void _animate() {
-    animation
-      ..addStatusListener((AnimationStatus status) {
+
+    controller.repeat(reverse:  true);
+
+    Future.delayed(Duration(seconds: 6), () {
+      controller.stop();
+      print(controller.isAnimating);
+      setState(() {
+
       });
-    controller.repeat(reverse: true);
+    });
   }
 
-  double scale = 0.0;
+  double scale = 1.0;
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
-    return Scaffold(
-        body: Center(
-          child: Transform.scale(
-            scale: scale,
-            child: CircleAvatar(child: SvgPicture.asset(CharacterIcons.default_wolf.getPath),)
-          ),
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            _animate();
-          },
-          child: Icon(Icons.favorite_rounded),
-        )
-    );
+    return
+    Consumer(builder: ((context, ref, child) {
+      return
+        Container(
+            height: widget.size.height / 25,
+            width: widget.size.height / 25,
+            child: GestureDetector(
+              onTap: () {
+                ref.read(chatProvider).startBoundAnime(controller);
+              },
+              child: Transform.scale(
+                  scale: scale,
+                  child: Container(
+                    decoration: BoxDecoration(shape: BoxShape.circle,
+                      border: Border.all(color: controller.isAnimating ? Colors.white : Colors.grey.withOpacity(0.5), width: controller.isAnimating? 1.5 : 0.5),),
+                    child: SvgPicture.asset(CharacterIcons.default_wolf.getPath),
+                  )
+              ),
+            ));
+
+    }));
   }
 }
+
+
 
