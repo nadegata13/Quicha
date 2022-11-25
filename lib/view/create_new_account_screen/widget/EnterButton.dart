@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lottie/lottie.dart';
 import 'package:quicha/ui/character_icons.dart';
 import 'package:quicha/ui/custom_style.dart';
+import 'package:quicha/view/chat_screen/widget/app_bar.dart';
 import 'package:spring_button/spring_button.dart';
 import '../../../viewModel/new_account_viewmodel.dart';
 
@@ -39,7 +40,8 @@ class EnterButton extends ConsumerWidget {
               showDialog(
                   context: context,
                   builder: (BuildContext context) {
-                    return AlertDialog(
+                    return CustomAlertDialog();
+                      AlertDialog(
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(32.0))),
                       backgroundColor: CustomColor.thinBlue,

@@ -24,13 +24,7 @@ class ChatNotifier extends ChangeNotifier{
   QuizHandler _quizHandler = QuizHandler(quizList: []);
   QuizMan _quizMan = QuizMan();
 
-  var chatScrollController = ScrollController();
-  var messageController = TextEditingController();
-  final myAnimeController = SpringController();
-  final partnerAnimeController = SpringController();
-
   List<String> quizManMessages = [];
-  List<Widget> quizWidget = [];
   List<ChatMessage> messageList= [];
 
   Color color = Colors.green;
@@ -38,35 +32,23 @@ class ChatNotifier extends ChangeNotifier{
 
   bool isShowTime = false;
   bool isVisibleQuiz = true;
-
   final CountDownController countDownController = CountDownController();
   final int duration = 120;
   int victoryCount = 0;
-
-  void startWinEffect( SpringController controller) {
-    controller.play(motion: Motion.reverse, animDuration: Duration(milliseconds: 2000),);
-    notifyListeners();
-  }
 
   void incrementVictoryCount() {
     victoryCount++;
     notifyListeners();
   }
 
-  void scrollDown() {
-
-    // chatScrollController.jumpTo(chatScrollController.position.maxScrollExtent + 100);
-    notifyListeners();
-
-  }
 
   void startBoundAnime(AnimationController controller) {
     controller.repeat();
     notifyListeners();
   }
   void addMessageFromPartner(){
-    List<ChatMessage> partnerMessage = [ChatMessage(messageContent: "こんにちは！", messageType: "partner"),
-      ChatMessage(messageContent: "うーんふんどしかなあ？", messageType: "partner"),];
+    List<ChatMessage> partnerMessage = [ChatMessage(messageContent: "こんにちは！", messanger: "partner"),
+      ChatMessage(messageContent: "うーんふんどしかなあ？", messanger: "partner"),];
 
     int random = Random().nextInt(2);
     messageList.add(partnerMessage[random]);
@@ -74,13 +56,14 @@ class ChatNotifier extends ChangeNotifier{
 
   }
 
-  void sendMessage(){
+  void sendMessage(TextEditingController controller){
 
-    String message = messageController.text;
+    var message = controller.text;
+
     if(message.isEmpty) {return;}
 
-    messageList.add(ChatMessage(messageContent: message, messageType: "me"));
-    messageController.clear();
+    messageList.add(ChatMessage(messageContent: message, messanger: "me"));
+    controller.clear();
 
     notifyListeners();
   }
@@ -123,7 +106,7 @@ class ChatNotifier extends ChangeNotifier{
     currentQuiz = _quizHandler.getOneQuiz();
     //FIXME:
     List<String> quizStringList = ["第" + getQuizCount().toString() + "問",
-    currentQuiz.quizString];
+    currentQuiz.quizText];
     _quizMan.setMessages(messages: quizStringList);
 
     notifyListeners();
@@ -183,11 +166,3 @@ class ChatNotifier extends ChangeNotifier{
 
 }
 
-class _AvatarAnimation{
-  _AvatarAnimation({required this.resized, required this.height}){
-  }
-
-  var resized;
-  var height;
-
-}

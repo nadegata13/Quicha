@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:quicha/ui/custom_style.dart';
 import 'package:quicha/view/chat_screen/widget/quiz_space.dart';
 import 'package:quicha/view/chat_screen/widget/chat_area.dart';
@@ -51,33 +53,49 @@ class _Body extends StatelessWidget {
 
 
         body:
-        SingleChildScrollView(
-          physics: ClampingScrollPhysics(),
-            scrollDirection: Axis.vertical,
-            child:
-            Container(
-              color: Colors.blue,
-                height: size.height - topHeight,
+        Stack(
+          children: [
+            SingleChildScrollView(
+              physics: ClampingScrollPhysics(),
+                scrollDirection: Axis.vertical,
                 child:
+                Container(
+                  color: Colors.blue,
+                    height: size.height - topHeight,
+                    child:
+                    Column(
+                      children: [
+                        //出題スペース
+                        QuizArea(size: size),
+
+
+
+                        //チャットスペース
+                        ChatArea(size: size, ),
+                        //入力欄
+                        ChatTextField(size: size)
+
+
+                      ],
+                    )
+                )
+            ),
+            //TODO: 後で消す
+            //テスト用ボタン
+            HookConsumer(builder: ((context, ref, child) {
+              var flag = useState(false);
+              return
                 Column(
                   children: [
-                    //出題スペース
-                    QuizArea(size: size),
 
-
-                    //TODO: 後で消す
-                    //テスト用ボタン
-                    // ButtonsForTest(size: size, ),
-
-                    //チャットスペース
-                    ChatArea(size: size, ),
-                    //入力欄
-                    ChatTextField(size: size)
-
-
+                    flag.value ? ButtonsForTest(size: size, ) : Container(),
+                    Switch(value: flag.value, onChanged: (value){
+                      flag.value = value;
+                    })
                   ],
-                )
-            )
+                );
+            })),
+          ],
         )
     );
   }

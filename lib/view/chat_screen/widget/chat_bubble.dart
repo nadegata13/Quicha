@@ -31,7 +31,6 @@ class ChatBubble extends StatelessWidget {
             color:  color,
             borderWidth: 0.1,
             borderColor: Colors.grey,
-            elevation: 0,
 
             margin:  BubbleEdges.only(left: size.width / 50, top: 8, bottom: 8),
             padding:  BubbleEdges.symmetric(horizontal: size.height / 50, vertical: size.height / 80),

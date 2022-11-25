@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:quicha/viewModel/chat_viewmodel.dart';
+import 'package:quicha/viewModel/chat_viewmodel/chat_room_notifier.dart';
 import 'package:spring_button/spring_button.dart';
 
 
@@ -35,7 +38,9 @@ class ChatTextField extends StatelessWidget {
                 ),
                 child:
 
-                    Consumer(builder: (context, ref, child) {
+                    HookConsumer(builder: (context, ref, child) {
+
+                      final controller = useState(TextEditingController());
                       return
                         Row(
                           children: [
@@ -49,7 +54,7 @@ class ChatTextField extends StatelessWidget {
                               margin: EdgeInsets.symmetric(horizontal: size.width / 50),
                               child:
                               TextField(
-                                controller: ref.watch(chatProvider).messageController,
+                                controller: controller.value,
                                 minLines: 1,
                                 maxLines: 3,
 
@@ -66,8 +71,10 @@ class ChatTextField extends StatelessWidget {
                             SpringButton(SpringButtonType.OnlyScale,
                               Icon(Icons.send,color: Colors.blue,),
                               onTap: () {
-                                ref.read(chatProvider).sendMessage();
-                                ref.read(chatProvider).scrollDown();
+
+                                ref.read(chatRoomProvider.notifier).sendMessage(controller.value);
+
+                                // ref.read(chatProvider).scrollDown();
                               },
                             )
 

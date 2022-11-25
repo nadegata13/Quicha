@@ -3,7 +3,10 @@ import 'package:fading_edge_scrollview/fading_edge_scrollview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lottie/lottie.dart';
+import 'package:quicha/ui/custom_style.dart';
+import 'package:quicha/viewModel/chat_viewmodel/chat_room_notifier.dart';
 import '../../../model/quiz_model.dart';
 import '../../../viewModel/chat_viewmodel.dart';
 import 'animation_text.dart';
@@ -37,7 +40,7 @@ class QuizArea extends StatelessWidget {
                 // child: Lottie.network("https://assets4.lottiefiles.com/packages/lf20_f24znioj.json",fit: BoxFit.fill)
           ),
             Padding(
-              padding: EdgeInsets.all(size.height / 50),
+              padding: EdgeInsets.all(size.height / 60),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -55,16 +58,35 @@ class QuizArea extends StatelessWidget {
                       Stack(
                         alignment: Alignment.center,
                         children: [
-                          _CountDownCircle(),
+                          Container(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.grey
+                            ),
+                            padding: EdgeInsets.all(3),
+                            child:
+                            _CountDownCircle(),
+                          ),
                           //クイズマン
                           Container(
-                            height: size.height / 15,
-                            width: size.height / 15,
+                            height: size.height / 14.5,
+                            width: size.height / 14.5,
                             child:SvgPicture.asset("assets/images/character_icon/cat.svg"),
                           ),
 
                         ],
                       ),
+                        SizedBox(height: size.height / 100,),
+                      HookConsumer(builder: ((context, ref, _) {
+                        final state = ref.watch(chatRoomProvider);
+
+                        return Text(state.timerText,
+                        style: TextStyle(
+                          color: state.isDangerZone ? CustomColor.timeupColor: Colors.white,
+                          fontSize: size.height / 50,
+                          fontFamily: 'Dseg'
+                        ),);
+                      }))
                     ],
                   ),
 
@@ -76,9 +98,10 @@ class QuizArea extends StatelessWidget {
                         scrollDirection: Axis.vertical,
                         reverse: true,
                         child:
-                        Consumer(builder: (BuildContext context, value, Widget? child) {
+                        HookConsumer(builder: (BuildContext context, ref, Widget? child) {
+                          final state = ref.watch(chatRoomProvider);
                           return
-                            AnimatedOpacity(opacity:value.watch(chatProvider).isVisibleQuiz ? 1 : 0 ,
+                            AnimatedOpacity(opacity:state.isVisibleQuiz ? 1 : 0 ,
                                 duration: Duration(seconds: 1),
 
                                 child:
@@ -89,7 +112,7 @@ class QuizArea extends StatelessWidget {
                                         children:
 
                                         // value.watch(chatProvider).quizManMessages.map((e) => QuizChatBabble(message: e,)).toList().cast<Widget>(),
-                                        value.watch(chatProvider).quizManMessages.asMap().entries.map((e) =>
+                                        state.quizmanMessages.asMap().entries.map((e) =>
                                             QuizChatBabble(message: e.value,isFirst: e.key == 0,)).toList().cast<Widget>()
 
 
@@ -145,13 +168,13 @@ class QuizChatBabble extends StatelessWidget {
 
       return
       Consumer(builder: (BuildContext context, WidgetRef ref, Widget? child) {
-        final viewModel = ref.read(chatProvider);
+        final viewModel = ref.read(chatRoomProvider.notifier);
         return
         AnimationText(  string: message,
           onFinished: () {
             //クイズの問題文
             //最後の要素なら
-             viewModel.getQuizWidget();
+             viewModel.showQuizmanNextMessage();
           },);
       },
       );
@@ -164,7 +187,7 @@ class QuizChatBabble extends StatelessWidget {
 
 
 
-class _CountDownCircle extends ConsumerWidget {
+class _CountDownCircle extends HookConsumerWidget {
   const _CountDownCircle({
     Key? key,
   }) : super(key: key);
@@ -173,29 +196,32 @@ class _CountDownCircle extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(chatRoomProvider);
+    final viewModel = ref.watch(chatRoomProvider.notifier);
 
 
     return CircularCountDownTimer(
       initialDuration: 0,
-      duration: ref.read(chatProvider).duration,
-      controller: ref.watch(chatProvider).countDownController,
+      duration: state.timerValue,
+      controller: ref.watch(chatRoomProvider.notifier).countDownController,
       width: MediaQuery.of(context).size.height / 14,
       height: MediaQuery.of(context).size.height / 14,
-      ringColor: Colors.grey[300]!,
-      fillColor: ref.watch(chatProvider).countDownController.isStarted ?  ref.watch(chatProvider).color : Colors.transparent ,
+      ringColor: Color(0xFFD6DADA),
+      fillColor: viewModel.countDownController.isStarted ?
+          state.isTimeUp?
+          CustomColor.timeupColor :  Colors.lightGreenAccent: Colors.transparent ,
       backgroundGradient: null,
       strokeWidth: MediaQuery.of(context).size.height / 200,
       strokeCap: StrokeCap.round,
       isReverse: true,
       isReverseAnimation: false,
-      isTimerTextShown: ref.watch(chatProvider).isShowTime,
+      isTimerTextShown: false,
       autoStart: false,
       onStart: () {
         debugPrint('Countdown Started');
       },
       onComplete: () {
         debugPrint('Countdown Ended');
-        ref.read(chatProvider).changeColor();
       },
       onChange: (String timeStamp) {
       },

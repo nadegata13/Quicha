@@ -2,9 +2,11 @@ import 'package:fading_edge_scrollview/fading_edge_scrollview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import 'package:quicha/ui/custom_style.dart';
 import 'package:quicha/viewModel/chat_viewmodel.dart';
+import 'package:quicha/viewModel/chat_viewmodel/chat_room_notifier.dart';
 
 import '../../../model/message.dart';
 import 'chat_bubble.dart';
@@ -50,9 +52,8 @@ class ChatArea extends StatelessWidget {
                 child:
                 Padding(
                   padding:  EdgeInsets.symmetric(horizontal: size.width / 30),
-                  child: Consumer(builder: (context,ref, _) {
-                    final watchProvider = ref.watch(chatProvider);
-                    final readProvider = ref.read(chatProvider);
+                  child: HookConsumer(builder: (context,ref, _) {
+                    final state = ref.watch(chatRoomProvider);
                     return
 
                       FadingEdgeScrollView.fromSingleChildScrollView(
@@ -61,16 +62,16 @@ class ChatArea extends StatelessWidget {
                               // ChatList(onMsgKey: (int index) {  }, itemBuilder: (BuildContext context, int index) {  },)
                       SingleChildScrollView(
                         reverse: true,
-                        controller: watchProvider.chatScrollController,
+                        controller: ScrollController(),
                         child: ListView.builder(
                             physics: NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
                             scrollDirection: Axis.vertical,
                             padding: EdgeInsets.zero,
-                            itemCount: watchProvider.messageList.length,
+                            itemCount: state.chatMessages.length,
                             itemBuilder: (context, index) {
-                              var items = watchProvider.messageList;
-                              bool isMe = items[index].messageType == "me";
+                              var items = state.chatMessages;
+                              bool isMe = items[index].messanger == "me";
 
 
                               return
@@ -99,7 +100,7 @@ class ChatArea extends StatelessWidget {
                                           items[index].messageContent,
                                           style: TextStyle(
                                               fontSize: size.height / 50,
-                                              fontFamily: "NotoSans"
+                                              fontFamily: "NotoSans",
                                           ),
                                         ))
                                   ],
@@ -121,6 +122,6 @@ class ChatArea extends StatelessWidget {
       return false;
     }
 
-    return items[index -1].messageType == items[index].messageType;
+    return items[index -1].messanger == items[index].messanger;
   }
 }

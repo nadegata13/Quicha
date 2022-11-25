@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quicha/view/chat_screen/widget/animation_text.dart';
+import 'package:quicha/viewModel/chat_viewmodel/chat_room_notifier.dart';
 
 import '../../../viewModel/chat_viewmodel.dart';
 import 'chat_bubble.dart';
@@ -16,8 +17,8 @@ class ButtonsForTest extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final watchProvider = ref.watch(chatProvider);
-    final readProvider = ref.read(chatProvider);
+    final state = ref.watch(chatRoomProvider);
+    final viewModel = ref.read(chatRoomProvider.notifier);
 
     return Container(
       height: size.height / 30,
@@ -29,7 +30,7 @@ class ButtonsForTest extends ConsumerWidget {
           Expanded(flex: 1,child:
           ElevatedButton(onPressed:
               (){
-            readProvider.getQuizWidget();
+            viewModel.showQuizmanNextMessage();
           }, child:
           Text("Start"),
           ),
@@ -37,7 +38,7 @@ class ButtonsForTest extends ConsumerWidget {
 
           Expanded(child:
           ElevatedButton(onPressed: (){
-            readProvider.clearChat();
+            viewModel.clearChat();
           }, child:
           Text("Clear"),
           ),
@@ -45,7 +46,7 @@ class ButtonsForTest extends ConsumerWidget {
           ),
           Expanded(child:
           ElevatedButton(onPressed: (){
-            readProvider.increaseQuizCount();
+            viewModel.incQuizCount();
 
           }, child:
           Text("Next"),
@@ -55,7 +56,7 @@ class ButtonsForTest extends ConsumerWidget {
           Expanded(
             child:
             ElevatedButton(onPressed: (){
-              readProvider.setQuizList();
+              viewModel.setQuizList();
 
             }, child:
             Text("Set"),
@@ -65,8 +66,8 @@ class ButtonsForTest extends ConsumerWidget {
           Expanded(
             child:
             ElevatedButton(onPressed: (){
-              readProvider.addMessageFromPartner();
-              readProvider.incrementVictoryCount();
+              viewModel.addMessageFromPartner();
+              viewModel.incrementVictoryCount();
 
             }, child:
             Text("message"),

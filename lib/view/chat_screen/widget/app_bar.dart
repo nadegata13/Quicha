@@ -3,9 +3,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import 'package:quicha/ui/character_icons.dart';
 import 'package:quicha/ui/custom_style.dart';
+import 'package:quicha/viewModel/chat_viewmodel/chat_room_notifier.dart';
 import 'package:spring/spring.dart';
 
 import '../../../test_data.dart';
@@ -87,13 +89,13 @@ class _User extends StatelessWidget {
 
                 ),
                 //正解カウンター
-                Consumer(builder: (BuildContext context, WidgetRef ref, Widget? child) {
+                HookConsumer(builder: (BuildContext context, WidgetRef ref, Widget? child) {
                   return Container(
                     child: AnimatedFlipCounter(
 
                       duration: Duration(milliseconds: 500),
                       textStyle: counterTextStyle,
-                      value: ref.watch(chatProvider).victoryCount, // pass in a value like 2014
+                      value: ref.watch(chatRoomProvider).victoryCount, // pass in a value like 2014
                     ),
                   );
                 },
@@ -110,53 +112,6 @@ class _User extends StatelessWidget {
   }
 }
 
-class AnimatedCirclePage extends StatefulWidget {
-  @override
-  _AnimatedCirclePageState createState() => _AnimatedCirclePageState();
-}
-
-class _AnimatedCirclePageState extends State<AnimatedCirclePage>  with SingleTickerProviderStateMixin {
-  late Animation animation;
-  late AnimationController animationController;
-
-  @override
-  void initState() {
-    super.initState();
-
-    animationController = AnimationController(
-      duration: Duration(seconds: 1),
-      vsync: this,
-    );
-    animation = Tween(begin: 100.0, end: 200.0).animate(animationController);
-    animationController.addStatusListener(animationStatusListener);
-    animationController.forward();
-  }
-  void animationStatusListener(AnimationStatus status) {
-    if (status == AnimationStatus.completed) {
-      animationController.reverse();
-    } else if (status == AnimationStatus.dismissed) {
-      animationController.forward();
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return
-    AnimatedBuilder(animation: animationController, builder: (context, widget){
-      return
-        Container(
-          width: 25,
-          height: 25,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(
-              Radius.circular(25),
-            ),
-            color: Colors.red,
-          ),
-        );
-    });
-  }
-}
 class _UserAvatar extends StatefulWidget {
 
   _UserAvatar({
@@ -233,7 +188,19 @@ class __USerAvatarState extends State<_UserAvatar> with SingleTickerProviderStat
             width: widget.size.height / 25,
             child: GestureDetector(
               onTap: () {
-                ref.read(chatProvider).startBoundAnime(controller);
+                _animate();
+                showDialog(context: context, builder: ((_) {
+                  return CustomAlertDialog();
+                  // return  Dialog(
+                  //
+                  //   shape: RoundedRectangleBorder(
+                  //       borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                  // ),
+                  //   child: Container(
+                  //     height: widget.size.height / 3,
+                  //   ),
+                  // );
+                }));
               },
               child: Transform.scale(
                   scale: scale,
@@ -250,4 +217,58 @@ class __USerAvatarState extends State<_UserAvatar> with SingleTickerProviderStat
 }
 
 
+//TEST
 
+class CustomAlertDialog extends StatefulWidget {
+  const CustomAlertDialog({Key? key}) : super(key: key);
+
+  @override
+  _CustomAlertDialogState createState() => _CustomAlertDialogState();
+}
+
+class _CustomAlertDialogState extends State<CustomAlertDialog>
+    with SingleTickerProviderStateMixin {
+  late AnimationController controller;
+  late Animation<double> animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _initScaleAnimation();
+  }
+
+  _initScaleAnimation() {
+    controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    )..addListener(() => setState(() {}));
+
+    animation = Tween<double>(begin: 0, end: 1.0).animate(
+      CurvedAnimation(parent: controller, curve: Curves.linear)
+    )..addListener(() {
+      setState(() => scale = animation.value);
+    });
+
+    controller.forward();
+  }
+
+  var scale = 0.0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Align(alignment: Alignment.topCenter,
+        child:
+        Transform.scale(
+          scale: scale,
+          child: const AlertDialog(
+            backgroundColor: Colors.cyanAccent,
+            title: Text("title"),
+          ),
+        ),
+        )
+      ],
+    );
+  }
+}
