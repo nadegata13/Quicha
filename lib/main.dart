@@ -5,7 +5,6 @@ import 'package:quicha/view/chat_screen/widget/app_bar.dart';
 import 'package:quicha/view/create_new_account_screen/new_account_screen.dart';
 import 'package:quicha/view/home_screen/home_screen.dart';
 import 'package:quicha/view/login_or_sign_up_screen/login_or_sign_up_screen.dart';
-import 'package:quicha/view/login_screen/login_screen.dart';
 
 void main() {
   runApp(ProviderScope(child: MyApp()));
