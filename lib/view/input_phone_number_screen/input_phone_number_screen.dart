@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import 'package:quicha/ui/custom_style.dart';
+import 'package:quicha/viewModel/login_viewmodel/login_notifier.dart';
 
 
 class InputPhoneNumberScreen extends StatelessWidget{
@@ -50,7 +52,7 @@ class InputPhoneNumberScreen extends StatelessWidget{
   }
 }
 
-class _PhoneTextField extends HookWidget {
+class _PhoneTextField extends HookConsumerWidget {
    _PhoneTextField({
     Key? key,
     required this.size,
@@ -59,15 +61,18 @@ class _PhoneTextField extends HookWidget {
   final Size size;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref ) {
     final textEditingController = useState(TextEditingController());
-    var isTextFill = useState(textEditingController.value.text.length > 0);
+    final isEmpty = useState(false);
     return Column(
       children: [
 
         Padding(
           padding:  EdgeInsets.symmetric(horizontal: size.width / 20),
           child: TextField(
+            onChanged: (text){
+              isEmpty.value = text.isEmpty;
+            },
             controller: textEditingController.value,
               textAlign: TextAlign.center,
               autofocus: true,
@@ -77,12 +82,24 @@ class _PhoneTextField extends HookWidget {
                 color: Colors.black,
               ),
               decoration: InputDecoration(
-                  contentPadding: EdgeInsets.symmetric( vertical: size.height / 70),
-                  prefixIcon: Icon(Icons.call),
-                  suffixIcon: Icon(Icons.clear, color: Colors.grey, size: size.height / 50,),
+                  contentPadding: EdgeInsets.symmetric( vertical: size.height / 300),
+                  prefix: Container(
+                    height: size.height / 50,
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    child: Icon(Icons.call, color: Colors.blueAccent,),
+                  ),
+                  suffix: Container(
+                    child: IconButton(
+                      onPressed: (){
+                        textEditingController.value.clear();
+                        print(textEditingController.value.text);
+
+                        },
+                        icon: Icon(Icons.clear, color: Colors.grey, size: size.height / 50,)),
+                  ),
                   fillColor: Colors.white,
+                  hintText: "電話番号",
                   filled: true,
-                  hintText: "携帯番号(11ケタ)",
                   border: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.blueAccent, width: 32.0),
                       borderRadius: BorderRadius.circular(25.0)),
@@ -91,7 +108,10 @@ class _PhoneTextField extends HookWidget {
                       borderRadius: BorderRadius.circular(25.0))
               )),
         ),
-        IconButton(onPressed: (){print(isTextFill);}, icon: Icon(Icons.east,color: isTextFill.value? Colors.blueAccent : Colors.grey, ), iconSize: size.height / 15,)
+        IconButton(onPressed: isEmpty.value? null : (){
+          // ref.read(loginProvider.notifier).verifyPhone(textEditingController.value.text);
+        },
+          icon: Icon(Icons.east,color: isEmpty.value? Colors.grey : Colors.blueAccent  , ), iconSize: size.height / 15,)
       ],
     );
   }

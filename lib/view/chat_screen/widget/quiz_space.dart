@@ -8,7 +8,6 @@ import 'package:lottie/lottie.dart';
 import 'package:quicha/ui/custom_style.dart';
 import 'package:quicha/viewModel/chat_viewmodel/chat_room_notifier.dart';
 import '../../../model/quiz_model.dart';
-import '../../../viewModel/chat_viewmodel.dart';
 import 'animation_text.dart';
 import 'chat_bubble.dart';
 

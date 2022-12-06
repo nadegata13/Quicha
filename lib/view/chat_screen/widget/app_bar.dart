@@ -11,7 +11,6 @@ import 'package:quicha/viewModel/chat_viewmodel/chat_room_notifier.dart';
 import 'package:spring/spring.dart';
 
 import '../../../test_data.dart';
-import '../../../viewModel/chat_viewmodel.dart';
 
 class ChatAppBar extends StatelessWidget {
   const ChatAppBar({

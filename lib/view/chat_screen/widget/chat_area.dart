@@ -5,7 +5,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import 'package:quicha/ui/custom_style.dart';
-import 'package:quicha/viewModel/chat_viewmodel.dart';
 import 'package:quicha/viewModel/chat_viewmodel/chat_room_notifier.dart';
 
 import '../../../model/message.dart';

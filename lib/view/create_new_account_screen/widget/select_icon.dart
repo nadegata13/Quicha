@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:quicha/ui/custom_style.dart';
-import 'package:quicha/viewModel/chat_viewmodel.dart';
 import 'package:scaled_list/scaled_list.dart';
 import 'package:scroll_snap_list/scroll_snap_list.dart';
 import '../../../ui/character_icons.dart';
@@ -54,7 +53,6 @@ class _DynamicHorizontalDemoState extends ConsumerState<DynamicHorizontalDemo> {
   @override
   void initState() {
     super.initState();
-    ref.read(chatProvider);
 
   }
 
