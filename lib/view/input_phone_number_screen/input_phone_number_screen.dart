@@ -109,7 +109,7 @@ class _PhoneTextField extends HookConsumerWidget {
               )),
         ),
         IconButton(onPressed: isEmpty.value? null : (){
-          // ref.read(loginProvider.notifier).verifyPhone(textEditingController.value.text);
+          ref.read(loginProvider.notifier).verifyPhone(textEditingController.value.text);
         },
           icon: Icon(Icons.east,color: isEmpty.value? Colors.grey : Colors.blueAccent  , ), iconSize: size.height / 15,)
       ],

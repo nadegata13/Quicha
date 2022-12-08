@@ -13,22 +13,27 @@ class LoginNotifier extends StateNotifier{
   void aiueo() {
 
   }
-//   Future<void> verifyPhone(String phone) async {
-//     await FirebaseAuth.instance.verifyPhoneNumber(
-//       phoneNumber: '+81$phone',
-//       verificationCompleted: ( credential) {},
-//       verificationFailed: (e) {
-//         if (e.code == 'invalid-phone-number') {
-//           print('電話番号が正しくありません。');
-//         } else {
-//           print("正しい");
-//         }
-//       },
-//       codeSent:  (s,int? a){
-//         final smsCode = '';
-// // ダイアログでユーザーの認証コード入力を待つ
-//       },
-//       codeAutoRetrievalTimeout: (String verificationId) {},
-//     );
-//   }
+  Future<void> verifyPhone(String phone) async {
+    await FirebaseAuth.instance.verifyPhoneNumber(
+      phoneNumber: '+81$phone',
+      timeout: Duration(seconds: 5),
+      verificationCompleted: ( credential) {
+        print("success");
+      },
+      verificationFailed: (e) {
+        print("failed");
+        print(e.message);
+      },
+      codeSent:  (s,int? a){
+        final smsCode = '';
+        print("smscode");
+        print(s);
+        print(a.toString());
+// ダイアログでユーザーの認証コード入力を待つ
+      },
+      codeAutoRetrievalTimeout: (String verificationId) {
+        print(verificationId);
+      },
+    );
+  }
 }

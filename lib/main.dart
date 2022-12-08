@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quicha/view/chat_screen/chat_screen.dart';
@@ -7,7 +8,9 @@ import 'package:quicha/view/home_screen/home_screen.dart';
 import 'package:quicha/view/input_phone_number_screen/input_phone_number_screen.dart';
 import 'package:quicha/view/login_or_sign_up_screen/login_or_sign_up_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+   await Firebase.initializeApp();
   runApp(ProviderScope(child: MyApp()));
 }
 
@@ -18,7 +21,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return  MaterialApp(
+    return
+      MaterialApp(
       title: 'Flutter Demo',
       home:  LoginOrSignUpScreen()
     );
