@@ -7,8 +7,15 @@ import 'package:quicha/view/create_new_account_screen/new_account_screen.dart';
 import 'package:quicha/view/home_screen/home_screen.dart';
 import 'package:quicha/view/input_phone_number_screen/input_phone_number_screen.dart';
 import 'package:quicha/view/login_or_sign_up_screen/login_or_sign_up_screen.dart';
+import 'package:quicha/view/test_websocket_screen.dart';
+
+import 'model/socket_client.dart';
 
 void main() async {
+
+
+  final _socketClient = SocketClient.instance.socket!;
+
   WidgetsFlutterBinding.ensureInitialized();
    await Firebase.initializeApp();
   runApp(ProviderScope(child: MyApp()));
@@ -24,7 +31,7 @@ class MyApp extends StatelessWidget {
     return
       MaterialApp(
       title: 'Flutter Demo',
-      home:  LoginOrSignUpScreen()
+      home:  HomeScreen()
     );
   }
 }

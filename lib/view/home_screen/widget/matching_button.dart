@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:quicha/view/matching_screen/matching_screen.dart';
 
 import '../../../viewModel/home_viewmodel.dart';
 
@@ -42,6 +43,10 @@ class MatchingButton extends ConsumerWidget {
             },
             onTapUp: (details) {
               readProvider.entryTapUp();
+              Navigator.push(context, MaterialPageRoute(
+                // （2） 実際に表示するページ(ウィジェット)を指定する
+                  builder: (context) => MatchingScreen()
+              ));
             },
             onTapCancel: () => readProvider.entryTapCancel(),
             child:
