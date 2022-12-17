@@ -44,7 +44,7 @@ class MatchingScreen extends HookConsumerWidget {
               viewModel.test();
             }, child: Text("お試し")),
 
-            Text("接続人数: " + state.connectClientCount),
+            Text("接続数: " + state.connectClientCount),
           ],
         ),
       ),
