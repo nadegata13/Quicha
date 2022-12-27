@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quicha/model/socket_methods.dart';
 import 'package:quicha/viewModel/matching_viewmodel/matching_state.dart';
 import 'package:socket_io_client/socket_io_client.dart';
+import 'package:intl/intl.dart';
 
 import '../../model/socket_client.dart';
 
@@ -61,8 +62,27 @@ class MatchingNotifier extends StateNotifier<MatchingState> {
         state = state.copyWith(connectClientCount: data + "人");
         print(data);
       });
+      _socketClient.on('testDate', (data) {
+        print(data);
+        print(data.runtimeType);
+        final _dateFormatter = DateFormat("y/M/d-HH:mm:ss");
 
-  }
+        // String→DateTime変換
+        DateTime result;
+
+        // String→DateTime変換
+        try {
+          result = _dateFormatter.parseStrict(data);
+          print(result);
+
+        } catch (e) {
+          // 変換に失敗した場合の処理
+        }
+      });
+    }
+
+
+
   void close(){
     _socketClient.emit('leaveRoom');
     _socketClient.clearListeners();
