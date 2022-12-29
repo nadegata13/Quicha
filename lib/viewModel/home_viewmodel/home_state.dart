@@ -6,10 +6,8 @@ part 'home_state.freezed.dart';
 class HomeState with _$HomeState{
   const factory HomeState({
 
-    @Default("") String successJoinRoom,
     @Default(false) bool isClickedEntryButton,
-    @Default("マッチング中………") String matchingMessage,
-    @Default("0人") String connectClientCount,
+    @Default("assets/images/character_icon/greyForIcon.jpg") String iconPath,
   }) = _HomeState;
 }
 

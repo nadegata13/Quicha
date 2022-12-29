@@ -8,7 +8,6 @@ import 'package:quicha/view/home_screen/widget/matching_button.dart';
 import 'package:quicha/view/home_screen/widget/user_icon.dart';
 import 'package:quicha/view/home_screen/widget/user_life.dart';
 import 'package:quicha/view/home_screen/widget/user_nickname.dart';
-import 'package:quicha/viewModel/home_viewmodel.dart';
 import 'package:spring_button/spring_button.dart';
 
 

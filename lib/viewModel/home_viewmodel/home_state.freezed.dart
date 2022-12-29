@@ -16,10 +16,8 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$HomeState {
-  String get successJoinRoom => throw _privateConstructorUsedError;
   bool get isClickedEntryButton => throw _privateConstructorUsedError;
-  String get matchingMessage => throw _privateConstructorUsedError;
-  String get connectClientCount => throw _privateConstructorUsedError;
+  String get iconPath => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $HomeStateCopyWith<HomeState> get copyWith =>
@@ -31,11 +29,7 @@ abstract class $HomeStateCopyWith<$Res> {
   factory $HomeStateCopyWith(HomeState value, $Res Function(HomeState) then) =
       _$HomeStateCopyWithImpl<$Res, HomeState>;
   @useResult
-  $Res call(
-      {String successJoinRoom,
-      bool isClickedEntryButton,
-      String matchingMessage,
-      String connectClientCount});
+  $Res call({bool isClickedEntryButton, String iconPath});
 }
 
 /// @nodoc
@@ -51,27 +45,17 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? successJoinRoom = null,
     Object? isClickedEntryButton = null,
-    Object? matchingMessage = null,
-    Object? connectClientCount = null,
+    Object? iconPath = null,
   }) {
     return _then(_value.copyWith(
-      successJoinRoom: null == successJoinRoom
-          ? _value.successJoinRoom
-          : successJoinRoom // ignore: cast_nullable_to_non_nullable
-              as String,
       isClickedEntryButton: null == isClickedEntryButton
           ? _value.isClickedEntryButton
           : isClickedEntryButton // ignore: cast_nullable_to_non_nullable
               as bool,
-      matchingMessage: null == matchingMessage
-          ? _value.matchingMessage
-          : matchingMessage // ignore: cast_nullable_to_non_nullable
-              as String,
-      connectClientCount: null == connectClientCount
-          ? _value.connectClientCount
-          : connectClientCount // ignore: cast_nullable_to_non_nullable
+      iconPath: null == iconPath
+          ? _value.iconPath
+          : iconPath // ignore: cast_nullable_to_non_nullable
               as String,
     ) as $Val);
   }
@@ -84,11 +68,7 @@ abstract class _$$_HomeStateCopyWith<$Res> implements $HomeStateCopyWith<$Res> {
       __$$_HomeStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {String successJoinRoom,
-      bool isClickedEntryButton,
-      String matchingMessage,
-      String connectClientCount});
+  $Res call({bool isClickedEntryButton, String iconPath});
 }
 
 /// @nodoc
@@ -102,27 +82,17 @@ class __$$_HomeStateCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? successJoinRoom = null,
     Object? isClickedEntryButton = null,
-    Object? matchingMessage = null,
-    Object? connectClientCount = null,
+    Object? iconPath = null,
   }) {
     return _then(_$_HomeState(
-      successJoinRoom: null == successJoinRoom
-          ? _value.successJoinRoom
-          : successJoinRoom // ignore: cast_nullable_to_non_nullable
-              as String,
       isClickedEntryButton: null == isClickedEntryButton
           ? _value.isClickedEntryButton
           : isClickedEntryButton // ignore: cast_nullable_to_non_nullable
               as bool,
-      matchingMessage: null == matchingMessage
-          ? _value.matchingMessage
-          : matchingMessage // ignore: cast_nullable_to_non_nullable
-              as String,
-      connectClientCount: null == connectClientCount
-          ? _value.connectClientCount
-          : connectClientCount // ignore: cast_nullable_to_non_nullable
+      iconPath: null == iconPath
+          ? _value.iconPath
+          : iconPath // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -132,27 +102,19 @@ class __$$_HomeStateCopyWithImpl<$Res>
 
 class _$_HomeState implements _HomeState {
   const _$_HomeState(
-      {this.successJoinRoom = "",
-      this.isClickedEntryButton = false,
-      this.matchingMessage = "マッチング中………",
-      this.connectClientCount = "0人"});
+      {this.isClickedEntryButton = false,
+      this.iconPath = "assets/images/character_icon/greyForIcon.jpg"});
 
-  @override
-  @JsonKey()
-  final String successJoinRoom;
   @override
   @JsonKey()
   final bool isClickedEntryButton;
   @override
   @JsonKey()
-  final String matchingMessage;
-  @override
-  @JsonKey()
-  final String connectClientCount;
+  final String iconPath;
 
   @override
   String toString() {
-    return 'HomeState(successJoinRoom: $successJoinRoom, isClickedEntryButton: $isClickedEntryButton, matchingMessage: $matchingMessage, connectClientCount: $connectClientCount)';
+    return 'HomeState(isClickedEntryButton: $isClickedEntryButton, iconPath: $iconPath)';
   }
 
   @override
@@ -160,19 +122,14 @@ class _$_HomeState implements _HomeState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_HomeState &&
-            (identical(other.successJoinRoom, successJoinRoom) ||
-                other.successJoinRoom == successJoinRoom) &&
             (identical(other.isClickedEntryButton, isClickedEntryButton) ||
                 other.isClickedEntryButton == isClickedEntryButton) &&
-            (identical(other.matchingMessage, matchingMessage) ||
-                other.matchingMessage == matchingMessage) &&
-            (identical(other.connectClientCount, connectClientCount) ||
-                other.connectClientCount == connectClientCount));
+            (identical(other.iconPath, iconPath) ||
+                other.iconPath == iconPath));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, successJoinRoom,
-      isClickedEntryButton, matchingMessage, connectClientCount);
+  int get hashCode => Object.hash(runtimeType, isClickedEntryButton, iconPath);
 
   @JsonKey(ignore: true)
   @override
@@ -183,19 +140,12 @@ class _$_HomeState implements _HomeState {
 
 abstract class _HomeState implements HomeState {
   const factory _HomeState(
-      {final String successJoinRoom,
-      final bool isClickedEntryButton,
-      final String matchingMessage,
-      final String connectClientCount}) = _$_HomeState;
+      {final bool isClickedEntryButton, final String iconPath}) = _$_HomeState;
 
-  @override
-  String get successJoinRoom;
   @override
   bool get isClickedEntryButton;
   @override
-  String get matchingMessage;
-  @override
-  String get connectClientCount;
+  String get iconPath;
   @override
   @JsonKey(ignore: true)
   _$$_HomeStateCopyWith<_$_HomeState> get copyWith =>
