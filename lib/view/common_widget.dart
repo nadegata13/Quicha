@@ -1,5 +1,33 @@
 import 'package:flutter/material.dart';
 
+
+//円形アイコン
+class CircleIcon extends StatelessWidget {
+  final double size;
+  final String imagePath;
+
+  CircleIcon({required this.size,
+    required this.imagePath,});
+
+  @override
+  Widget build(BuildContext context) {
+    return
+      Container(
+        height: size,
+        width: size,
+        decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(width: 0.3, color: Colors.grey),
+            image: DecorationImage(
+                fit: BoxFit.fill,
+                image: AssetImage(imagePath)
+            )
+        ),
+      );
+  }
+}
+
+
 class CustomAlertDialog extends StatefulWidget {
   const CustomAlertDialog({Key? key, required this.dialog}) : super(key: key);
 

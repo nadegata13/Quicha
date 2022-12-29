@@ -8,6 +8,7 @@ import 'package:scaled_list/scaled_list.dart';
 import 'package:scroll_snap_list/scroll_snap_list.dart';
 import '../../../ui/character_icons.dart';
 import '../../../viewModel/new_account_viewmodel.dart';
+import '../../common_widget.dart';
 
 class SelectIcon extends StatelessWidget {
   const SelectIcon({
@@ -131,15 +132,11 @@ class _DynamicHorizontalDemoState extends ConsumerState<DynamicHorizontalDemo> {
         ),
       )
           ),
-          Container(
-            height: size.height / 12.5,
-            width: size.height / 12.5,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(width: 0.3, color: Colors.grey),
-            ),
-            child: SvgPicture.asset(CharacterIcons.getIcon(index).getPath),
-          ),
+          CircleIcon(
+            size: size.height / 12.5,
+            imagePath: CharacterIcons.getIcon(index).getPath,
+
+          )
         ],
       )
     );

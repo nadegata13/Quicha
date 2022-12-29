@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import 'package:quicha/ui/custom_style.dart';
 import 'package:quicha/view/input_phone_number_screen/input_phone_number_screen.dart';
+import 'package:quicha/viewModel/login_viewmodel/login_notifier.dart';
 import 'package:rive/rive.dart';
 import 'package:spring_button/spring_button.dart';
 
@@ -45,30 +47,44 @@ class LoginOrSignUpScreen extends StatelessWidget {
           ),
           Align(alignment: Alignment.bottomCenter,
             child:
-            Container(
-              height: size.height / 3,
-              margin: EdgeInsets.only(bottom: size.height / 8),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-
-                  SignButton(size: size, isSignIn: true, title: "ログイン・新規登録", onPressed: () {
-                    //
-                    // （1） 指定した画面に遷移する
-                    Navigator.push(context, MaterialPageRoute(
-                      // （2） 実際に表示するページ(ウィジェット)を指定する
-                        builder: (context) => InputPhoneNumberScreen()
-                    ));
-                  },),
-                  SizedBox(height: size.height / 20,),
-                  SignButton(size: size, isSignIn: false, title: "お問い合わせ", onPressed: () {
-                    //
-                  },),
-                ],
-              ),
-            ),
+            _SignUpOrSignIn(size: size),
           ),
 
+        ],
+      ),
+    );
+  }
+}
+
+class _SignUpOrSignIn extends HookConsumerWidget {
+  const _SignUpOrSignIn({
+    Key? key,
+    required this.size,
+  }) : super(key: key);
+
+  final Size size;
+
+  @override
+  Widget build(BuildContext context, ref) {
+    final viewModel = ref.read(loginProvider.notifier);
+
+    return Container(
+      height: size.height / 3,
+      margin: EdgeInsets.only(bottom: size.height / 8),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+
+          //匿名ではじめる
+          SignButton(size: size, isSignIn: true, title: "新しくはじめる", onPressed: () {
+            //
+            viewModel.onSignInWithAnonymousUser(context);
+          },),
+          SizedBox(height: size.height / 20,),
+          //既にお持ちの方
+          SignButton(size: size, isSignIn: false, title: "ログイン", onPressed: () {
+            //
+          },),
         ],
       ),
     );

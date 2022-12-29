@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quicha/view/matching_screen/matching_screen.dart';
+import 'package:quicha/viewModel/home_viewmodel/home_notifier.dart';
 
-import '../../../viewModel/home_viewmodel.dart';
 
 class MatchingButton extends ConsumerWidget {
   const MatchingButton({
@@ -15,15 +15,15 @@ class MatchingButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
 
-    final watchProvider = ref.watch(homePorovider);
-    final readProvider = ref.watch(homePorovider);
+    final watchProvider = ref.watch(homeProvider);
+    final readProvider = ref.read(homeProvider.notifier);
 
     return Stack(
       alignment: Alignment.bottomCenter,
       children: [
 
         //タップ中の押し込まれたボタン
-        Opacity(opacity: watchProvider.isClicked? 1 : 0, child:
+        Opacity(opacity: watchProvider.isClickedEntryButton? 1 : 0, child:
         InkResponse(
             onTap: null,
             child:
@@ -36,7 +36,7 @@ class MatchingButton extends ConsumerWidget {
         ),
         ),
 
-        Opacity(opacity: watchProvider.isClicked ? 0 : 1, child:
+        Opacity(opacity: watchProvider.isClickedEntryButton ? 0 : 1, child:
         GestureDetector(
             onTapDown: (detail) {
               readProvider.entryTapDown();

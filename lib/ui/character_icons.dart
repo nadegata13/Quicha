@@ -1,9 +1,9 @@
 enum CharacterIcons {
-  default_human,
-  default_bird,
-  default_cat,
-  default_sheep,
-  default_turtle,
+  default_azarashi,
+  penguin,
+  default_hippo,
+  default_fox,
+  default_cow,
   default_wolf;
 
   static CharacterIcons  getIcon(int index){
@@ -12,19 +12,19 @@ enum CharacterIcons {
       return icon;
     }
   }
-  return CharacterIcons.default_human;
+  return CharacterIcons.default_azarashi;
 }
 
 }
 
 extension IconsPath on CharacterIcons {
   static final path = {
-    CharacterIcons.default_human: "assets/images/character_icon/human.svg",
-    CharacterIcons.default_bird: "assets/images/character_icon/bird.svg",
-    CharacterIcons.default_cat: "assets/images/character_icon/cat.svg",
-    CharacterIcons.default_sheep: "assets/images/character_icon/sheep.svg",
-    CharacterIcons.default_turtle: "assets/images/character_icon/turtle.svg",
-    CharacterIcons.default_wolf: "assets/images/character_icon/wolf.svg",
+    CharacterIcons.default_azarashi: "assets/images/character_icon/azarashi.png",
+    CharacterIcons.penguin: "assets/images/character_icon/penguin.png",
+    CharacterIcons.default_hippo: "assets/images/character_icon/hippo.png",
+    CharacterIcons.default_fox: "assets/images/character_icon/fox.png",
+    CharacterIcons.default_cow: "assets/images/character_icon/cow.png",
+    CharacterIcons.default_wolf: "assets/images/character_icon/wolf.png",
   };
   String get getPath => path[this]!;
 

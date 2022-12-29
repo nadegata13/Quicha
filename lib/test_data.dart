@@ -13,7 +13,7 @@ class TestData{
     Quiz(quizString: "aiueo.png", quizCategory: "あ",answer: "スプリット"),
     Quiz(quizString: "オーストラリアの先住民のことを「アボリジニ」といいますが、ニュージーランドの先住民のことを何というでしょう？オーストラリアの先住民のことを「アボリジニ」といいますが、ニュージーランドの先住民のことを何というでしょう？", quizCategory: "あ",answer: "マオリ"),
   ];
-  static var user1 = User(nickname: "たかし", icon: CharacterIcons.default_human);
+  static var user1 = User(nickname: "たかし", icon: CharacterIcons.default_azarashi);
   static var user2 = User(nickname: "魔法戦士よしだだだだだだ", icon: CharacterIcons.default_wolf);
 
   static var profileImage = "assets/images/character_icon/bird.svg";

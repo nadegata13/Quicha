@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:quicha/view/create_new_account_screen/new_account_screen.dart';
 
 final loginProvider = StateNotifierProvider.autoDispose(
     ((ref) => LoginNotifier())
@@ -13,6 +14,49 @@ class LoginNotifier extends StateNotifier{
   void aiueo() {
 
   }
+
+  Future<void> onSignInWithAnonymousUser(BuildContext context) async {
+    final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+    try{
+      await firebaseAuth.signInAnonymously();
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => NewAccountScreen()),
+      );
+
+    }catch(e){
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(e.toString()),
+        ),
+      );
+    }
+  }
+
+  Future<void> anonymousEmailLink({
+    required String email,
+    required String password,
+  }) async {
+
+    if(FirebaseAuth.instance.currentUser == null){
+      return;
+    }
+    final user = FirebaseAuth.instance.currentUser!;
+
+    try {
+      await Future.wait([
+        user.updateEmail(email),
+        user.updatePassword(password),
+      ]);
+    } catch (error) {
+      print(error);
+    }
+  }
+
+
+
   Future<void> verifyPhone(String phone) async {
     await FirebaseAuth.instance.verifyPhoneNumber(
       phoneNumber: '+81$phone',

@@ -21,7 +21,7 @@ class NickNameTextField extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.all(30),
         decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.5),
+            color: Colors.white.withOpacity(0.8),
           borderRadius: BorderRadius.circular(20)
         ),
         child: Column(

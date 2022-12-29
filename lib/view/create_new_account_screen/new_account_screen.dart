@@ -46,12 +46,6 @@ class _Body extends StatelessWidget {
 
     return
       Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-
-          backgroundColor: CustomColor.appBarTheme,
-          title: Text("アバターを作る", style: TextStyle(fontFamily: 'Kodomo'),),
-        ),
         resizeToAvoidBottomInset: false,
           backgroundColor: CustomColor.selectIconBackground,
           body:
@@ -62,7 +56,7 @@ class _Body extends StatelessWidget {
               Stack(
                 children: [
                   Container(
-                    height: size.height - topHeight,
+                    height: size.height ,
                     width: size.width,
                     child:
                     Lottie.asset("assets/lottile/mountainBackground.json",
@@ -75,6 +69,7 @@ class _Body extends StatelessWidget {
                       child:
                       Column(
                         children: [
+                            SizedBox(height: size.height / 30,),
                           //アイコンを選択
                           SelectIcon(size: size),
 
@@ -82,8 +77,10 @@ class _Body extends StatelessWidget {
                           //ニックネームを入力
                           NickNameTextField(size: size),
 
+                            SizedBox(height: size.height / 30,),
 
-                          EnterButton(size: size)
+
+                          EnterButton(size: size),
                         ],
                       ),
                     ),
