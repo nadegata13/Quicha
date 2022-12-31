@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:quicha/viewModel/home_viewmodel/home_notifier.dart';
 import 'package:spring_button/spring_button.dart';
 
 import '../../../test_data.dart';
 
-class UserNickName extends StatelessWidget {
+class UserNickName extends HookConsumerWidget {
   const UserNickName({
     Key? key,
     required this.size,
@@ -12,7 +14,10 @@ class UserNickName extends StatelessWidget {
   final Size size;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
+
+    final state = ref.watch(homeProvider);
+
     return Column(
       children: [
         Stack(
@@ -42,7 +47,8 @@ class UserNickName extends StatelessWidget {
                 child:
                 FittedBox(
                   fit: BoxFit.scaleDown,
-                  child: Text(TestData.username, style: TextStyle(fontSize: size.height / 25,
+                  //ニックネーム
+                  child: Text(state.nickname, style: TextStyle(fontSize: size.height / 25,
                       fontWeight: FontWeight.w900),),
                 ),
 

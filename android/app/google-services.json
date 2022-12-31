@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "696120875183",
+    "project_id": "quicha-firebase",
+    "storage_bucket": "quicha-firebase.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:696120875183:android:905cc68018198c7b249c5a",
+        "android_client_info": {
+          "package_name": "com.nadegata.quicha"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "696120875183-5tddlbtt3ak30va4dop62moieaphqjl3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCuy_Q34NK98WOLiJTmaz7MBvOSOR7vvoo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "696120875183-5tddlbtt3ak30va4dop62moieaphqjl3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "696120875183-so29931edse1nncnhbvc42op3un9ub9r.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "jp.ac.jec.cm.gd.quicha"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

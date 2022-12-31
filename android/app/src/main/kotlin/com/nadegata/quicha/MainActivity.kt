@@ -1,4 +1,4 @@
-package com.example.quicha
+package com.nadegata.quicha
 
 import io.flutter.embedding.android.FlutterActivity
 

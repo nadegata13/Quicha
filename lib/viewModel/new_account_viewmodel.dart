@@ -1,14 +1,18 @@
 
 import 'dart:async';
+import 'dart:io';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:quicha/ui/character_icons.dart';
 import 'package:quicha/view/home_screen/home_screen.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:socket_io_client/socket_io_client.dart';
+import 'package:uuid/uuid.dart';
 
 
 import '../model/socket_client.dart';
@@ -107,14 +111,46 @@ class NewAcountNotifier extends ChangeNotifier{
 
     String userID = FirebaseAuth.instance.currentUser!.uid;
     String nickname = nicknameController.text;
+    String deviceID = "";
     int icon = selectedIcon.index;
+    await getDeviceUniqueId().then((value) => deviceID = value);
+
+
 
     _socketClient.emit('createNewAccount', {
       "newUserID": userID,
       "newNickname" : nickname,
       "newIcon" : icon,
+      "deviceID" : deviceID
     });
 
+  }
+
+  Future<String> getDeviceUniqueId() async {
+    var deviceIdentifier = 'unknown';
+    var deviceInfo = DeviceInfoPlugin();
+
+    if (Platform.isAndroid) {
+      var androidInfo = await deviceInfo.androidInfo;
+      deviceIdentifier = androidInfo.id;
+      print(androidInfo.id);
+    } else if (Platform.isIOS) {
+
+      //キーチェーンにuuidが登録されているか確認
+      final storage = new FlutterSecureStorage();
+      String? idToken = await storage.read(key: 'quichaUUID');
+      //なかったら新規登録
+      if(idToken == null){
+        final String UUID = Uuid().v4();
+        await storage.write(key: 'quichaUUID', value: UUID);
+      }
+
+       idToken = await storage.read(key: 'quichaUUID');
+      print(idToken!);
+      deviceIdentifier = idToken!;
+    }
+
+    return deviceIdentifier;
   }
 
 

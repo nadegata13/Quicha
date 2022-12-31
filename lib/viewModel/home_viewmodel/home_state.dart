@@ -8,6 +8,7 @@ class HomeState with _$HomeState{
 
     @Default(false) bool isClickedEntryButton,
     @Default("assets/images/character_icon/greyForIcon.jpg") String iconPath,
+    @Default("name") String nickname
   }) = _HomeState;
 }
 

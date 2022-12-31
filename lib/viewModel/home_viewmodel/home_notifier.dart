@@ -39,12 +39,15 @@ class HomeNotifier extends StateNotifier<HomeState> {
 
     //アカウント情報を受け取る;
     _socketClient.on("passAccountInfo", (data) {
-      String iconPath = CharacterIcons.getIcon(data).getPath;
 
-      print(data);
-      print(iconPath);
+      int _icon = data['icon'];
 
-      state = state.copyWith(iconPath: iconPath);
+      String nickname = data['nickname'];
+
+      String iconPath = CharacterIcons.getIcon(_icon).getPath;
+
+
+      state = state.copyWith(iconPath: iconPath, nickname: nickname);
     });
   }
 

@@ -18,6 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$HomeState {
   bool get isClickedEntryButton => throw _privateConstructorUsedError;
   String get iconPath => throw _privateConstructorUsedError;
+  String get nickname => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $HomeStateCopyWith<HomeState> get copyWith =>
@@ -29,7 +30,7 @@ abstract class $HomeStateCopyWith<$Res> {
   factory $HomeStateCopyWith(HomeState value, $Res Function(HomeState) then) =
       _$HomeStateCopyWithImpl<$Res, HomeState>;
   @useResult
-  $Res call({bool isClickedEntryButton, String iconPath});
+  $Res call({bool isClickedEntryButton, String iconPath, String nickname});
 }
 
 /// @nodoc
@@ -47,6 +48,7 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
   $Res call({
     Object? isClickedEntryButton = null,
     Object? iconPath = null,
+    Object? nickname = null,
   }) {
     return _then(_value.copyWith(
       isClickedEntryButton: null == isClickedEntryButton
@@ -56,6 +58,10 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
       iconPath: null == iconPath
           ? _value.iconPath
           : iconPath // ignore: cast_nullable_to_non_nullable
+              as String,
+      nickname: null == nickname
+          ? _value.nickname
+          : nickname // ignore: cast_nullable_to_non_nullable
               as String,
     ) as $Val);
   }
@@ -68,7 +74,7 @@ abstract class _$$_HomeStateCopyWith<$Res> implements $HomeStateCopyWith<$Res> {
       __$$_HomeStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool isClickedEntryButton, String iconPath});
+  $Res call({bool isClickedEntryButton, String iconPath, String nickname});
 }
 
 /// @nodoc
@@ -84,6 +90,7 @@ class __$$_HomeStateCopyWithImpl<$Res>
   $Res call({
     Object? isClickedEntryButton = null,
     Object? iconPath = null,
+    Object? nickname = null,
   }) {
     return _then(_$_HomeState(
       isClickedEntryButton: null == isClickedEntryButton
@@ -94,6 +101,10 @@ class __$$_HomeStateCopyWithImpl<$Res>
           ? _value.iconPath
           : iconPath // ignore: cast_nullable_to_non_nullable
               as String,
+      nickname: null == nickname
+          ? _value.nickname
+          : nickname // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -103,7 +114,8 @@ class __$$_HomeStateCopyWithImpl<$Res>
 class _$_HomeState implements _HomeState {
   const _$_HomeState(
       {this.isClickedEntryButton = false,
-      this.iconPath = "assets/images/character_icon/greyForIcon.jpg"});
+      this.iconPath = "assets/images/character_icon/greyForIcon.jpg",
+      this.nickname = "name"});
 
   @override
   @JsonKey()
@@ -111,10 +123,13 @@ class _$_HomeState implements _HomeState {
   @override
   @JsonKey()
   final String iconPath;
+  @override
+  @JsonKey()
+  final String nickname;
 
   @override
   String toString() {
-    return 'HomeState(isClickedEntryButton: $isClickedEntryButton, iconPath: $iconPath)';
+    return 'HomeState(isClickedEntryButton: $isClickedEntryButton, iconPath: $iconPath, nickname: $nickname)';
   }
 
   @override
@@ -125,11 +140,14 @@ class _$_HomeState implements _HomeState {
             (identical(other.isClickedEntryButton, isClickedEntryButton) ||
                 other.isClickedEntryButton == isClickedEntryButton) &&
             (identical(other.iconPath, iconPath) ||
-                other.iconPath == iconPath));
+                other.iconPath == iconPath) &&
+            (identical(other.nickname, nickname) ||
+                other.nickname == nickname));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, isClickedEntryButton, iconPath);
+  int get hashCode =>
+      Object.hash(runtimeType, isClickedEntryButton, iconPath, nickname);
 
   @JsonKey(ignore: true)
   @override
@@ -140,12 +158,16 @@ class _$_HomeState implements _HomeState {
 
 abstract class _HomeState implements HomeState {
   const factory _HomeState(
-      {final bool isClickedEntryButton, final String iconPath}) = _$_HomeState;
+      {final bool isClickedEntryButton,
+      final String iconPath,
+      final String nickname}) = _$_HomeState;
 
   @override
   bool get isClickedEntryButton;
   @override
   String get iconPath;
+  @override
+  String get nickname;
   @override
   @JsonKey(ignore: true)
   _$$_HomeStateCopyWith<_$_HomeState> get copyWith =>
