@@ -6,6 +6,7 @@ import 'package:quicha/view/chat_screen/widget/app_bar.dart';
 import 'package:quicha/view/create_new_account_screen/new_account_screen.dart';
 import 'package:quicha/view/home_screen/home_screen.dart';
 import 'package:quicha/view/login_or_sign_up_screen/login_or_sign_up_screen.dart';
+import 'package:quicha/view/testTimerScreen.dart';
 import 'package:quicha/view/test_websocket_screen.dart';
 
 import 'model/socket_client.dart';
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
     return
       MaterialApp(
       title: 'Flutter Demo',
-      home:  LoginOrSignUpScreen()
+      home:  HomeScreen()
     );
   }
 }

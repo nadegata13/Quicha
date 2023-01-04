@@ -5,7 +5,7 @@ import 'package:spring_button/spring_button.dart';
 
 import '../../../test_data.dart';
 
-class UserNickName extends HookConsumerWidget {
+class UserNickName extends ConsumerWidget {
   const UserNickName({
     Key? key,
     required this.size,

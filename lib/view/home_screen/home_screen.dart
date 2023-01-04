@@ -8,6 +8,7 @@ import 'package:quicha/view/home_screen/widget/matching_button.dart';
 import 'package:quicha/view/home_screen/widget/user_icon.dart';
 import 'package:quicha/view/home_screen/widget/user_life.dart';
 import 'package:quicha/view/home_screen/widget/user_nickname.dart';
+import 'package:quicha/viewModel/home_viewmodel/home_notifier.dart';
 import 'package:spring_button/spring_button.dart';
 
 
@@ -50,7 +51,7 @@ class _Body extends StatelessWidget {
                   //ライフ
                   UserLife(size: size),
 
-                    SizedBox(height: size.height / 50,),
+                    SizedBox(height: size.height / 30,),
 
 
                   //アイコン
@@ -79,7 +80,8 @@ class _Body extends StatelessWidget {
                                   child:
                                   SvgPicture.asset("assets/images/system/makeQuiz.svg")
                               ),
-                              onTap: () {},
+                              onTap: () {
+                              },
                               ),
                         ],
                       ),
@@ -107,7 +109,6 @@ class _Body extends StatelessWidget {
       );
   }
 }
-
 
 
 

@@ -19,6 +19,10 @@ mixin _$MatchingState {
   String get successJoinRoom => throw _privateConstructorUsedError;
   String get matchingMessage => throw _privateConstructorUsedError;
   String get connectClientCount => throw _privateConstructorUsedError;
+  bool get isVisibleBus => throw _privateConstructorUsedError;
+  bool get isAnimation => throw _privateConstructorUsedError;
+  int get opponentIcon => throw _privateConstructorUsedError;
+  String get opponentNickname => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $MatchingStateCopyWith<MatchingState> get copyWith =>
@@ -34,7 +38,11 @@ abstract class $MatchingStateCopyWith<$Res> {
   $Res call(
       {String successJoinRoom,
       String matchingMessage,
-      String connectClientCount});
+      String connectClientCount,
+      bool isVisibleBus,
+      bool isAnimation,
+      int opponentIcon,
+      String opponentNickname});
 }
 
 /// @nodoc
@@ -53,6 +61,10 @@ class _$MatchingStateCopyWithImpl<$Res, $Val extends MatchingState>
     Object? successJoinRoom = null,
     Object? matchingMessage = null,
     Object? connectClientCount = null,
+    Object? isVisibleBus = null,
+    Object? isAnimation = null,
+    Object? opponentIcon = null,
+    Object? opponentNickname = null,
   }) {
     return _then(_value.copyWith(
       successJoinRoom: null == successJoinRoom
@@ -66,6 +78,22 @@ class _$MatchingStateCopyWithImpl<$Res, $Val extends MatchingState>
       connectClientCount: null == connectClientCount
           ? _value.connectClientCount
           : connectClientCount // ignore: cast_nullable_to_non_nullable
+              as String,
+      isVisibleBus: null == isVisibleBus
+          ? _value.isVisibleBus
+          : isVisibleBus // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isAnimation: null == isAnimation
+          ? _value.isAnimation
+          : isAnimation // ignore: cast_nullable_to_non_nullable
+              as bool,
+      opponentIcon: null == opponentIcon
+          ? _value.opponentIcon
+          : opponentIcon // ignore: cast_nullable_to_non_nullable
+              as int,
+      opponentNickname: null == opponentNickname
+          ? _value.opponentNickname
+          : opponentNickname // ignore: cast_nullable_to_non_nullable
               as String,
     ) as $Val);
   }
@@ -82,7 +110,11 @@ abstract class _$$_MatchingStateCopyWith<$Res>
   $Res call(
       {String successJoinRoom,
       String matchingMessage,
-      String connectClientCount});
+      String connectClientCount,
+      bool isVisibleBus,
+      bool isAnimation,
+      int opponentIcon,
+      String opponentNickname});
 }
 
 /// @nodoc
@@ -99,6 +131,10 @@ class __$$_MatchingStateCopyWithImpl<$Res>
     Object? successJoinRoom = null,
     Object? matchingMessage = null,
     Object? connectClientCount = null,
+    Object? isVisibleBus = null,
+    Object? isAnimation = null,
+    Object? opponentIcon = null,
+    Object? opponentNickname = null,
   }) {
     return _then(_$_MatchingState(
       successJoinRoom: null == successJoinRoom
@@ -113,6 +149,22 @@ class __$$_MatchingStateCopyWithImpl<$Res>
           ? _value.connectClientCount
           : connectClientCount // ignore: cast_nullable_to_non_nullable
               as String,
+      isVisibleBus: null == isVisibleBus
+          ? _value.isVisibleBus
+          : isVisibleBus // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isAnimation: null == isAnimation
+          ? _value.isAnimation
+          : isAnimation // ignore: cast_nullable_to_non_nullable
+              as bool,
+      opponentIcon: null == opponentIcon
+          ? _value.opponentIcon
+          : opponentIcon // ignore: cast_nullable_to_non_nullable
+              as int,
+      opponentNickname: null == opponentNickname
+          ? _value.opponentNickname
+          : opponentNickname // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -122,8 +174,12 @@ class __$$_MatchingStateCopyWithImpl<$Res>
 class _$_MatchingState implements _MatchingState {
   const _$_MatchingState(
       {this.successJoinRoom = "",
-      this.matchingMessage = "マッチング中………",
-      this.connectClientCount = "0人"});
+      this.matchingMessage = "",
+      this.connectClientCount = "0人",
+      this.isVisibleBus = true,
+      this.isAnimation = false,
+      this.opponentIcon = 0,
+      this.opponentNickname = "opponent"});
 
   @override
   @JsonKey()
@@ -134,10 +190,22 @@ class _$_MatchingState implements _MatchingState {
   @override
   @JsonKey()
   final String connectClientCount;
+  @override
+  @JsonKey()
+  final bool isVisibleBus;
+  @override
+  @JsonKey()
+  final bool isAnimation;
+  @override
+  @JsonKey()
+  final int opponentIcon;
+  @override
+  @JsonKey()
+  final String opponentNickname;
 
   @override
   String toString() {
-    return 'MatchingState(successJoinRoom: $successJoinRoom, matchingMessage: $matchingMessage, connectClientCount: $connectClientCount)';
+    return 'MatchingState(successJoinRoom: $successJoinRoom, matchingMessage: $matchingMessage, connectClientCount: $connectClientCount, isVisibleBus: $isVisibleBus, isAnimation: $isAnimation, opponentIcon: $opponentIcon, opponentNickname: $opponentNickname)';
   }
 
   @override
@@ -150,12 +218,27 @@ class _$_MatchingState implements _MatchingState {
             (identical(other.matchingMessage, matchingMessage) ||
                 other.matchingMessage == matchingMessage) &&
             (identical(other.connectClientCount, connectClientCount) ||
-                other.connectClientCount == connectClientCount));
+                other.connectClientCount == connectClientCount) &&
+            (identical(other.isVisibleBus, isVisibleBus) ||
+                other.isVisibleBus == isVisibleBus) &&
+            (identical(other.isAnimation, isAnimation) ||
+                other.isAnimation == isAnimation) &&
+            (identical(other.opponentIcon, opponentIcon) ||
+                other.opponentIcon == opponentIcon) &&
+            (identical(other.opponentNickname, opponentNickname) ||
+                other.opponentNickname == opponentNickname));
   }
 
   @override
   int get hashCode => Object.hash(
-      runtimeType, successJoinRoom, matchingMessage, connectClientCount);
+      runtimeType,
+      successJoinRoom,
+      matchingMessage,
+      connectClientCount,
+      isVisibleBus,
+      isAnimation,
+      opponentIcon,
+      opponentNickname);
 
   @JsonKey(ignore: true)
   @override
@@ -168,7 +251,11 @@ abstract class _MatchingState implements MatchingState {
   const factory _MatchingState(
       {final String successJoinRoom,
       final String matchingMessage,
-      final String connectClientCount}) = _$_MatchingState;
+      final String connectClientCount,
+      final bool isVisibleBus,
+      final bool isAnimation,
+      final int opponentIcon,
+      final String opponentNickname}) = _$_MatchingState;
 
   @override
   String get successJoinRoom;
@@ -176,6 +263,14 @@ abstract class _MatchingState implements MatchingState {
   String get matchingMessage;
   @override
   String get connectClientCount;
+  @override
+  bool get isVisibleBus;
+  @override
+  bool get isAnimation;
+  @override
+  int get opponentIcon;
+  @override
+  String get opponentNickname;
   @override
   @JsonKey(ignore: true)
   _$$_MatchingStateCopyWith<_$_MatchingState> get copyWith =>

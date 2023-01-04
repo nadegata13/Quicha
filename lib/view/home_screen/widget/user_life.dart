@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:quicha/viewModel/home_viewmodel/home_notifier.dart';
 
 import '../../../test_data.dart';
 
-class UserLife extends StatelessWidget {
+class UserLife extends ConsumerWidget {
   const UserLife({
     Key? key,
     required this.size,
@@ -11,20 +14,30 @@ class UserLife extends StatelessWidget {
   final Size size;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
+    final state = ref.watch(homeProvider);
+
     return Container(
         width: size.width / 2,
         child:
         Column(
           children: [
+              SizedBox(height: size.height / 50,),
 
             //ライフ復活時間
-            Padding(padding: EdgeInsets.symmetric(vertical: size.height / 50),
+            Padding(padding: EdgeInsets.symmetric(vertical: size.height / 80),
               child:
               Opacity(opacity: 1,
                 child:
                 Align(alignment: Alignment(0.9,0),
-                  child: Text(TestData.currentTime),
+                  child:
+                  Container(
+                    width: size.width / 7,
+                    alignment: Alignment.centerLeft,
+                      child: Text(state.lifeUpTime, style: TextStyle(
+                        fontSize: size.height / 60,
+                        color: Colors.green.withOpacity(0.5)
+                      ),)),
                 ),
               ),
             ),
@@ -34,7 +47,7 @@ class UserLife extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               //ライフ（引数の数は緑色のハートの数)
-              children: _restLifes(TestData.fillLifeCount),
+              children: _restLifes(state.lifeCount),
             )
           ],
         )
