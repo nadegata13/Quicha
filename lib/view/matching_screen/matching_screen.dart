@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lottie/lottie.dart';
-import 'package:quicha/model/socket_client.dart';
+import 'package:quicha/repository/socket_client.dart';
 import 'package:quicha/ui/character_icons.dart';
 import 'package:quicha/ui/custom_style.dart';
 import 'package:quicha/view/common_widget.dart';
@@ -60,6 +60,15 @@ class MatchingScreen extends HookConsumerWidget {
       appBar: AppBar(
         title: Text(state.matchingMessage),
         backgroundColor: CustomColor.appBarTheme,
+        leading: IconButton(icon: const Icon(Icons.arrow_back),
+        onPressed: (){
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(
+                // （2） 実際に表示するページ(ウィジェット)を指定する
+                  builder: (context) => HomeScreen()
+
+              ));
+        },),
 
       ),
       body:Stack(

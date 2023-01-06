@@ -3,80 +3,87 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quicha/model/DateFormatter.dart';
-import 'package:quicha/ui/character_icons.dart';
+import 'package:quicha/model/home_data.dart';
+import 'package:quicha/repository/socket_methods/home_socket_methods.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
-import '../../model/socket_client.dart';
+import '../../repository/socket_client.dart';
 import 'home_state.dart';
 
 
 final homeProvider = StateNotifierProvider.autoDispose<HomeNotifier, HomeState>(
     ((ref) {
       ref.onDispose(() {
-        SocketClient.instance.socket!.clearListeners();
         if(ref.notifier._timer != null){
           ref.notifier._timer.cancel();
         }
+        ref.notifier._socketMethods.close();
         print("disposed!");
       });
-      return HomeNotifier();
+      return HomeNotifier(ref);
     })
 );
 
+final homeSocketMethods = StreamProvider((ref){
+  final ss = ref.read(homeSocketProvider);
+  return ss.socketResponse.stream;
+});
+
 class HomeNotifier extends StateNotifier<HomeState> {
 
-  late Socket _socketClient;
-  late Timer _timer;
+  late Timer _timer = Timer(Duration(days: 1), (){});
+  final StateNotifierProviderRef ref;
+  final Socket _socketClient = SocketClient.instance.socket!;
   //画面遷移用のアイコン
-  int currentIcon = 0;
+
+  HomeNotifier(this.ref) : super(const HomeState()){
 
 
-  HomeNotifier() : super(const HomeState()){
-    _socketClient = SocketClient.instance.socket!;
 
-    this._receiveEvent();
+    ref.listen(homeSocketMethods, (_, AsyncValue<dynamic> data) {
 
-    //アカウント情報をサーバーに要求
-    this._queryAccountInfo();
+      var value = data.value;
+
+      print(value.runtimeType);
+
+
+      if(value is PassAccountInfoData){
+        print("pass");
+
+
+        state = state.copyWith(icon: value.icon, nickname: value.nickname);
+        //ライフの個数と時間をチェック
+        _checkLife(lifeUpdateStr: value.lifeUpdateStr, lifeCount: value.lifeCount);
+
+      } else if (value is SuccessUpdateLifeData) {
+        print("successUpdateLifeData");
+        state = state.copyWith(lifeCount: value.lifeCount);
+
+        _checkLife(lifeUpdateStr: value.lifeUpdateStr, lifeCount: value.lifeCount);
+      }
+    });
+
+    //onメソッド
+      this._receiveEvent();
+
+      //アカウント情報をサーバーに要求kkk
+      _socketMethods.queryAccountInfo();
 
   }
 
-
-  void test(){
-    _queryAccountInfo();
-  }
+  HomeSocketMethods get _socketMethods => ref.read(homeSocketProvider);
 
   void _receiveEvent() {
 
-    //アカウント情報を受け取る;
-    _socketClient.on("passAccountInfo", (data) {
+    _socketMethods.onSuccessUpdateLifeCount();
+    _socketMethods.onPassAccountInfo();
+    //test
+    _socketMethods.onTest();
 
-      int _icon = data['icon'];
-      int _lifeCount = data['lifeCount'];
-      String _lifeUpdate = data['lifeUpdate'];
+  }
 
-      String nickname = data['nickname'];
-      String iconPath = CharacterIcons.getIcon(_icon).getPath;
-
-      //画面遷移用のアイコンを設定
-      currentIcon = _icon;
-      state = state.copyWith(iconPath: iconPath, nickname: nickname );
-
-      //ライフの確認
-      _checkLife(lifeUpdateStr: _lifeUpdate, lifeCount: _lifeCount);
-    });
-
-    _socketClient.on("successUpdateLifeCount", (data){
-      int lifeCount = data["lifeCount"];
-      String lifeUpdate = data["lifeUpdate"];
-      print(lifeCount);
-
-
-      state = state.copyWith(lifeCount: lifeCount);
-      _checkLife(lifeUpdateStr: lifeUpdate, lifeCount: lifeCount);
-
-    });
-
+  void test (){
+    _socketMethods.emitTest();
   }
   void _checkLife({required String lifeUpdateStr, required int lifeCount}){
 
@@ -207,15 +214,6 @@ class HomeNotifier extends StateNotifier<HomeState> {
     }));
   }
 
-  //アカウント情報をサーバーに要求
-  void _queryAccountInfo() {
-
-    final currentUser = FirebaseAuth.instance.currentUser;
-
-    if(currentUser == null){ return; }
-
-    _socketClient.emit("queryAccountInfo", currentUser!.uid );
-  }
 
   /**
    * マッチングルームへのボタンの挙動

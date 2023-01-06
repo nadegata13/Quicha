@@ -29,6 +29,7 @@ class UserIcon extends ConsumerWidget {
         shape: CircleBorder(),
       ),
       onPressed: () {
+        ref.read(homeProvider.notifier).test();
 
       },
       child:
@@ -45,12 +46,7 @@ class UserIcon extends ConsumerWidget {
             ),
           ),
 
-          CircleIcon(size: size.height / 10, imagePath: state.iconPath),
-          // Container(
-          //   height: size.height / 10,
-          //   //ユーザーアイコン
-          //   child:SvgPicture.asset("assets/images/character_icon/human.svg"),
-          // )
+          CircleIcon(size: size.height / 10, imagePath: CharacterIcons.getIcon(state.icon).getPath),
           //タップ時にアイコン選択画面が出てくる
         ],
       ),

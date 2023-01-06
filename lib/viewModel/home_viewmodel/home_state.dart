@@ -7,7 +7,7 @@ class HomeState with _$HomeState{
   const factory HomeState({
 
     @Default(false) bool isClickedEntryButton,
-    @Default("assets/images/character_icon/greyForIcon.jpg") String iconPath,
+    @Default(0) int icon,
     @Default("name") String nickname,
     @Default("") String lifeUpTime,
     @Default(0) int lifeCount,

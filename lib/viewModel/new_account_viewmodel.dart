@@ -15,7 +15,7 @@ import 'package:socket_io_client/socket_io_client.dart';
 import 'package:uuid/uuid.dart';
 
 
-import '../model/socket_client.dart';
+import '../repository/socket_client.dart';
 
 
 final newAccountProvider = ChangeNotifierProvider.autoDispose((ref) {

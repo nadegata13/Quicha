@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:quicha/model/socket_methods.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +15,6 @@ class TestWebSocketScreen extends HookWidget {
 
 
     final _controller = useState(TextEditingController());
-    final SocketMethods _socketMethods = SocketMethods();
     return Scaffold(
       body:
       Padding(

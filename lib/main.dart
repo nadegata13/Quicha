@@ -9,7 +9,7 @@ import 'package:quicha/view/login_or_sign_up_screen/login_or_sign_up_screen.dart
 import 'package:quicha/view/testTimerScreen.dart';
 import 'package:quicha/view/test_websocket_screen.dart';
 
-import 'model/socket_client.dart';
+import 'repository/socket_client.dart';
 
 void main() async {
 
@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
     return
       MaterialApp(
       title: 'Flutter Demo',
-      home:  HomeScreen()
+      home:  TimerPage(),
     );
   }
 }

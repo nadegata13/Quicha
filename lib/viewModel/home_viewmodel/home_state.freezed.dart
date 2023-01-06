@@ -17,7 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$HomeState {
   bool get isClickedEntryButton => throw _privateConstructorUsedError;
-  String get iconPath => throw _privateConstructorUsedError;
+  int get icon => throw _privateConstructorUsedError;
   String get nickname => throw _privateConstructorUsedError;
   String get lifeUpTime => throw _privateConstructorUsedError;
   int get lifeCount => throw _privateConstructorUsedError;
@@ -34,7 +34,7 @@ abstract class $HomeStateCopyWith<$Res> {
   @useResult
   $Res call(
       {bool isClickedEntryButton,
-      String iconPath,
+      int icon,
       String nickname,
       String lifeUpTime,
       int lifeCount});
@@ -54,7 +54,7 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
   @override
   $Res call({
     Object? isClickedEntryButton = null,
-    Object? iconPath = null,
+    Object? icon = null,
     Object? nickname = null,
     Object? lifeUpTime = null,
     Object? lifeCount = null,
@@ -64,10 +64,10 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
           ? _value.isClickedEntryButton
           : isClickedEntryButton // ignore: cast_nullable_to_non_nullable
               as bool,
-      iconPath: null == iconPath
-          ? _value.iconPath
-          : iconPath // ignore: cast_nullable_to_non_nullable
-              as String,
+      icon: null == icon
+          ? _value.icon
+          : icon // ignore: cast_nullable_to_non_nullable
+              as int,
       nickname: null == nickname
           ? _value.nickname
           : nickname // ignore: cast_nullable_to_non_nullable
@@ -93,7 +93,7 @@ abstract class _$$_HomeStateCopyWith<$Res> implements $HomeStateCopyWith<$Res> {
   @useResult
   $Res call(
       {bool isClickedEntryButton,
-      String iconPath,
+      int icon,
       String nickname,
       String lifeUpTime,
       int lifeCount});
@@ -111,7 +111,7 @@ class __$$_HomeStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? isClickedEntryButton = null,
-    Object? iconPath = null,
+    Object? icon = null,
     Object? nickname = null,
     Object? lifeUpTime = null,
     Object? lifeCount = null,
@@ -121,10 +121,10 @@ class __$$_HomeStateCopyWithImpl<$Res>
           ? _value.isClickedEntryButton
           : isClickedEntryButton // ignore: cast_nullable_to_non_nullable
               as bool,
-      iconPath: null == iconPath
-          ? _value.iconPath
-          : iconPath // ignore: cast_nullable_to_non_nullable
-              as String,
+      icon: null == icon
+          ? _value.icon
+          : icon // ignore: cast_nullable_to_non_nullable
+              as int,
       nickname: null == nickname
           ? _value.nickname
           : nickname // ignore: cast_nullable_to_non_nullable
@@ -146,7 +146,7 @@ class __$$_HomeStateCopyWithImpl<$Res>
 class _$_HomeState implements _HomeState {
   const _$_HomeState(
       {this.isClickedEntryButton = false,
-      this.iconPath = "assets/images/character_icon/greyForIcon.jpg",
+      this.icon = 0,
       this.nickname = "name",
       this.lifeUpTime = "",
       this.lifeCount = 0});
@@ -156,7 +156,7 @@ class _$_HomeState implements _HomeState {
   final bool isClickedEntryButton;
   @override
   @JsonKey()
-  final String iconPath;
+  final int icon;
   @override
   @JsonKey()
   final String nickname;
@@ -169,7 +169,7 @@ class _$_HomeState implements _HomeState {
 
   @override
   String toString() {
-    return 'HomeState(isClickedEntryButton: $isClickedEntryButton, iconPath: $iconPath, nickname: $nickname, lifeUpTime: $lifeUpTime, lifeCount: $lifeCount)';
+    return 'HomeState(isClickedEntryButton: $isClickedEntryButton, icon: $icon, nickname: $nickname, lifeUpTime: $lifeUpTime, lifeCount: $lifeCount)';
   }
 
   @override
@@ -179,8 +179,7 @@ class _$_HomeState implements _HomeState {
             other is _$_HomeState &&
             (identical(other.isClickedEntryButton, isClickedEntryButton) ||
                 other.isClickedEntryButton == isClickedEntryButton) &&
-            (identical(other.iconPath, iconPath) ||
-                other.iconPath == iconPath) &&
+            (identical(other.icon, icon) || other.icon == icon) &&
             (identical(other.nickname, nickname) ||
                 other.nickname == nickname) &&
             (identical(other.lifeUpTime, lifeUpTime) ||
@@ -190,8 +189,8 @@ class _$_HomeState implements _HomeState {
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, isClickedEntryButton, iconPath,
-      nickname, lifeUpTime, lifeCount);
+  int get hashCode => Object.hash(
+      runtimeType, isClickedEntryButton, icon, nickname, lifeUpTime, lifeCount);
 
   @JsonKey(ignore: true)
   @override
@@ -203,7 +202,7 @@ class _$_HomeState implements _HomeState {
 abstract class _HomeState implements HomeState {
   const factory _HomeState(
       {final bool isClickedEntryButton,
-      final String iconPath,
+      final int icon,
       final String nickname,
       final String lifeUpTime,
       final int lifeCount}) = _$_HomeState;
@@ -211,7 +210,7 @@ abstract class _HomeState implements HomeState {
   @override
   bool get isClickedEntryButton;
   @override
-  String get iconPath;
+  int get icon;
   @override
   String get nickname;
   @override

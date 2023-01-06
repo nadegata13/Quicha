@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'dart:async';
 
+import 'package:quicha/view/home_screen/home_screen.dart';
+
 class TimerPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -46,7 +48,15 @@ class _TimerState extends State<TimerPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('TimerPage')),
-      body:Text('現在時刻：\n$_nowtime' ),
+      body: Container(
+        child: ElevatedButton(onPressed: (){
+          Navigator.push(context, MaterialPageRoute(
+            // （2） 実際に表示するページ(ウィジェット)を指定する
+              builder: (context) => HomeScreen()
+          ));
+        },
+            child: Text("ボタン"))
+      )
 
 
 
