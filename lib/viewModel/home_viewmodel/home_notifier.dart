@@ -24,10 +24,10 @@ final homeProvider = StateNotifierProvider.autoDispose<HomeNotifier, HomeState>(
     })
 );
 
-final homeSocketMethods = StreamProvider((ref){
-  final ss = ref.read(homeSocketProvider);
-  return ss.socketResponse.stream;
-});
+// final homeSocketMethods = StreamProvider((ref){
+//   final ss = ref.read(homeSocketProvider);
+//   return ss.socketResponse.stream;
+// });
 
 class HomeNotifier extends StateNotifier<HomeState> {
 
@@ -35,14 +35,15 @@ class HomeNotifier extends StateNotifier<HomeState> {
   final StateNotifierProviderRef ref;
   final Socket _socketClient = SocketClient.instance.socket!;
   //画面遷移用のアイコン
+  HomeSocketMethods  _socketMethods = HomeSocketMethods();
 
   HomeNotifier(this.ref) : super(const HomeState()){
 
 
+    _socketMethods.socketResponse.stream.listen((data) {
 
-    ref.listen(homeSocketMethods, (_, AsyncValue<dynamic> data) {
 
-      var value = data.value;
+      var value = data;
 
       print(value.runtimeType);
 
@@ -63,6 +64,30 @@ class HomeNotifier extends StateNotifier<HomeState> {
       }
     });
 
+
+    // ref.listen(homeSocketMethods, (_, AsyncValue<dynamic> data) {
+    //
+    //   var value = data.value;
+    //
+    //   print(value.runtimeType);
+    //
+    //
+    //   if(value is PassAccountInfoData){
+    //     print("pass");
+    //
+    //
+    //     state = state.copyWith(icon: value.icon, nickname: value.nickname);
+    //     //ライフの個数と時間をチェック
+    //     _checkLife(lifeUpdateStr: value.lifeUpdateStr, lifeCount: value.lifeCount);
+    //
+    //   } else if (value is SuccessUpdateLifeData) {
+    //     print("successUpdateLifeData");
+    //     state = state.copyWith(lifeCount: value.lifeCount);
+    //
+    //     _checkLife(lifeUpdateStr: value.lifeUpdateStr, lifeCount: value.lifeCount);
+    //   }
+    // });
+
     //onメソッド
       this._receiveEvent();
 
@@ -71,7 +96,6 @@ class HomeNotifier extends StateNotifier<HomeState> {
 
   }
 
-  HomeSocketMethods get _socketMethods => ref.read(homeSocketProvider);
 
   void _receiveEvent() {
 

@@ -8,14 +8,13 @@ import 'package:socket_io_client/socket_io_client.dart';
 
 
 
-final homeSocketProvider = Provider.autoDispose(HomeSocketMethods.new);
 
 class HomeSocketMethods {
-  final ProviderRef ref;
   final _socketClient = SocketClient.instance.socket!;
+
   final socketResponse = StreamController<dynamic>();
 
-  HomeSocketMethods(this.ref){
+  HomeSocketMethods(){
 
   }
 
@@ -54,9 +53,9 @@ class HomeSocketMethods {
     print("emitTest");
     _socketClient.emit("testHome");
   }
-  void onTest(Socket socket){
+  void onTest(){
     print("onTest");
-    socket.on("testEvent", (data) {
+    _socketClient.on("testEvent", (data) {
       print("test成功");
     });
   }
