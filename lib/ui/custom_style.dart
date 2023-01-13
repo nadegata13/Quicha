@@ -29,6 +29,7 @@ class CustomColor{
   static Color myBubbleColor = Colors.yellow;
   static Color yourBubbleColor = Color(0xFFfca562);
   static Color timeupColor = Color(0xFFBC0707);
+  static Color thinBlack = Color(0xFF404040);
 
 
 }

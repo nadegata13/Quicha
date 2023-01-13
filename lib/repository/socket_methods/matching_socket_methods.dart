@@ -57,10 +57,11 @@ class MatchingSocketMethods {
   void onReceiveUserProfile() {
 
     _socketClient.on("receiveUserProfile", (data){
+      final String opponentUserID = data["userID"];
       final int opponentIcon = data["icon"];
       final String opponentNickname = data["nickname"];
       socketResponse.sink.add(
-        ReceiveUserData(opponentIcon: opponentIcon, opponentNickname: opponentNickname,
+        ReceiveUserData(opponentUserID: opponentUserID, opponentIcon: opponentIcon, opponentNickname: opponentNickname,
         isAnimation: true, isVisibleBus: false)
       );
     });

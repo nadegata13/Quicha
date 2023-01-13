@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import 'package:quicha/ui/character_icons.dart';
@@ -81,7 +82,8 @@ class _DialogContent extends HookConsumerWidget {
     final watchProvider = ref.watch(newAccountProvider);
     return
       Container(
-        width: 300.0,
+        width: size.width  - 100,
+        padding: EdgeInsets.symmetric(vertical: size.height / 50, horizontal: size.width / 100),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
@@ -107,7 +109,7 @@ class _DialogContent extends HookConsumerWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  CircleIcon(size: size.height / 10, imagePath: watchProvider.selectedIcon.getPath),
+                  CircleIcon(size: size.height / 10, iconNum: watchProvider.selectedIcon.index),
                   Container(
                       padding: EdgeInsets.only(top: size.height / 100),
                       child:
@@ -145,8 +147,8 @@ class _DialogContent extends HookConsumerWidget {
                       child:
                       RoundedLoadingButton(
                         width: size.width / 2,
-                        height: size.height / 15,
-                        child: Text("決定"),
+                        height: size.height / 17,
+                        child: Text("決定", style: GoogleFonts.mochiyPopOne(fontSize: size.height / 50),),
                         controller: watchProvider.btnController,
                         successColor: Colors.green,
                         onPressed: (){

@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:quicha/ui/custom_style.dart';
 import 'package:quicha/view/home_screen/widget/app_bar.dart';
@@ -73,7 +74,7 @@ class _Body extends StatelessWidget {
                     children: [
                       Column(
                         children: [
-                          Text("クイズ作成"),
+                          Text("クイズ作成", style: GoogleFonts.mochiyPopOne(color: CustomColor.thinBlack, fontSize: size.height / 50),),
                           SpringButton(SpringButtonType.OnlyScale,
                               Container(
                                   height: size.height / 10,
@@ -88,7 +89,7 @@ class _Body extends StatelessWidget {
                       SizedBox(width: size.width / 10,),
                       Column(
                         children: [
-                          Text("SHOP"),
+                          Text("SHOP",style: GoogleFonts.mochiyPopOne(color: CustomColor.thinBlack, fontSize: size.height / 50),),
                           SpringButton(SpringButtonType.OnlyScale,
                               Container(
                                   height: size.height / 10,

@@ -1,6 +1,6 @@
 class ChatMessage{
   String messageContent;
-  String messanger;
+  String messangerID;
 
-  ChatMessage({required this.messageContent, required this.messanger});
+  ChatMessage({required this.messageContent, required this.messangerID});
 }

@@ -46,7 +46,7 @@ class UserIcon extends ConsumerWidget {
             ),
           ),
 
-          CircleIcon(size: size.height / 10, imagePath: CharacterIcons.getIcon(state.icon).getPath),
+          CircleIcon(size: size.height / 10, iconNum: state.icon,),
           //タップ時にアイコン選択画面が出てくる
         ],
       ),

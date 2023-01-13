@@ -134,7 +134,7 @@ class _DynamicHorizontalDemoState extends ConsumerState<DynamicHorizontalDemo> {
           ),
           CircleIcon(
             size: size.height / 12.5,
-            imagePath: CharacterIcons.getIcon(index).getPath,
+            iconNum: index,
 
           )
         ],

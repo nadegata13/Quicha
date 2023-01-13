@@ -7,6 +7,7 @@ abstract class MatchingData {
    bool isAnimation;
    int opponentIcon;
    String opponentNickname;
+   String opponentUserID;
 
 
 
@@ -16,7 +17,8 @@ abstract class MatchingData {
     this.isVisibleBus = true,
     this.isAnimation = false,
     this.opponentIcon = 0,
-    this.opponentNickname = "name"
+    this.opponentNickname = "name",
+    this.opponentUserID = ""
   });
 }
 
@@ -30,7 +32,7 @@ class MatchedMessageData extends MatchingData {
 
 class ReceiveUserData extends MatchingData {
 
-  ReceiveUserData({super.opponentNickname, super.opponentIcon, super.isAnimation, super.isVisibleBus});
+  ReceiveUserData({super.opponentUserID, super.opponentNickname, super.opponentIcon, super.isAnimation, super.isVisibleBus});
 
   
 }

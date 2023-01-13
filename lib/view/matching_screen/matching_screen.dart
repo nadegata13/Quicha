@@ -1,11 +1,14 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lottie/lottie.dart';
+import 'package:quicha/model/user_model.dart';
 import 'package:quicha/repository/socket_client.dart';
 import 'package:quicha/ui/character_icons.dart';
 import 'package:quicha/ui/custom_style.dart';
+import 'package:quicha/view/chat_screen/chat_screen.dart';
 import 'package:quicha/view/common_widget.dart';
 import 'package:quicha/view/home_screen/home_screen.dart';
 import 'package:quicha/viewModel/matching_viewmodel/matching_notifier.dart';
@@ -13,13 +16,9 @@ import 'package:rive/rive.dart';
 
 class MatchingScreen extends HookConsumerWidget {
   const MatchingScreen({
-    required this.currrentIcon,
-    required this.currentNickname,
     Key? key,
   }) : super(key: key);
 
-  final int currrentIcon;
-  final String currentNickname;
 
   @override
   Widget build(BuildContext context, ref, ) {
@@ -45,6 +44,19 @@ class MatchingScreen extends HookConsumerWidget {
         animationController.reverse();
       } else {
         animationController.forward();
+        Future.delayed(Duration(milliseconds: 1500), (){
+          viewModel.showVsAnimation();
+
+          Future.delayed(Duration(milliseconds: 3000), (){
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(
+                      // （2） 実際に表示するページ(ウィジェット)を指定する
+                        builder: (context) => ChatScreen(),
+
+                    ));
+
+          });
+        });
       }
 
     });
@@ -57,20 +69,20 @@ class MatchingScreen extends HookConsumerWidget {
     return Scaffold(
 
 
-      appBar: AppBar(
-        title: Text(state.matchingMessage),
-        backgroundColor: CustomColor.appBarTheme,
-        leading: IconButton(icon: const Icon(Icons.arrow_back),
-        onPressed: (){
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(
-                // （2） 実際に表示するページ(ウィジェット)を指定する
-                  builder: (context) => HomeScreen()
-
-              ));
-        },),
-
-      ),
+      // appBar: AppBar(
+      //   title: Text(state.matchingMessage),
+      //   backgroundColor: CustomColor.appBarTheme,
+      //   leading: IconButton(icon: const Icon(Icons.arrow_back),
+      //   onPressed: (){
+      //     Navigator.pushReplacement(context,
+      //         MaterialPageRoute(
+      //           // （2） 実際に表示するページ(ウィジェット)を指定する
+      //             builder: (context) => HomeScreen()
+      //
+      //         ));
+      //   },),
+      //
+      // ),
       body:Stack(
         children: [
           //バス
@@ -84,12 +96,46 @@ class MatchingScreen extends HookConsumerWidget {
 
           ),
 
+          //VSアニメーション
+          Align(alignment: Alignment.center,
+              child: state.isShowVsAnimation ?
+              SizedBox(
+                height: size.height / 5,
+                  child: RiveAnimation.asset('assets/rive/vsAnimation.riv'))
+              : SizedBox(height: size.height / 5,)
+          ),
+
+          //戻るボタン
+          Align(
+            alignment: Alignment(-0.9 , -0.8),
+            child: IconButton(icon: const Icon(Icons.arrow_back_ios, color: Colors.blueAccent,),iconSize: size.height / 30,
+                onPressed:
+                    //本番用
+                // state.isAnimation ? null :
+                    (){
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(
+                        // （2） 実際に表示するページ(ウィジェット)を指定する
+                          builder: (context) => HomeScreen()
+
+                      ));
+                },),
+          ),
+
+          //マッチングテキスト
+          Align(
+            alignment: Alignment(0, -0.7),
+            child: Text(state.matchingMessage, style:
+            GoogleFonts.mochiyPopOne(fontSize: size.height / 50, color: Colors.black),),
+          ),
+
           Align(
             alignment: Alignment(0,-userPosition),
             child: _UserWidget(size: size, isMe: true,
-              icon: currrentIcon,
-              nickname: currentNickname,),
-          ),
+              icon: ref.read(myUserProvider).iconNum,
+              nickname: ref.read(myUserProvider).nickname,
+          ),),
+
           AnimatedBuilder(
             animation: animationController,
             builder: ( context,  child) {
@@ -160,8 +206,7 @@ class _UserWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           _userWidget(isShow: isMe),
-          CircleIcon(size: size.height / 8, imagePath:
-          CharacterIcons.getIcon(icon).getPath
+          CircleIcon(size: size.height / 8, iconNum: icon
             ,),
           _userWidget(isShow: !isMe),
         ],
@@ -173,8 +218,12 @@ class _UserWidget extends StatelessWidget {
     return Opacity(
           opacity: !isShow ? 1 : 0,
           child: Container(
-              padding: EdgeInsets.symmetric(horizontal: size.width / 50),
-              child: Text(nickname)),
+              padding: EdgeInsets.symmetric(horizontal: size.width / 50, vertical: size.height / 100),
+              child: Text(nickname,
+              //   style: TextStyle(fontFamily: 'MPlus', fontWeight: FontWeight.bold,
+              // fontSize: size.height / 50 ),
+                style: GoogleFonts.rocknRollOne(fontSize: size.height / 50)
+              )),
         );
   }
   

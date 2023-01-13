@@ -49,7 +49,7 @@ class MatchingButton extends HookConsumerWidget {
               Navigator.pushReplacement(context,
                    CupertinoPageRoute(
                 // （2） 実際に表示するページ(ウィジェット)を指定する
-                  builder: (context) =>  MatchingScreen(currrentIcon: state.icon, currentNickname: state.nickname,)
+                  builder: (context) =>  MatchingScreen()
 
               ));
             },

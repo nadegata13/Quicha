@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,6 +12,7 @@ import '../../model/message.dart';
 import '../../model/quiz_handler.dart';
 import '../../model/quiz_man.dart';
 import '../../model/quiz_model.dart';
+import '../../repository/socket_client.dart';
 import '../../test_data.dart';
 
 final chatRoomProvider = StateNotifierProvider.autoDispose<ChatRoomNotifier, ChatRoomState>(
@@ -27,6 +29,8 @@ class ChatRoomNotifier extends StateNotifier<ChatRoomState> {
 
   var countDownController = CountDownController();
 
+  final _socketClient = SocketClient.instance.socket!;
+
   ChatRoomNotifier() : super (const ChatRoomState()){
     //取得クイズ全体のハンドリング
     _quizHandler = QuizHandler(quizList: []);
@@ -35,6 +39,20 @@ class ChatRoomNotifier extends StateNotifier<ChatRoomState> {
     //出題クイズ
     currentQuiz = Quiz(quizString: "初期値", quizCategory: "初期値",answer: "初期値");
 
+
+    _socketClient.on("receiveMessage", (data){
+
+      print(data);
+      var messages = [...state.chatMessages];
+      messages.add(ChatMessage(messageContent: data["receivedMessage"], messangerID: data["userID"]));
+      state = state.copyWith(chatMessages: messages);
+
+    });
+
+  }
+
+  void _quizmanGreet(){
+    _quizHandler.setQuizList([]);
   }
 
 
@@ -47,8 +65,8 @@ class ChatRoomNotifier extends StateNotifier<ChatRoomState> {
   }
 
   void addMessageFromPartner(){
-    List<ChatMessage> partnerMessage = [ChatMessage(messageContent: "こんにちは！", messanger: "partner"),
-      ChatMessage(messageContent: "うーんふんどしかなあ？", messanger: "partner"),];
+    List<ChatMessage> partnerMessage = [ChatMessage(messageContent: "こんにちは！", messangerID: "partner"),
+      ChatMessage(messageContent: "うーんふんどしかなあ？", messangerID: "partner"),];
 
     int random = Random().nextInt(2);
     //実験 不変クラスだから反映されない可能性
@@ -63,9 +81,11 @@ class ChatRoomNotifier extends StateNotifier<ChatRoomState> {
 
     if(message.isEmpty) {return;}
 
-    var messages = [...state.chatMessages];
-    messages.add(ChatMessage(messageContent: message, messanger: "me"));
-    state = state.copyWith(chatMessages: messages);
+    _socketClient.emit("sendMessage", {
+      "sendUserID" : FirebaseAuth.instance.currentUser!.uid,
+      "sendMessage" : message,
+    });
+
     //消去
     controller.clear();
 

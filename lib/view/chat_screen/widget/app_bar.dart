@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lottie/lottie.dart';
+import 'package:quicha/model/user_model.dart';
 import 'package:quicha/ui/character_icons.dart';
 import 'package:quicha/ui/custom_style.dart';
 import 'package:quicha/viewModel/chat_viewmodel/chat_room_notifier.dart';
@@ -12,7 +13,7 @@ import 'package:spring/spring.dart';
 
 import '../../../test_data.dart';
 
-class ChatAppBar extends StatelessWidget {
+class ChatAppBar extends HookConsumerWidget {
   const ChatAppBar({
     Key? key,
     required this.topHeight,
@@ -23,24 +24,37 @@ class ChatAppBar extends StatelessWidget {
   final Size size;
 
   @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
+  Widget build(BuildContext context, ref) {
+    return Container(
+      color: Colors.white.withOpacity(0.5),
+      alignment: Alignment.bottomCenter,
+      height: size.height / 9,
+      padding: EdgeInsets.only(top: 30),
 
-        Container(
-            height: topHeight ,
-            width: size.width / 3,
-            child:
-            _User(size: size, user: TestData.user1, isMe: false,)
+      child: Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+
+              Container(
+                  height: topHeight ,
+                  width: size.width / 3,
+                  child:
+                  _User(size: size, user: ref.read(myUserProvider), isMe: false,)
+            ),
+              Container(width: size.width / 10,
+                  alignment: Alignment.center,
+                  child:
+                  Text("x")
+              ),
+              _User(size: size, isMe: true, user: ref.read(opponentUserProvider))
+            ],
+          ),
+        ],
       ),
-        Container(width: size.width / 10,
-            alignment: Alignment.center,
-            child:
-            Text("x")
-        ),
-        _User(size: size, isMe: true, user: TestData.user2)
-      ],
     );
   }
 }
@@ -54,7 +68,7 @@ class _User extends StatelessWidget {
   }) : super(key: key);
 
 
-  final User user;
+  final UserData user;
   final Size size;
   final isMe;
 
@@ -77,6 +91,7 @@ class _User extends StatelessWidget {
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                //名前
                 Container(
                   width: size.width / 5,
                   height: size.height / 40,
@@ -120,7 +135,7 @@ class _UserAvatar extends StatefulWidget {
   }) : super(key: key);
 
   final Size size;
-  final User user;
+  final UserData user;
 
   @override
   __USerAvatarState createState() => __USerAvatarState();
@@ -168,7 +183,7 @@ class __USerAvatarState extends State<_UserAvatar> with SingleTickerProviderStat
     controller.repeat(reverse:  true);
 
     Future.delayed(Duration(seconds: 6), () {
-      controller.stop();
+      controller.reset();
       print(controller.isAnimating);
       setState(() {
 
@@ -203,10 +218,11 @@ class __USerAvatarState extends State<_UserAvatar> with SingleTickerProviderStat
               },
               child: Transform.scale(
                   scale: scale,
+                  //アイコン
                   child: Container(
                     decoration: BoxDecoration(shape: BoxShape.circle,
+                      image: DecorationImage(image: AssetImage(CharacterIcons.getIcon(widget.user.iconNum).getPath)),
                       border: Border.all(color: controller.isAnimating ? Colors.white : Colors.grey.withOpacity(0.5), width: controller.isAnimating? 1.5 : 0.5),),
-                    child: SvgPicture.asset(CharacterIcons.default_wolf.getPath),
                   )
               ),
             ));

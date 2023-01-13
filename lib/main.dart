@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,7 +15,6 @@ import 'repository/socket_client.dart';
 void main() async {
 
 
-  final _socketClient = SocketClient.instance.socket!;
 
   WidgetsFlutterBinding.ensureInitialized();
    await Firebase.initializeApp();
@@ -31,7 +31,12 @@ class MyApp extends StatelessWidget {
     return
       MaterialApp(
       title: 'Flutter Demo',
+<<<<<<< HEAD
       home:  TimerPage(),
+=======
+      home:  HomeScreen(),
+       debugShowCheckedModeBanner: false,
+>>>>>>> 54d112f (チャット機能を実装)
     );
   }
 }

@@ -6,14 +6,15 @@ part 'matching_state.freezed.dart';
 class MatchingState with _$MatchingState{
   const factory MatchingState({
 
-  @Default("") String successJoinRoom,
-  @Default("") String matchingMessage,
-  @Default("0人") String connectClientCount,
-  @Default(true) bool isVisibleBus,
-  @Default(false) bool isAnimation,
-  @Default(0) int opponentIcon,
-  @Default("opponent") String opponentNickname,
-}) = _MatchingState;
+    @Default("") String successJoinRoom,
+    @Default("") String matchingMessage,
+    @Default("0人") String connectClientCount,
+    @Default(true) bool isVisibleBus,
+    @Default(false) bool isAnimation,
+    @Default(false) bool isShowVsAnimation,
+    @Default(0) int opponentIcon,
+    @Default("opponent") String opponentNickname,
+  }) = _MatchingState;
 }
 
 

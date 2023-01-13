@@ -43,11 +43,14 @@ class _Body extends StatelessWidget {
 
     var topHeight = MediaQuery.of(context).padding.top + kToolbarHeight;
     return Scaffold(
-        appBar: AppBar(
-          title:
-          ChatAppBar(topHeight: topHeight, size: size,),
-          backgroundColor: CustomColor.appBarTheme,
-        ),
+        // appBar: AppBar(
+        //   automaticallyImplyLeading: false,
+        //   elevation: 0,
+        //   //ホームに戻るボタン
+        //   title:
+        //   ChatAppBar(topHeight: topHeight, size: size,),
+        //   backgroundColor: CustomColor.appBarTheme,
+        // ),
         // backgroundColor: CustomColor.thinBlue,
         backgroundColor: Colors.white,
 
@@ -61,11 +64,12 @@ class _Body extends StatelessWidget {
                 child:
                 Container(
                   color: Colors.blue,
-                    height: size.height - topHeight,
+                    height: size.height ,
                     child:
                     Column(
                       children: [
                         //出題スペース
+                        ChatAppBar(topHeight: topHeight, size: size,),
                         QuizArea(size: size),
 
 

@@ -141,7 +141,7 @@ class QuizChatBabble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChatBubble(
-        isLeft: true,
+      messengerID: "quizman",
         color: Colors.white,
 //最初のメッセージなら
         showNip: isFirst,

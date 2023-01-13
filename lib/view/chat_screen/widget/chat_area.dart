@@ -4,7 +4,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lottie/lottie.dart';
+import 'package:quicha/model/user_model.dart';
+import 'package:quicha/ui/character_icons.dart';
 import 'package:quicha/ui/custom_style.dart';
+import 'package:quicha/view/common_widget.dart';
 import 'package:quicha/viewModel/chat_viewmodel/chat_room_notifier.dart';
 
 import '../../../model/message.dart';
@@ -70,31 +73,42 @@ class ChatArea extends StatelessWidget {
                             itemCount: state.chatMessages.length,
                             itemBuilder: (context, index) {
                               var items = state.chatMessages;
-                              bool isMe = items[index].messanger == "me";
+                              bool isMe = items[index].messangerID == ref.read(myUserProvider).userID;
+                              String messengerID = items[index].messangerID;
 
 
                               return
                                 Row(
                                   mainAxisAlignment: isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
                                   children: [
-                                    isMe ? Container() : Container(
-                                      height: 30,
-                                      width: 30,
-                                      decoration:
-                                      isContinuousMessage(items, index) ?
-                                      BoxDecoration()
-                                          :
-                                      BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Colors.red,
-                                      ) ,
+                                    isMe ?  Container() :
+                                        //前回の発信者は同じか
+                                    isContinuousMessage(items, index) ?
+                                    Container(height: size.height / 25, width: size.height / 25,)
+                                        :
+                                        isOpponent(userID: items[index].messangerID)?
+                                    CircleIcon(size: size.height / 25,
+                                        iconNum: ref.read(opponentUserProvider).iconNum) : Container(
+                                          height: 20,
+                                          width: 20,
+                                          color: Colors.red,
+                                        ),
 
-                                    ),
+                                    // Container(
+                                    //   height: size.height / 25,
+                                    //   width: size.height / 25,
+                                    //   decoration:
+                                    //   isContinuousMessage(items, index) ?
+                                    //   BoxDecoration()
+                                    //       :
+                                    //       getIcon(userID: items[index].messangerID, userInfo: ref.read(opponentUserProvider)),
+                                    //
+                                    // ),
 
                                     ChatBubble(
-                                        isLeft: !isMe,
                                         color: isMe ? CustomColor.myBubbleColor : CustomColor.yourBubbleColor,
                                         showNip: !isContinuousMessage(items, index),
+                                        messengerID: messengerID,
                                         child: Text(
                                           items[index].messageContent,
                                           style: TextStyle(
@@ -115,12 +129,31 @@ class ChatArea extends StatelessWidget {
       )
       );
   }
+
+  BoxDecoration getIcon({required String userID, required UserData userInfo}){
+    final String BOT_ID = "BOT";
+    if(userID == BOT_ID){
+      return BoxDecoration(shape: BoxShape.circle, color: Colors.red);
+    } else {
+      return BoxDecoration(shape: BoxShape.circle,
+      image: DecorationImage(image: AssetImage(
+        CharacterIcons.getIcon(userInfo.iconNum).getPath
+      )));
+    }
+  }
+  bool isOpponent({required String userID}){
+    final String BOT_ID = "BOT";
+
+    return userID != BOT_ID;
+
+    }
+
   bool isContinuousMessage(List<ChatMessage> items , int index) {
 
     if(index <= 0) {
       return false;
     }
 
-    return items[index -1].messanger == items[index].messanger;
+    return items[index -1].messangerID == items[index].messangerID;
   }
 }

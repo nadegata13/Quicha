@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import 'package:quicha/ui/custom_style.dart';
@@ -39,6 +40,12 @@ class LoginOrSignUpScreen extends StatelessWidget {
             ),
           ),
 
+          //メーr
+          Align(alignment: Alignment.topLeft,
+          child: IconButton(icon: Icon(Icons.mail),onPressed: (){
+
+          },)),
+
 
           Align(alignment: Alignment.center,
             child: SizedBox(
@@ -76,13 +83,13 @@ class _SignUpOrSignIn extends HookConsumerWidget {
         children: [
 
           //匿名ではじめる
-          SignButton(size: size, isSignIn: true, title: "新しくはじめる", onPressed: () {
+          SignButton(size: size, isRegister: true, title: "新しくはじめる", onPressed: () {
             //
             viewModel.onSignInWithAnonymousUser(context);
           },),
           SizedBox(height: size.height / 20,),
           //既にお持ちの方
-          SignButton(size: size, isSignIn: false, title: "ログイン", onPressed: () {
+          SignButton(size: size, isRegister: false, title: "ログイン", onPressed: () {
             //
           },),
         ],
@@ -94,14 +101,14 @@ class _SignUpOrSignIn extends HookConsumerWidget {
 class SignButton extends StatelessWidget {
   const SignButton({
     Key? key,
-    required this.isSignIn,
+    required this.isRegister,
     required this.size,
     required this.title, required this.onPressed,
 
   }) : super(key: key);
 
   final Size size;
-  final bool isSignIn;
+  final bool isRegister;
   final String title;
   final VoidCallback onPressed;
   @override
@@ -121,20 +128,28 @@ class SignButton extends StatelessWidget {
               offset: Offset(2, 2), // changes position of shadow
             ),],
             borderRadius: BorderRadius.circular(15),
-            color: isSignIn ? Colors.white : Colors.black,
+            color: isRegister ? Colors.white : Colors.black,
           ),
           child:
           Stack(
             children: [
               Align(alignment: Alignment.centerLeft,child:
-              Icon(isSignIn ? Icons.person : Icons.email_rounded, color: isSignIn ? Colors.black : Colors.white,size: size.height / 25,)),
+              Icon(isRegister ? Icons.person_add : Icons.lock, color: isRegister ? Colors.blue : Colors.white,size: size.height / 27,)),
               Align(
                   alignment: Alignment.center,
                   child:
+<<<<<<< HEAD
                   Text(title, style: TextStyle(color: isSignIn? Colors.black : Colors.white,
                       fontSize: size.height / 40,
                     fontFamily: 'MPlus'
                   ),)
+=======
+                  Text(title, style: GoogleFonts.mochiyPopOne(fontSize: size.height / 45, color: isRegister ? Color(0xFF4A4A4A): Colors.white))
+                  // Text(title, style: TextStyle(color: isSignIn? Colors.black : Colors.white,
+                  //     fontSize: size.height / 40,
+                  //   fontFamily: ''
+                  // ),)
+>>>>>>> 54d112f (チャット機能を実装)
               )
             ],
           )

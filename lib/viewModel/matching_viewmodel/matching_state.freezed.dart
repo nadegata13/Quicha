@@ -21,6 +21,7 @@ mixin _$MatchingState {
   String get connectClientCount => throw _privateConstructorUsedError;
   bool get isVisibleBus => throw _privateConstructorUsedError;
   bool get isAnimation => throw _privateConstructorUsedError;
+  bool get isShowVsAnimation => throw _privateConstructorUsedError;
   int get opponentIcon => throw _privateConstructorUsedError;
   String get opponentNickname => throw _privateConstructorUsedError;
 
@@ -41,6 +42,7 @@ abstract class $MatchingStateCopyWith<$Res> {
       String connectClientCount,
       bool isVisibleBus,
       bool isAnimation,
+      bool isShowVsAnimation,
       int opponentIcon,
       String opponentNickname});
 }
@@ -63,6 +65,7 @@ class _$MatchingStateCopyWithImpl<$Res, $Val extends MatchingState>
     Object? connectClientCount = null,
     Object? isVisibleBus = null,
     Object? isAnimation = null,
+    Object? isShowVsAnimation = null,
     Object? opponentIcon = null,
     Object? opponentNickname = null,
   }) {
@@ -86,6 +89,10 @@ class _$MatchingStateCopyWithImpl<$Res, $Val extends MatchingState>
       isAnimation: null == isAnimation
           ? _value.isAnimation
           : isAnimation // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isShowVsAnimation: null == isShowVsAnimation
+          ? _value.isShowVsAnimation
+          : isShowVsAnimation // ignore: cast_nullable_to_non_nullable
               as bool,
       opponentIcon: null == opponentIcon
           ? _value.opponentIcon
@@ -113,6 +120,7 @@ abstract class _$$_MatchingStateCopyWith<$Res>
       String connectClientCount,
       bool isVisibleBus,
       bool isAnimation,
+      bool isShowVsAnimation,
       int opponentIcon,
       String opponentNickname});
 }
@@ -133,6 +141,7 @@ class __$$_MatchingStateCopyWithImpl<$Res>
     Object? connectClientCount = null,
     Object? isVisibleBus = null,
     Object? isAnimation = null,
+    Object? isShowVsAnimation = null,
     Object? opponentIcon = null,
     Object? opponentNickname = null,
   }) {
@@ -157,6 +166,10 @@ class __$$_MatchingStateCopyWithImpl<$Res>
           ? _value.isAnimation
           : isAnimation // ignore: cast_nullable_to_non_nullable
               as bool,
+      isShowVsAnimation: null == isShowVsAnimation
+          ? _value.isShowVsAnimation
+          : isShowVsAnimation // ignore: cast_nullable_to_non_nullable
+              as bool,
       opponentIcon: null == opponentIcon
           ? _value.opponentIcon
           : opponentIcon // ignore: cast_nullable_to_non_nullable
@@ -178,6 +191,7 @@ class _$_MatchingState implements _MatchingState {
       this.connectClientCount = "0人",
       this.isVisibleBus = true,
       this.isAnimation = false,
+      this.isShowVsAnimation = false,
       this.opponentIcon = 0,
       this.opponentNickname = "opponent"});
 
@@ -198,6 +212,9 @@ class _$_MatchingState implements _MatchingState {
   final bool isAnimation;
   @override
   @JsonKey()
+  final bool isShowVsAnimation;
+  @override
+  @JsonKey()
   final int opponentIcon;
   @override
   @JsonKey()
@@ -205,7 +222,7 @@ class _$_MatchingState implements _MatchingState {
 
   @override
   String toString() {
-    return 'MatchingState(successJoinRoom: $successJoinRoom, matchingMessage: $matchingMessage, connectClientCount: $connectClientCount, isVisibleBus: $isVisibleBus, isAnimation: $isAnimation, opponentIcon: $opponentIcon, opponentNickname: $opponentNickname)';
+    return 'MatchingState(successJoinRoom: $successJoinRoom, matchingMessage: $matchingMessage, connectClientCount: $connectClientCount, isVisibleBus: $isVisibleBus, isAnimation: $isAnimation, isShowVsAnimation: $isShowVsAnimation, opponentIcon: $opponentIcon, opponentNickname: $opponentNickname)';
   }
 
   @override
@@ -223,6 +240,8 @@ class _$_MatchingState implements _MatchingState {
                 other.isVisibleBus == isVisibleBus) &&
             (identical(other.isAnimation, isAnimation) ||
                 other.isAnimation == isAnimation) &&
+            (identical(other.isShowVsAnimation, isShowVsAnimation) ||
+                other.isShowVsAnimation == isShowVsAnimation) &&
             (identical(other.opponentIcon, opponentIcon) ||
                 other.opponentIcon == opponentIcon) &&
             (identical(other.opponentNickname, opponentNickname) ||
@@ -237,6 +256,7 @@ class _$_MatchingState implements _MatchingState {
       connectClientCount,
       isVisibleBus,
       isAnimation,
+      isShowVsAnimation,
       opponentIcon,
       opponentNickname);
 
@@ -254,6 +274,7 @@ abstract class _MatchingState implements MatchingState {
       final String connectClientCount,
       final bool isVisibleBus,
       final bool isAnimation,
+      final bool isShowVsAnimation,
       final int opponentIcon,
       final String opponentNickname}) = _$_MatchingState;
 
@@ -267,6 +288,8 @@ abstract class _MatchingState implements MatchingState {
   bool get isVisibleBus;
   @override
   bool get isAnimation;
+  @override
+  bool get isShowVsAnimation;
   @override
   int get opponentIcon;
   @override

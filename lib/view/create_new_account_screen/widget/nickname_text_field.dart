@@ -64,7 +64,7 @@ class _NickName extends ConsumerWidget {
       decoration: InputDecoration(
         hoverColor: Colors.red,
         hintText: "ニックネーム",
-        hintStyle: TextStyle(color: Colors.grey),
+        hintStyle: TextStyle(color: Colors.grey,fontFamily: 'MPlus'),
       ),
     );
   }

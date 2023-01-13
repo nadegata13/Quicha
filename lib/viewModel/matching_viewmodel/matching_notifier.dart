@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:quicha/model/user_model.dart';
 import 'package:quicha/repository/socket_methods/matching_socket_methods.dart';
 import 'package:quicha/viewModel/matching_viewmodel/matching_state.dart';
 import 'package:socket_io_client/socket_io_client.dart';
@@ -17,7 +18,6 @@ final matchingProvider = StateNotifierProvider.autoDispose<MatchingNotifier, Mat
 
           ref.notifier._timer.cancel();
         }
-        ref.notifier._socketMethods.close();
       });
       return MatchingNotifier(ref);
     })
@@ -31,11 +31,15 @@ final matchingSocketMethods = StreamProvider((ref){
 
 class MatchingNotifier extends StateNotifier<MatchingState> {
 
-    late Socket _socketClient;
+     Socket _socketClient = SocketClient.instance.socket!;
     late Timer _timer;
     final StateNotifierProviderRef ref;
 
   MatchingNotifier( this.ref ) : super(const MatchingState()){
+
+
+    _socketClient.clearListeners();
+
 
     ref.listen(matchingSocketMethods, (AsyncValue<MatchingData>? _, AsyncValue<MatchingData> data) {
       var matchingData = data.value;
@@ -57,11 +61,15 @@ class MatchingNotifier extends StateNotifier<MatchingState> {
         var isAnimation = matchingData.isAnimation;
         var isVisibleBus = matchingData.isVisibleBus;
 
+        var opponentUserID = matchingData.opponentUserID;
+
+        //相手ユーザープロバイダーを更新
+        ref.read(opponentUserProvider).setUserInfo(tmpUserID: opponentUserID, tmpNickname: opponentNickname, tmpIconNum: opponentIcon);
+
         state = state.copyWith(opponentNickname: opponentNickname, opponentIcon: opponentIcon,
         isAnimation: isAnimation, isVisibleBus: isVisibleBus);
       }
     });
-    _socketClient = SocketClient.instance.socket!;
 
     int periodCount = 1;
     
@@ -117,66 +125,16 @@ class MatchingNotifier extends StateNotifier<MatchingState> {
     _socketClient.emit('getMyRoom');
   }
 
-  //マッチング時のアニメーション
-  void test(){
-    //TEST
-
-
-    bool isVisibleBus = !state.isVisibleBus;
-    print(isVisibleBus);
-
-    bool isAnimation = !state.isAnimation;
-    state = state.copyWith(isVisibleBus: isVisibleBus, isAnimation: isAnimation );
-  }
-    void initEntryRoom()  {
-      entryRoby();
-
-
-      ///REMOVE
-      _socketClient.on('successJoinRoom', (data) {
-        state = state.copyWith(successJoinRoom: "${data}");
-        print(data);
-      });
-
-      _socketClient.on('matchingUser', (data){
-        _timer.cancel();
-
-        state = state.copyWith(matchingMessage:"マッチングしました!");
-
-        if(FirebaseAuth.instance == null) { throw Error(); }
-
-        //ユーザーIDを相手に渡す
-        final userID = FirebaseAuth.instance.currentUser!.uid;
-        _socketClient.emit('sendUserProfile', userID);
-
-      });
-
-      _socketClient.on("receiveUserProfile", (data){
-        final int opponentIcon = data["icon"];
-        final String opponentNickname = data["nickname"];
-
-        state = state.copyWith(opponentNickname: opponentNickname, opponentIcon: opponentIcon,
-        isAnimation: true, isVisibleBus: false);
-      });
-
-      _socketClient.on('getClientCount', (data){
-        state = state.copyWith(connectClientCount: data + "人");
-        print(data);
-      });
-      _socketClient.on('testDate', (data) {
-        print(data);
-        print(data.runtimeType);
-
-        print(DateFormatter.dateFormatter(data));
-      });
-    }
-
 
 
 
   void close(){
     _socketClient.emit('leaveRoom');
     _socketClient.clearListeners();
+  }
+
+  void showVsAnimation() {
+    state = state.copyWith(isShowVsAnimation: true);
   }
 
 }

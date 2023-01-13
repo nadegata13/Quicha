@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:quicha/ui/character_icons.dart';
 
 
 //円形アイコン
 class CircleIcon extends StatelessWidget {
   final double size;
-  final String imagePath;
+  final int iconNum;
 
   CircleIcon({required this.size,
-    required this.imagePath,});
+    required this.iconNum,});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,7 @@ class CircleIcon extends StatelessWidget {
             border: Border.all(width: 0.3, color: Colors.grey),
             image: DecorationImage(
                 fit: BoxFit.fill,
-                image: AssetImage(imagePath)
+                image: AssetImage(CharacterIcons.getIcon(iconNum).getPath)
             )
         ),
       );

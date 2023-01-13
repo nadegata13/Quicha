@@ -1,33 +1,37 @@
 import 'package:bubble/bubble.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:quicha/model/user_model.dart';
 
-class ChatBubble extends StatelessWidget {
+class ChatBubble extends ConsumerWidget {
   const ChatBubble({
     Key? key,
     required this.showNip,
     required this.child,
-    required this.isLeft,
-    required this.color
+    required this.color,
+    required this.messengerID
   }) : super(key: key);
 
   final Widget child;
-  final bool isLeft;
   final Color color;
   final bool showNip;
+  final messengerID;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
 
     final Size size = MediaQuery.of(context).size;
+    //自分かどうか
+    bool isMe = messengerID == ref.read(myUserProvider).userID;
 
     return
       Container(
         width:  size.width - size.width / 4,
         child:
         Bubble(
-            alignment: isLeft ? Alignment.topLeft : Alignment.topRight,
-            nip: isLeft ? BubbleNip.leftTop : BubbleNip.rightTop,
+            alignment: isMe ? Alignment.topRight : Alignment.topLeft,
+            nip: isMe ?  BubbleNip.rightTop : BubbleNip.leftTop ,
             color:  color,
             borderWidth: 0.1,
             borderColor: Colors.grey,

@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quicha/model/DateFormatter.dart';
 import 'package:quicha/model/home_data.dart';
+import 'package:quicha/model/user_model.dart';
 import 'package:quicha/repository/socket_methods/home_socket_methods.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
@@ -17,7 +18,10 @@ final homeProvider = StateNotifierProvider.autoDispose<HomeNotifier, HomeState>(
         if(ref.notifier._timer != null){
           ref.notifier._timer.cancel();
         }
+<<<<<<< HEAD
         ref.notifier._socketMethods.close();
+=======
+>>>>>>> 54d112f (チャット機能を実装)
         print("disposed!");
       });
       return HomeNotifier(ref);
@@ -39,11 +43,19 @@ class HomeNotifier extends StateNotifier<HomeState> {
 
   HomeNotifier(this.ref) : super(const HomeState()){
 
+    //リスナーをリセット
+    _socketClient.clearListeners();
 
     _socketMethods.socketResponse.stream.listen((data) {
 
 
+<<<<<<< HEAD
       var value = data;
+=======
+
+
+      var value = data.value;
+>>>>>>> 54d112f (チャット機能を実装)
 
       print(value.runtimeType);
 
@@ -51,6 +63,11 @@ class HomeNotifier extends StateNotifier<HomeState> {
       if(value is PassAccountInfoData){
         print("pass");
 
+
+
+        //自分用ユーザー情報を更新
+        ref.read(myUserProvider).setUserInfo(tmpUserID: FirebaseAuth.instance.currentUser!.uid
+            , tmpNickname: value.nickname, tmpIconNum: value.icon);
 
         state = state.copyWith(icon: value.icon, nickname: value.nickname);
         //ライフの個数と時間をチェック
@@ -96,6 +113,11 @@ class HomeNotifier extends StateNotifier<HomeState> {
 
   }
 
+<<<<<<< HEAD
+=======
+
+  HomeSocketMethods get _socketMethods => ref.read(homeSocketProvider);
+>>>>>>> 54d112f (チャット機能を実装)
 
   void _receiveEvent() {
 
@@ -107,7 +129,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
   }
 
   void test (){
-    _socketMethods.emitTest();
+    print(ref.read(myUserProvider).userID);
   }
   void _checkLife({required String lifeUpdateStr, required int lifeCount}){
 
