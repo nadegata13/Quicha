@@ -1,7 +1,15 @@
 
+import 'package:quicha/model/quiz_man.dart';
+
+class QuizItem{
+  final String item;
+  final MessageType type;
+  QuizItem({required this.item, required this.type});
+}
+
 class Quiz{
 
-  final String _quizText;
+  final List<QuizItem> _quizItems;
   final String _quizCategory;
   final String _answer;
   final bool _isPicture;
@@ -9,8 +17,8 @@ class Quiz{
 
 
 
-  Quiz({required String answer, required String quizString, required String quizCategory, bool isPicture = false, bool isSound = false}):
-        _quizText = quizString,
+  Quiz({required String answer, required List<QuizItem> quizItems, required String quizCategory, bool isPicture = false, bool isSound = false}):
+        _quizItems = quizItems,
         _quizCategory = quizCategory,
         _isPicture = isPicture,
         _isSound = isSound,
@@ -18,7 +26,7 @@ class Quiz{
 
 
   String get answer => _answer;
-  String get quizText => _quizText;
+  List<QuizItem> get quizItems => _quizItems;
   String get quizCategory => _quizCategory;
   bool get isPicture => _isPicture;
   bool get isSound => _isSound;

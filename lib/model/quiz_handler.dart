@@ -1,3 +1,4 @@
+import 'package:quicha/model/quiz_man.dart';
 import 'package:quicha/model/quiz_model.dart';
 import 'package:quicha/test_data.dart';
 
@@ -23,7 +24,8 @@ class QuizHandler {
 
   Quiz getOneQuiz() {
     if(quizListIndex > quizList.length - 1) {
-      return Quiz(quizString: "クイズがありません", quizCategory: "a", answer: "お待ちください");
+      return Quiz(
+          quizItems: [QuizItem(item: "クイズがありません。", type: MessageType.text)], quizCategory: "a", answer: "お待ちください");
     }
     return  quizList[quizListIndex];
   }

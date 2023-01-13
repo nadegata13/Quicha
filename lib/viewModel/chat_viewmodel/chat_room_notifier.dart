@@ -37,7 +37,7 @@ class ChatRoomNotifier extends StateNotifier<ChatRoomState> {
     //出題AI
     _quizMan = QuizMan();
     //出題クイズ
-    currentQuiz = Quiz(quizString: "初期値", quizCategory: "初期値",answer: "初期値");
+    currentQuiz = Quiz(quizItems: [QuizItem(item: "初期値", type: MessageType.text)], quizCategory: "初期値",answer: "初期値");
 
 
     _socketClient.on("receiveMessage", (data){
@@ -173,14 +173,12 @@ class ChatRoomNotifier extends StateNotifier<ChatRoomState> {
 
     String quizCountTxt = "第" + quizCount + "問";
 
-    List<QuizManMessage> quizStringList = [
+    //現在のクイズからメッセージアイテムリストを取り出す。
+    List<QuizManMessage> quizManMessages = currentQuiz.quizItems.asMap().entries.map((item) =>
+    QuizManMessage(message: item.value.item, type: item.value.type)).toList().cast<QuizManMessage>();
 
-      QuizManMessage(message: quizCountTxt, type: MessageType.text),
-      QuizManMessage(message: currentQuiz.quizText, type: MessageType.text)
 
-      ];
-
-    _quizMan.setMessages(messages: quizStringList);
+    _quizMan.setMessages(messages: quizManMessages);
   }
 
 
