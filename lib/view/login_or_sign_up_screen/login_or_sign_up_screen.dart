@@ -138,18 +138,11 @@ class SignButton extends StatelessWidget {
               Align(
                   alignment: Alignment.center,
                   child:
-<<<<<<< HEAD
-                  Text(title, style: TextStyle(color: isSignIn? Colors.black : Colors.white,
-                      fontSize: size.height / 40,
-                    fontFamily: 'MPlus'
-                  ),)
-=======
                   Text(title, style: GoogleFonts.mochiyPopOne(fontSize: size.height / 45, color: isRegister ? Color(0xFF4A4A4A): Colors.white))
                   // Text(title, style: TextStyle(color: isSignIn? Colors.black : Colors.white,
                   //     fontSize: size.height / 40,
                   //   fontFamily: ''
                   // ),)
->>>>>>> 54d112f (チャット機能を実装)
               )
             ],
           )

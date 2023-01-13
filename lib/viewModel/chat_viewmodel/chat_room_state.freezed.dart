@@ -23,7 +23,8 @@ mixin _$ChatRoomState {
   bool get isVisibleQuiz => throw _privateConstructorUsedError;
   bool get isDangerZone => throw _privateConstructorUsedError;
   bool get isTimeUp => throw _privateConstructorUsedError;
-  List<String> get quizmanMessages => throw _privateConstructorUsedError;
+  List<QuizManMessage> get quizmanMessages =>
+      throw _privateConstructorUsedError;
   List<ChatMessage> get chatMessages => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -45,7 +46,7 @@ abstract class $ChatRoomStateCopyWith<$Res> {
       bool isVisibleQuiz,
       bool isDangerZone,
       bool isTimeUp,
-      List<String> quizmanMessages,
+      List<QuizManMessage> quizmanMessages,
       List<ChatMessage> chatMessages});
 }
 
@@ -104,7 +105,7 @@ class _$ChatRoomStateCopyWithImpl<$Res, $Val extends ChatRoomState>
       quizmanMessages: null == quizmanMessages
           ? _value.quizmanMessages
           : quizmanMessages // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+              as List<QuizManMessage>,
       chatMessages: null == chatMessages
           ? _value.chatMessages
           : chatMessages // ignore: cast_nullable_to_non_nullable
@@ -129,7 +130,7 @@ abstract class _$$_ChatRoomStateCopyWith<$Res>
       bool isVisibleQuiz,
       bool isDangerZone,
       bool isTimeUp,
-      List<String> quizmanMessages,
+      List<QuizManMessage> quizmanMessages,
       List<ChatMessage> chatMessages});
 }
 
@@ -183,7 +184,7 @@ class __$$_ChatRoomStateCopyWithImpl<$Res>
       quizmanMessages: null == quizmanMessages
           ? _value._quizmanMessages
           : quizmanMessages // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+              as List<QuizManMessage>,
       chatMessages: null == chatMessages
           ? _value._chatMessages
           : chatMessages // ignore: cast_nullable_to_non_nullable
@@ -203,7 +204,7 @@ class _$_ChatRoomState implements _ChatRoomState {
       this.isVisibleQuiz = true,
       this.isDangerZone = false,
       this.isTimeUp = false,
-      final List<String> quizmanMessages = const [],
+      final List<QuizManMessage> quizmanMessages = const [],
       final List<ChatMessage> chatMessages = const []})
       : _quizmanMessages = quizmanMessages,
         _chatMessages = chatMessages;
@@ -229,10 +230,10 @@ class _$_ChatRoomState implements _ChatRoomState {
   @override
   @JsonKey()
   final bool isTimeUp;
-  final List<String> _quizmanMessages;
+  final List<QuizManMessage> _quizmanMessages;
   @override
   @JsonKey()
-  List<String> get quizmanMessages {
+  List<QuizManMessage> get quizmanMessages {
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_quizmanMessages);
   }
@@ -304,7 +305,7 @@ abstract class _ChatRoomState implements ChatRoomState {
       final bool isVisibleQuiz,
       final bool isDangerZone,
       final bool isTimeUp,
-      final List<String> quizmanMessages,
+      final List<QuizManMessage> quizmanMessages,
       final List<ChatMessage> chatMessages}) = _$_ChatRoomState;
 
   @override
@@ -322,7 +323,7 @@ abstract class _ChatRoomState implements ChatRoomState {
   @override
   bool get isTimeUp;
   @override
-  List<String> get quizmanMessages;
+  List<QuizManMessage> get quizmanMessages;
   @override
   List<ChatMessage> get chatMessages;
   @override

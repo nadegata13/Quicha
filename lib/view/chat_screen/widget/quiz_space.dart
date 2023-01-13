@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lottie/lottie.dart';
+import 'package:quicha/model/quiz_man.dart';
 import 'package:quicha/ui/custom_style.dart';
 import 'package:quicha/viewModel/chat_viewmodel/chat_room_notifier.dart';
 import '../../../model/quiz_model.dart';
@@ -109,10 +110,11 @@ class QuizArea extends StatelessWidget {
                                     SizedBox(height: size.height / 30,),
                                     Column(
                                         children:
-
                                         // value.watch(chatProvider).quizManMessages.map((e) => QuizChatBabble(message: e,)).toList().cast<Widget>(),
                                         state.quizmanMessages.asMap().entries.map((e) =>
-                                            QuizChatBabble(message: e.value,isFirst: e.key == 0,)).toList().cast<Widget>()
+                                            QuizChatBabble(message: e.value.message,
+                                              messageType: e.value.type,
+                                              isFirst: e.key == 0,)).toList().cast<Widget>()
 
 
                                     ),
@@ -134,9 +136,12 @@ class QuizArea extends StatelessWidget {
 }
 
 class QuizChatBabble extends StatelessWidget {
-  QuizChatBabble({required this.message, required this.isFirst, });
+  QuizChatBabble({required this.message,
+    required this.messageType,
+    required this.isFirst, });
 
   final String message;
+  final MessageType messageType;
   final bool isFirst;
   @override
   Widget build(BuildContext context) {

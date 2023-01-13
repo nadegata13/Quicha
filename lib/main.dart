@@ -31,12 +31,8 @@ class MyApp extends StatelessWidget {
     return
       MaterialApp(
       title: 'Flutter Demo',
-<<<<<<< HEAD
-      home:  TimerPage(),
-=======
-      home:  HomeScreen(),
+      home:  ChatScreen(),
        debugShowCheckedModeBanner: false,
->>>>>>> 54d112f (チャット機能を実装)
     );
   }
 }

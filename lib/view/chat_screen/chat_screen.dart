@@ -43,18 +43,7 @@ class _Body extends StatelessWidget {
 
     var topHeight = MediaQuery.of(context).padding.top + kToolbarHeight;
     return Scaffold(
-        // appBar: AppBar(
-        //   automaticallyImplyLeading: false,
-        //   elevation: 0,
-        //   //ホームに戻るボタン
-        //   title:
-        //   ChatAppBar(topHeight: topHeight, size: size,),
-        //   backgroundColor: CustomColor.appBarTheme,
-        // ),
-        // backgroundColor: CustomColor.thinBlue,
         backgroundColor: Colors.white,
-
-
         body:
         Stack(
           children: [
@@ -86,19 +75,23 @@ class _Body extends StatelessWidget {
             ),
             //TODO: 後で消す
             //テスト用ボタン
-            HookConsumer(builder: ((context, ref, child) {
-              var flag = useState(false);
-              return
-                Column(
-                  children: [
+            Align(
+              alignment: Alignment.center,
+              child: HookConsumer(builder: ((context, ref, child) {
+                var flag = useState(false);
+                return
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
 
-                    flag.value ? ButtonsForTest(size: size, ) : Container(),
-                    Switch(value: flag.value, onChanged: (value){
-                      flag.value = value;
-                    })
-                  ],
-                );
-            })),
+                      flag.value ? ButtonsForTest(size: size, ) : Container(),
+                      Switch(value: flag.value, onChanged: (value){
+                        flag.value = value;
+                      })
+                    ],
+                  );
+              })),
+            ),
           ],
         )
     );

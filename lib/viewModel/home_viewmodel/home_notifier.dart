@@ -18,10 +18,6 @@ final homeProvider = StateNotifierProvider.autoDispose<HomeNotifier, HomeState>(
         if(ref.notifier._timer != null){
           ref.notifier._timer.cancel();
         }
-<<<<<<< HEAD
-        ref.notifier._socketMethods.close();
-=======
->>>>>>> 54d112f (チャット機能を実装)
         print("disposed!");
       });
       return HomeNotifier(ref);
@@ -49,13 +45,9 @@ class HomeNotifier extends StateNotifier<HomeState> {
     _socketMethods.socketResponse.stream.listen((data) {
 
 
-<<<<<<< HEAD
-      var value = data;
-=======
 
 
       var value = data.value;
->>>>>>> 54d112f (チャット機能を実装)
 
       print(value.runtimeType);
 
@@ -113,11 +105,6 @@ class HomeNotifier extends StateNotifier<HomeState> {
 
   }
 
-<<<<<<< HEAD
-=======
-
-  HomeSocketMethods get _socketMethods => ref.read(homeSocketProvider);
->>>>>>> 54d112f (チャット機能を実装)
 
   void _receiveEvent() {
 

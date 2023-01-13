@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:quicha/model/quiz_man.dart';
 import '../../model/message.dart';
 
 part 'chat_room_state.freezed.dart';
@@ -17,7 +18,7 @@ class ChatRoomState with _$ChatRoomState{
     @Default(false) bool isDangerZone,
     @Default(false) bool isTimeUp,
 
-    @Default([]) List<String> quizmanMessages,
+    @Default([]) List<QuizManMessage> quizmanMessages,
     @Default([]) List<ChatMessage> chatMessages,
 }) = _ChatRoomState;
 }

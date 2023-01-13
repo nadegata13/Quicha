@@ -138,8 +138,9 @@ class ChatRoomNotifier extends StateNotifier<ChatRoomState> {
             print(state.isShowTime.toString());
             return ;
           }
-          //不変クラスのリストが参照されてしまうため、この書き方
-          List<String> quizmanMessages = [...state.quizmanMessages];
+
+
+          List<QuizManMessage> quizmanMessages = [...state.quizmanMessages];
           quizmanMessages.add(_quizMan.getNewMessage());
 
           state = state.copyWith(quizmanMessages: quizmanMessages);
@@ -170,7 +171,15 @@ class ChatRoomNotifier extends StateNotifier<ChatRoomState> {
     //FIXME:
     String quizCount = _quizHandler.getQuizCount().toString();
 
-    List<String> quizStringList = ["第" + quizCount + "問", currentQuiz.quizText];
+    String quizCountTxt = "第" + quizCount + "問";
+
+    List<QuizManMessage> quizStringList = [
+
+      QuizManMessage(message: quizCountTxt, type: MessageType.text),
+      QuizManMessage(message: currentQuiz.quizText, type: MessageType.text)
+
+      ];
+
     _quizMan.setMessages(messages: quizStringList);
   }
 

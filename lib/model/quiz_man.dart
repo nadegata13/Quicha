@@ -1,18 +1,30 @@
+enum MessageType{
+  text,
+  image,
+  sound
+}
+
+class QuizManMessage{
+  String message;
+  MessageType type;
+  QuizManMessage({required this.message, required this.type});
+}
+
 class QuizMan{
 
-  List<String> _messages = [];
+  List<QuizManMessage> _messages = [];
   int _index = 0;
-  String _newMessage = "";
-
   bool isLastIndex = false;
+  QuizManMessage _newMessage = QuizManMessage(message: "初期値", type: MessageType.text);
 
-  void setMessages({required List<String> messages}){
+
+  void setMessages({required List<QuizManMessage> messages}){
     this._messages = messages;
     _index = 0;
     isLastIndex = false;
   }
 
-  String getNewMessage() {
+  QuizManMessage getNewMessage() {
     _newMessage = _messages[_index];
     _countUpIndex();
 
@@ -23,6 +35,9 @@ class QuizMan{
   }
 
   void _countUpIndex(){
+
+    if(isLastIndex) { return; }
+
     _index++;
   }
 
