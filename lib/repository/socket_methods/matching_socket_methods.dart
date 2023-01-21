@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quicha/model/matching_data.dart';
+import 'package:quicha/model/user_model.dart';
 import 'package:quicha/repository/socket_client.dart';
 
 final matchingSocketProvider = Provider(MatchingSocketMethods.new);
@@ -66,6 +67,13 @@ class MatchingSocketMethods {
       );
     });
 
+  }
+
+  void onAssignLeader() {
+    _socketClient.on("assignLeader", (data){
+      RoleLeader.setLeader();
+      print(RoleLeader.getIsLeader());
+    });
   }
 
 

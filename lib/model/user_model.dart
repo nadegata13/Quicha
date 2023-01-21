@@ -11,6 +11,7 @@ class UserData{
   String nickname = "name";
   int iconNum = CharacterIcons.default_azarashi.index;
 
+
   void setUserInfo({required String tmpUserID, required String tmpNickname, required int tmpIconNum} ){
     userID = tmpUserID;
     nickname = tmpNickname;
@@ -24,3 +25,20 @@ class UserData{
   }
 
 }
+
+class RoleLeader{
+  static bool _isLeader = false;
+  static void setLeader(){
+    _isLeader = true;
+  }
+  static void unSetLeader(){
+    _isLeader = false;
+  }
+
+  static bool getIsLeader(){
+    return _isLeader;
+  }
+
+
+}
+

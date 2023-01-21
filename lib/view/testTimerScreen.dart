@@ -1,65 +1,156 @@
-import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'dart:async';
 
-import 'package:quicha/view/home_screen/home_screen.dart';
+import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
+import 'package:audio_session/audio_session.dart';
 
-class TimerPage extends StatefulWidget {
+
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({Key? key, required this.title}) : super(key: key);
+  final String title;
+
   @override
-  State<StatefulWidget> createState() {
-    return _TimerState();
-  }
+  State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _TimerState extends State<TimerPage> {
-  String _nowtime = '';
-  var formatter = DateFormat('yyyy/MM/dd HH:mm:ss');
-  late Timer _timer;
+class _MyHomePageState extends State<MyHomePage> {
+  late AudioPlayer _player;
+  double _currentSliderValue = 1.0;
+  bool _changeAudioSource = false;
+  String _stateSource = 'アセットを再生';
 
   @override
   void initState() {
     super.initState();
-    _timer = Timer.periodic(
-      // 定期実行する間隔の設定.
-      const Duration(seconds: 1),
-      // 定期実行関数.
-      _onTimer,
-    );
+    _setupSession();
 
-    print(_timer.isActive);
+    // AudioPlayerの状態を取得
+    _player.playbackEventStream.listen((event) {
+      switch(event.processingState) {
+        case ProcessingState.idle:
+          print('オーディオファイルをロードしていないよ');
+          break;
+        case ProcessingState.loading:
+          print('オーディオファイルをロード中だよ');
+          break;
+        case ProcessingState.buffering:
+          print('バッファリング(読み込み)中だよ');
+          break;
+        case ProcessingState.ready:
+          print('再生できるよ');
+          break;
+        case ProcessingState.completed:
+          print('再生終了したよ');
+          break;
+        default:
+          print(event.processingState);
+          break;
+      }
+    });
+  }
+
+  Future<void> _setupSession() async {
+    _player = AudioPlayer();
+    final session = await AudioSession.instance;
+    await session.configure(AudioSessionConfiguration.speech());
+    await _loadAudioFile();
   }
 
   @override
-  void dispose(){
-    // 破棄される時に停止する.
-    _timer.cancel();
+  void dispose() {
+    _player.dispose();
     super.dispose();
   }
 
-  void _onTimer(Timer timer) {
-    var now = DateTime.now();
-    var formatterTime = formatter.format(now);
-    setState(() {
-      _nowtime = formatterTime;
+  void _takeTurns() {
+    late String _changeStateText;
+    _changeAudioSource = _changeAudioSource ? false : true; // 真偽値を反転
+
+    _player.stop();
+    _loadAudioFile().then((_) {
+      if(_changeAudioSource) {
+        _changeStateText = 'ストリーミング再生';
+      } else {
+        _changeStateText = 'アセットを再生';
+      }
+      setState((){
+        _stateSource = _changeStateText;
+      });
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('TimerPage')),
-      body: Container(
-        child: ElevatedButton(onPressed: (){
-          Navigator.push(context, MaterialPageRoute(
-            // （2） 実際に表示するページ(ウィジェット)を指定する
-              builder: (context) => HomeScreen()
-          ));
-        },
-            child: Text("ボタン"))
-      )
-
-
-
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(_stateSource),
+            Slider(
+              value: _currentSliderValue,
+              min: 0,
+              max: 10.0,
+              divisions: 10,
+              label: _currentSliderValue.toString(),
+              onChanged: (double value) {
+                setState(() {
+                  _currentSliderValue = value;
+                });
+              },
+            ),
+            Text(_currentSliderValue.toString()),
+            IconButton(
+              icon: const Icon(Icons.play_arrow),
+              onPressed: () async => await _playSoundFile(),
+            ),
+            IconButton(
+              icon: const Icon(Icons.pause),
+              onPressed: () async => await _player.pause(),
+            )
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _takeTurns,
+        tooltip: 'Increment',
+        child: const Icon(Icons.autorenew),
+      ),
     );
+  }
+
+  Future<void> _playSoundFile() async {
+    // 再生終了状態の場合、新たなオーディオファイルを定義し再生できる状態にする
+    if(_player.processingState == ProcessingState.completed) {
+      await _loadAudioFile();
+    }
+
+    await _player.setSpeed(_currentSliderValue); // 再生速度を指定
+    await _player.play();
+
+    Timer.periodic(Duration(seconds: 1), (timer) {
+      var wholeDuration = _player.duration!.inMilliseconds;
+      var musicPositon = _player.position.inMilliseconds;
+      var restDuration =   musicPositon / wholeDuration ;
+
+      print(restDuration);
+      print("a");
+    });
+  }
+
+  Future<void> _loadAudioFile() async {
+    try {
+      if(_changeAudioSource) {
+        await _player.setUrl('https://www.ne.jp/asahi/music/myuu/wave/menuettm.mp3'); // ストリーミング
+      } else {
+        await _player.setAsset('assets/audio/cute.mp3'); // アセット(ローカル)のファイル
+      }
+    } catch(e) {
+      print(e);
+    }
   }
 }

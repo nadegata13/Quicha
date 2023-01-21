@@ -1,7 +1,15 @@
 enum MessageType{
   text,
   image,
-  sound
+  sound;
+  static MessageType getType(int index){
+    for(var icon in MessageType.values){
+      if(icon.index == index) {
+        return icon;
+        }
+  }
+return MessageType.text;
+}
 }
 
 class QuizManMessage{

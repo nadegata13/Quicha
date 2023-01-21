@@ -64,6 +64,7 @@ dependencies:
   flutter_secure_storage: ^7.0.1
   uuid: ^3.0.7
   google_fonts: ^3.0.1
+  just_audio: ^0.9.31
 
 dev_dependencies:
   flutter_test:

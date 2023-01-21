@@ -41,6 +41,10 @@ class MatchingNotifier extends StateNotifier<MatchingState> {
     _socketClient.clearListeners();
 
 
+    //リーダーの役職を解任
+    RoleLeader.unSetLeader();
+
+
     ref.listen(matchingSocketMethods, (AsyncValue<MatchingData>? _, AsyncValue<MatchingData> data) {
       var matchingData = data.value;
 
@@ -104,6 +108,8 @@ class MatchingNotifier extends StateNotifier<MatchingState> {
     _socketMethods.onMatchedUser();
     //相手のプロフィール
     _socketMethods.onReceiveUserProfile();
+    //リーダーの場合に受け取る
+    _socketMethods.onAssignLeader();
   }
 
   void _entryRoby() {

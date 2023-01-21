@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:quicha/model/user_model.dart';
 import 'package:quicha/viewModel/chat_viewmodel/chat_room_state.dart';
 
 import '../../model/message.dart';
@@ -16,7 +17,7 @@ import '../../repository/socket_client.dart';
 import '../../test_data.dart';
 
 final chatRoomProvider = StateNotifierProvider.autoDispose<ChatRoomNotifier, ChatRoomState>(
-    ((ref) => ChatRoomNotifier())
+    ((ref) => ChatRoomNotifier(ref))
 );
 
 
@@ -31,14 +32,30 @@ class ChatRoomNotifier extends StateNotifier<ChatRoomState> {
 
   final _socketClient = SocketClient.instance.socket!;
 
-  ChatRoomNotifier() : super (const ChatRoomState()){
+
+  final StateNotifierProviderRef ref;
+
+  ChatRoomNotifier(this.ref) : super (const ChatRoomState()){
     //取得クイズ全体のハンドリング
     _quizHandler = QuizHandler(quizList: []);
     //出題AI
     _quizMan = QuizMan();
     //出題クイズ
-    currentQuiz = Quiz(quizItems: [QuizItem(item: "初期値", type: MessageType.text)], quizCategory: "初期値",answer: "初期値");
+    currentQuiz = Quiz(quizID: "annonymous" , quizItems: [QuizItem(item: "初期値", type: MessageType.text)], quizCategory: "初期値",answer: "初期値");
 
+    _socketClient.clearListeners();
+
+    //レシーブイベント
+    _receivedEvent();
+
+    //最初の挨拶
+    _quizmanGreet();
+    showQuizmanNextMessage();
+
+
+  }
+
+  void _receivedEvent(){
 
     _socketClient.on("receiveMessage", (data){
 
@@ -49,10 +66,57 @@ class ChatRoomNotifier extends StateNotifier<ChatRoomState> {
 
     });
 
+    _socketClient.on("receiveQuiz", (data){
+
+      List<dynamic> quizes = data;
+      List<Quiz> fetchecQuizes = [];
+      try{
+        quizes.forEach((quiz) {
+          List<dynamic> materialQuizItems = quiz["quizItems"];
+          List<QuizItem> quizItems = [];
+
+          
+          //問題です。
+          quizItems.add(QuizItem(item: "問題です", type: MessageType.text));
+
+          //問題文を取得
+          materialQuizItems.forEach((element) {
+            MessageType type = MessageType.getType(element["type"]);
+            quizItems.add(QuizItem(item: element["item"], type: type));
+          });
+
+          var newQuiz = Quiz(answer: quiz["answer"] ,quizItems: quizItems, quizCategory: quiz["category"], quizID: quiz["quizID"]);
+
+          fetchecQuizes.add(newQuiz);
+
+          _quizHandler.setQuizList(fetchecQuizes);
+        });
+        print(fetchecQuizes);
+      }catch(e){
+        print("error:${e}");
+      }
+      print("receiveQuiz");
+    });
+
   }
 
   void _quizmanGreet(){
-    _quizHandler.setQuizList([]);
+
+    String _myName = ref.read(myUserProvider).nickname;
+    String _opponentName = ref.read(opponentUserProvider).nickname;
+
+    _quizMan.setMessages(messages:[
+
+      QuizManMessage(message: "ようこそ、${_myName}さんと${_opponentName}さん！", type: MessageType.text),
+      QuizManMessage(message: "飲まず食わずでクイズしようぜ！", type: MessageType.text),
+      QuizManMessage(message: "おっと！その前にお互い挨拶しよう", type: MessageType.text),
+      QuizManMessage(message: "いい出会になるといいな！それじゃぼちぼち始めるぜ！", type: MessageType.text),
+
+    ] );
+  }
+
+  void testFetchQuiz(){
+    _socketClient.emit("requestQuizes");
   }
 
 
@@ -64,16 +128,6 @@ class ChatRoomNotifier extends StateNotifier<ChatRoomState> {
     controller.repeat();
   }
 
-  void addMessageFromPartner(){
-    List<ChatMessage> partnerMessage = [ChatMessage(messageContent: "こんにちは！", messangerID: "partner"),
-      ChatMessage(messageContent: "うーんふんどしかなあ？", messangerID: "partner"),];
-
-    int random = Random().nextInt(2);
-    //実験 不変クラスだから反映されない可能性
-    List<ChatMessage> messages = [...state.chatMessages];
-    messages.add(partnerMessage[random]);
-    state = state.copyWith(chatMessages: messages);
-  }
 
   void sendMessage(TextEditingController controller){
 
@@ -119,8 +173,6 @@ class ChatRoomNotifier extends StateNotifier<ChatRoomState> {
     _quizHandler.setQuizList(TestData.quizObject);
     _setNextQuiz();
   }
-
-
 
 
   //getQuizWidget
@@ -180,6 +232,7 @@ class ChatRoomNotifier extends StateNotifier<ChatRoomState> {
 
     _quizMan.setMessages(messages: quizManMessages);
   }
+
 
 
   void _startCountdown()  {

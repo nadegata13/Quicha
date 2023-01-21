@@ -10,18 +10,19 @@ class TestData{
   static int fillLifeCount = 2;
 
   static List<Quiz> quizObject = [
-    Quiz(quizItems:
+    Quiz(quizID: "",
+        quizItems:
     [QuizItem(item:
     "大相撲で関取衆が土俵入りする際に着用する、金銀の刺繍などを施した前垂れが付いた儀式用のまわしを何というでしょう？",
         type: MessageType.text)],
         quizCategory: "a", answer: "化粧まわし"),
-    Quiz(quizItems: [QuizItem(item:
+    Quiz(quizID:"",quizItems: [QuizItem(item:
     "オーストラリアの先住民のことを「アボリジニ」といいますが、ニュージーランドの先住民のことを何というでしょう？",
         type: MessageType.text)], quizCategory: "a", answer: "マオリ"),
-    Quiz(quizItems: [QuizItem(item:
+    Quiz(quizID:"",quizItems: [QuizItem(item:
     "ボウリングで、フレームの1投目にヘッドピンが倒れ、残りの2本以上のピンが隣接しない状態で残ることを何というでしょう？",
         type: MessageType.text)], quizCategory: "a", answer: "スプリット"),
-    Quiz(quizItems: [QuizItem(item:
+    Quiz(quizID:"",quizItems: [QuizItem(item:
     "オーストラリアの先住民のことを「アボリジニ」といいますが、ニュージーランドの先住民のことを何というでしょう？オーストラリアの先住民のことを「アボリジニ」といいますが、ニュージーランドの先住民のことを何というでしょう？",
         type: MessageType.text)], quizCategory: "a", answer: "マオリ"),
   ];

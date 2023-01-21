@@ -25,6 +25,7 @@ class QuizHandler {
   Quiz getOneQuiz() {
     if(quizListIndex > quizList.length - 1) {
       return Quiz(
+        quizID: "anonnymous",
           quizItems: [QuizItem(item: "クイズがありません。", type: MessageType.text)], quizCategory: "a", answer: "お待ちください");
     }
     return  quizList[quizListIndex];

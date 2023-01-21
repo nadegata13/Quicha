@@ -47,7 +47,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
 
 
 
-      var value = data.value;
+      var value = data;
 
       print(value.runtimeType);
 
@@ -70,7 +70,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
         state = state.copyWith(lifeCount: value.lifeCount);
 
         _checkLife(lifeUpdateStr: value.lifeUpdateStr, lifeCount: value.lifeCount);
-      }
+     }
     });
 
 

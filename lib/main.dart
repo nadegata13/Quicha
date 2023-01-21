@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
     return
       MaterialApp(
       title: 'Flutter Demo',
-      home:  ChatScreen(),
+      home:  HomeScreen(),
        debugShowCheckedModeBanner: false,
     );
   }
