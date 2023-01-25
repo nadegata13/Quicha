@@ -35,6 +35,7 @@ class ChatAppBar extends HookConsumerWidget {
         alignment: Alignment.bottomCenter,
         children: [
 
+
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -52,6 +53,14 @@ class ChatAppBar extends HookConsumerWidget {
               ),
               _User(size: size, isMe: true, user: ref.read(opponentUserProvider))
             ],
+          ),
+          Align(alignment: Alignment.topLeft,
+              child:
+              IconButton(icon: Icon(Icons.arrow_back_ios),onPressed: (){
+                
+                showDialog(context: context, builder: )
+
+              },)
           ),
         ],
       ),

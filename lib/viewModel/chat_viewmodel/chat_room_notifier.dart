@@ -53,6 +53,14 @@ class ChatRoomNotifier extends StateNotifier<ChatRoomState> {
     showQuizmanNextMessage();
 
 
+    //クイズを取得
+    if(RoleLeader.getIsLeader()){
+
+      fetchQuiz();
+
+    }
+
+
   }
 
   void _receivedEvent(){
@@ -107,15 +115,14 @@ class ChatRoomNotifier extends StateNotifier<ChatRoomState> {
 
     _quizMan.setMessages(messages:[
 
-      QuizManMessage(message: "ようこそ、${_myName}さんと${_opponentName}さん！", type: MessageType.text),
-      QuizManMessage(message: "飲まず食わずでクイズしようぜ！", type: MessageType.text),
-      QuizManMessage(message: "おっと！その前にお互い挨拶しよう", type: MessageType.text),
-      QuizManMessage(message: "いい出会になるといいな！それじゃぼちぼち始めるぜ！", type: MessageType.text),
+      QuizManMessage(message: "ようこそ${_myName}さん、${_opponentName}さん！", type: MessageType.text),
+      QuizManMessage(message: "俺の名前はクイズマン！好きな言葉は「飲まず食わずでクイズ」\n楽しんでってくれよな!", type: MessageType.text),
 
     ] );
   }
 
-  void testFetchQuiz(){
+  //クイズ取得
+  void fetchQuiz(){
     _socketClient.emit("requestQuizes");
   }
 
@@ -223,7 +230,6 @@ class ChatRoomNotifier extends StateNotifier<ChatRoomState> {
     //FIXME:
     String quizCount = _quizHandler.getQuizCount().toString();
 
-    String quizCountTxt = "第" + quizCount + "問";
 
     //現在のクイズからメッセージアイテムリストを取り出す。
     List<QuizManMessage> quizManMessages = currentQuiz.quizItems.asMap().entries.map((item) =>

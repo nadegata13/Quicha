@@ -65,7 +65,7 @@ class ButtonsForTest extends ConsumerWidget {
           Expanded(
             child:
             ElevatedButton(onPressed: (){
-              viewModel.testFetchQuiz();
+              viewModel.fetchQuiz();
             }, child:
             Text("message"),
             ),
