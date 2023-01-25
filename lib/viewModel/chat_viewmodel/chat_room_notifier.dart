@@ -17,11 +17,16 @@ import '../../repository/socket_client.dart';
 import '../../test_data.dart';
 
 final chatRoomProvider = StateNotifierProvider.autoDispose<ChatRoomNotifier, ChatRoomState>(
-    ((ref) => ChatRoomNotifier(ref))
+    ((ref) {
+      ref.onDispose(() {
+        print("disposed chatRoomProvider");
+      });
+      return ChatRoomNotifier(ref);
+    })
 );
 
 
-class ChatRoomNotifier extends StateNotifier<ChatRoomState> {
+class ChatRoomNotifier  extends StateNotifier<ChatRoomState> {
 
   late QuizHandler _quizHandler;
   late QuizMan _quizMan;
@@ -43,6 +48,7 @@ class ChatRoomNotifier extends StateNotifier<ChatRoomState> {
     //出題クイズ
     currentQuiz = Quiz(quizID: "annonymous" , quizItems: [QuizItem(item: "初期値", type: MessageType.text)], quizCategory: "初期値",answer: "初期値");
 
+    //リスナーを削除
     _socketClient.clearListeners();
 
     //レシーブイベント
@@ -192,8 +198,8 @@ class ChatRoomNotifier extends StateNotifier<ChatRoomState> {
             (){
 
           if(_quizMan.isLastIndex) {
-            _startCountdown();
-            _setVisibleTime();
+            // _startCountdown();
+            // _setVisibleTime();
             print(state.isShowTime.toString());
             return ;
           }

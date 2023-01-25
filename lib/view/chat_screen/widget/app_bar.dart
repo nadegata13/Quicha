@@ -1,4 +1,5 @@
 import 'package:animated_flip_counter/animated_flip_counter.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ import 'package:quicha/viewModel/chat_viewmodel/chat_room_notifier.dart';
 import 'package:spring/spring.dart';
 
 import '../../../test_data.dart';
+import '../../home_screen/home_screen.dart';
 
 class ChatAppBar extends HookConsumerWidget {
   const ChatAppBar({
@@ -57,8 +59,30 @@ class ChatAppBar extends HookConsumerWidget {
           Align(alignment: Alignment.topLeft,
               child:
               IconButton(icon: Icon(Icons.arrow_back_ios),onPressed: (){
-                
-                showDialog(context: context, builder: )
+
+                showDialog(
+                    context: context,
+                    builder: (_) => CupertinoAlertDialog(
+                      title: Text("退室しますか？"),
+                      content: Text("退室条件が揃ってないにもかかわらず退室するとライフが減る可能性があります。"),
+                      actions: [
+                        CupertinoDialogAction(
+                            child: Text('Cancel'),
+                            isDestructiveAction: true,
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            }),
+                        CupertinoDialogAction(
+                          child: Text('OK'),
+                          onPressed: () {
+                            Navigator.pushReplacement(context, CupertinoPageRoute(
+                              // （2） 実際に表示するページ(ウィジェット)を指定する
+                                builder: (context) => HomeScreen()
+                            ));
+                          },
+                        )
+                      ],
+                    ));
 
               },)
           ),
