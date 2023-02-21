@@ -3,30 +3,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quicha/view/create_new_account_screen/new_account_screen.dart';
 
-final loginProvider = StateNotifierProvider.autoDispose(
-    ((ref) => LoginNotifier())
-);
+final loginProvider =
+    StateNotifierProvider.autoDispose(((ref) => LoginNotifier()));
 
-
-class LoginNotifier extends StateNotifier{
+class LoginNotifier extends StateNotifier {
   LoginNotifier() : super(null);
 
-  void aiueo() {
-
-  }
+  void aiueo() {}
 
   Future<void> onSignInWithAnonymousUser(BuildContext context) async {
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-    try{
+    try {
       await firebaseAuth.signInAnonymously();
 
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => NewAccountScreen()),
       );
-
-    }catch(e){
-
+    } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(e.toString()),
@@ -39,8 +33,7 @@ class LoginNotifier extends StateNotifier{
     required String email,
     required String password,
   }) async {
-
-    if(FirebaseAuth.instance.currentUser == null){
+    if (FirebaseAuth.instance.currentUser == null) {
       return;
     }
     final user = FirebaseAuth.instance.currentUser!;
@@ -55,31 +48,30 @@ class LoginNotifier extends StateNotifier{
     }
   }
 
-
-
   Future<void> verifyPhone(String phone) async {
     await FirebaseAuth.instance.verifyPhoneNumber(
       phoneNumber: '+81$phone',
-      verificationCompleted: ( credential) {
+      verificationCompleted: (credential) {
         print("success");
       },
       verificationFailed: (e) {
         print("failed");
         print(e.message);
       },
-      codeSent:  (verificationId,int? resendToken)async{
+      codeSent: (verificationId, int? resendToken) async {
         print("smscode");
         String smsCode = '1234';
 
         print("電話番号" + phone);
 
         // Create a PhoneAuthCredential with the code
-        PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: verificationId, smsCode: smsCode);
+        PhoneAuthCredential credential = PhoneAuthProvider.credential(
+            verificationId: verificationId, smsCode: smsCode);
 
         // Sign the user in (or link) with the credential
-        try{
+        try {
           await FirebaseAuth.instance.signInWithCredential(credential);
-        } catch(e){
+        } catch (e) {
           print("Login not successful");
         }
 

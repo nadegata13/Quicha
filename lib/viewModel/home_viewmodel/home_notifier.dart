@@ -18,7 +18,7 @@ final homeProvider = StateNotifierProvider.autoDispose<HomeNotifier, HomeState>(
         if(ref.notifier._timer != null){
           ref.notifier._timer.cancel();
         }
-        print("disposed!");
+        print("homeProvide disposed!");
       });
       return HomeNotifier(ref);
     })

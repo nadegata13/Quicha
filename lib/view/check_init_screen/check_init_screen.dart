@@ -1,50 +1,54 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:quicha/view/home_screen/home_screen.dart';
 import 'package:quicha/view/login_or_sign_up_screen/login_or_sign_up_screen.dart';
+import 'package:quicha/viewModel/check_init_viewmodel/check_init_notifier.dart';
 
-import '../../repository/socket_client.dart';
 import '../../ui/custom_style.dart';
 
-class CheckInitSCreen extends StatefulWidget {
-  @override
-  _CheckInitSCreenState createState() => _CheckInitSCreenState();
+class CheckInitScreen extends StatelessWidget {
+  const CheckInitScreen({super.key});
 
-}
-
-class _CheckInitSCreenState extends State<CheckInitSCreen> {
   @override
   Widget build(BuildContext context) {
-
-    @override
-    void initState(){
-      final _socketClient = SocketClient.instance.socket!;
-      final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-
-      _socketClient.clearListeners();
-
-      if(_firebaseAuth.currentUser == null) {
-        //firebase authにログインしていない場合
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(
-              // （2） 実際に表示するページ(ウィジェット)を指定する
-                builder: (context) =>  LoginOrSignUpScreen()
-
-            ));
-      } else {
-        // _socketClient.emit("checkExitAccount", ç);
-      }
-
-      super.initState();
-    }
-
-    final Size size = MediaQuery.of(context).size;
-    return
-      Container(
-        height: size.height,
-        width: size.width,
-        color: CustomColor.backgroundYellow,
-      );
+    return Scaffold(
+      backgroundColor: CustomColor.backgroundYellow,
+      body: _Body(),
+    );
   }
 }
 
+class _Body extends HookConsumerWidget {
+  @override
+  Widget build(BuildContext context, ref) {
+    final viewModel = ref.read(checkInitProvider);
+    final state = ref.watch(checkInitProvider);
 
+    useValueChanged<int, void>(state.routeNumber, (_, __) {
+      switch (state.routeNumber) {
+        case 200:
+          //よくわかんねーから握りつぶした
+          Future.delayed(Duration.zero, () {
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    // （2） 実際に表示するページ(ウィジェット)を指定する
+                    builder: (context) => LoginOrSignUpScreen()));
+          });
+          break;
+        default:
+          Future.delayed(Duration.zero, () {
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    // （2） 実際に表示するページ(ウィジェット)を指定する
+                    builder: (context) => HomeScreen()));
+          });
+          break;
+      }
+    });
+
+    return Container();
+  }
+}

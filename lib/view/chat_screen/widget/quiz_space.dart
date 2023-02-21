@@ -4,11 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:lottie/lottie.dart';
 import 'package:quicha/model/quiz_man.dart';
 import 'package:quicha/ui/custom_style.dart';
 import 'package:quicha/viewModel/chat_viewmodel/chat_room_notifier.dart';
-import '../../../model/quiz_model.dart';
+
 import 'animation_text.dart';
 import 'chat_bubble.dart';
 
@@ -22,23 +21,21 @@ class QuizArea extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return
-      Container(
+    return Container(
         height: size.height / 3,
         width: size.width,
-        child:
-        Stack(
+        child: Stack(
           alignment: Alignment.center,
           children: [
             Container(
               height: size.height,
-                width: size.width,
-                // decoration: BoxDecoration(
-                //   color: Colors.yellow,
-                //     borderRadius: BorderRadius.vertical(bottom: Radius.circular(30))
-                // ),
-                // child: Lottie.network("https://assets4.lottiefiles.com/packages/lf20_f24znioj.json",fit: BoxFit.fill)
-          ),
+              width: size.width,
+              // decoration: BoxDecoration(
+              //   color: Colors.yellow,
+              //     borderRadius: BorderRadius.vertical(bottom: Radius.circular(30))
+              // ),
+              // child: Lottie.network("https://assets4.lottiefiles.com/packages/lf20_f24znioj.json",fit: BoxFit.fill)
+            ),
             Padding(
               padding: EdgeInsets.all(size.height / 60),
               child: Row(
@@ -47,49 +44,53 @@ class QuizArea extends StatelessWidget {
                   //クイズマン及びタイマー
                   Column(
                     children: [
-                      Text("クイズマン",
+                      Text(
+                        "クイズマン",
                         style: TextStyle(
                             fontSize: 10,
                             fontFamily: 'Meiryo',
                             fontWeight: FontWeight.bold,
-                            color: Colors.deepPurpleAccent
-                        ),),
-                      SizedBox(height: size.height / 100,),
+                            color: Colors.deepPurpleAccent),
+                      ),
+                      SizedBox(
+                        height: size.height / 100,
+                      ),
                       Stack(
                         alignment: Alignment.center,
                         children: [
                           Container(
                             decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.grey
-                            ),
+                                shape: BoxShape.circle, color: Colors.grey),
                             padding: EdgeInsets.all(3),
-                            child:
-                            _CountDownCircle(),
+                            child: _CountDownCircle(),
                           ),
                           //クイズマン
                           Container(
                             height: size.height / 14.5,
                             width: size.height / 14.5,
-                            child:SvgPicture.asset("assets/images/character_icon/cat.svg"),
+                            child: SvgPicture.asset(
+                                "assets/images/character_icon/cat.svg"),
                           ),
-
                         ],
                       ),
-                        SizedBox(height: size.height / 100,),
+                      SizedBox(
+                        height: size.height / 100,
+                      ),
                       HookConsumer(builder: ((context, ref, _) {
                         final state = ref.watch(chatRoomProvider);
 
-                        return Text(state.timerText,
-                        style: TextStyle(
-                          color: state.isDangerZone ? CustomColor.timeupColor: Colors.white,
-                          fontSize: size.height / 50,
-                          fontFamily: 'Dseg'
-                        ),);
+                        return Text(
+                          state.timerText,
+                          style: TextStyle(
+                              color: state.isDangerZone
+                                  ? CustomColor.timeupColor
+                                  : Colors.white,
+                              fontSize: size.height / 50,
+                              fontFamily: 'Dseg'),
+                        );
                       }))
                     ],
                   ),
-
 
                   FadingEdgeScrollView.fromSingleChildScrollView(
                     gradientFractionOnStart: 0.1,
@@ -97,48 +98,49 @@ class QuizArea extends StatelessWidget {
                         controller: ScrollController(),
                         scrollDirection: Axis.vertical,
                         reverse: true,
-                        child:
-                        HookConsumer(builder: (BuildContext context, ref, Widget? child) {
-                          final state = ref.watch(chatRoomProvider);
-                          return
-                            AnimatedOpacity(opacity:state.isVisibleQuiz ? 1 : 0 ,
+                        child: HookConsumer(
+                          builder: (BuildContext context, ref, Widget? child) {
+                            final state = ref.watch(chatRoomProvider);
+                            return AnimatedOpacity(
+                                opacity: state.isVisibleQuiz ? 1 : 0,
                                 duration: Duration(seconds: 1),
-
-                                child:
-                                Column(
+                                child: Column(
                                   children: [
-                                    SizedBox(height: size.height / 30,),
+                                    SizedBox(
+                                      height: size.height / 30,
+                                    ),
                                     Column(
                                         children:
-                                        // value.watch(chatProvider).quizManMessages.map((e) => QuizChatBabble(message: e,)).toList().cast<Widget>(),
-                                        state.quizmanMessages.asMap().entries.map((e) =>
-                                            QuizChatBabble(message: e.value.message,
-                                              messageType: e.value.type,
-                                              isFirst: e.key == 0,)).toList().cast<Widget>()
-
-
-                                    ),
+                                            // value.watch(chatProvider).quizManMessages.map((e) => QuizChatBabble(message: e,)).toList().cast<Widget>(),
+                                            state.quizmanMessages
+                                                .asMap()
+                                                .entries
+                                                .map((e) => QuizChatBabble(
+                                                      message: e.value.message,
+                                                      messageType: e.value.type,
+                                                      isFirst: e.key == 0,
+                                                    ))
+                                                .toList()
+                                                .cast<Widget>()),
                                   ],
-                                )
-                            );
-                        },)
-                    ),
+                                ));
+                          },
+                        )),
                   )
-
                 ],
               ),
             ),
           ],
-        )
-
-    );
+        ));
   }
 }
 
 class QuizChatBabble extends StatelessWidget {
-  QuizChatBabble({required this.message,
+  QuizChatBabble({
+    required this.message,
     required this.messageType,
-    required this.isFirst, });
+    required this.isFirst,
+  });
 
   final String message;
   final MessageType messageType;
@@ -147,73 +149,62 @@ class QuizChatBabble extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChatBubble(
       messengerID: "quizman",
-        color: Colors.white,
+      color: Colors.white,
 //最初のメッセージなら
-        showNip: isFirst,
-        child: _bubbleChild(message),
+      showNip: isFirst,
+      child: _bubbleChild(message),
     );
   }
+
   Widget _bubbleChild(String message) {
+    int lastIndex = message.length - 1;
+    String filetype =
+        message.substring(message.length <= 4 ? 0 : lastIndex - 4, lastIndex);
 
-
-    int lastIndex = message.length -1;
-    String filetype = message.substring(message.length <= 4 ? 0 : lastIndex - 4, lastIndex);
-
-    if(filetype == ".png"){
-      return
-        Container(height: 30, width: 30, child: Text(message));
-
-    } else if(filetype == ".mp3") {
-
-      return
-        Container(height: 30, width: 30, child: Text(message));
-
+    if (filetype == ".png") {
+      return Container(height: 30, width: 30, child: Text(message));
+    } else if (filetype == ".mp3") {
+      return Container(height: 30, width: 30, child: Text(message));
     } else {
-
-      return
-      Consumer(builder: (BuildContext context, WidgetRef ref, Widget? child) {
-        final viewModel = ref.read(chatRoomProvider.notifier);
-        return
-        AnimationText(  string: message,
-          onFinished: () {
-            //クイズの問題文
-            //最後の要素なら
-             viewModel.showQuizmanNextMessage();
-          },);
-      },
+      return Consumer(
+        builder: (BuildContext context, WidgetRef ref, Widget? child) {
+          final viewModel = ref.read(chatRoomProvider.notifier);
+          return AnimationText(
+            string: message,
+            onFinished: () {
+              //クイズの問題文
+              //最後の要素なら
+              viewModel.showQuizmanNextMessage();
+            },
+          );
+        },
       );
     }
   }
-
 }
-
-
-
-
 
 class _CountDownCircle extends HookConsumerWidget {
   const _CountDownCircle({
     Key? key,
   }) : super(key: key);
 
-
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(chatRoomProvider);
     final viewModel = ref.watch(chatRoomProvider.notifier);
 
-
     return CircularCountDownTimer(
       initialDuration: 0,
       duration: state.timerValue,
-      controller: ref.watch(chatRoomProvider.notifier).countDownController,
+      controller: viewModel.countDownController,
       width: MediaQuery.of(context).size.height / 14,
       height: MediaQuery.of(context).size.height / 14,
       ringColor: Color(0xFFD6DADA),
-      fillColor: viewModel.countDownController.isStarted ?
-          state.isTimeUp?
-          CustomColor.timeupColor :  Colors.lightGreenAccent: Colors.transparent ,
+      fillColor: viewModel.countDownController.isStarted
+          ? state.isTimeUp
+              ? CustomColor.timeupColor
+              : Colors.lightGreenAccent
+          : Colors.transparent,
       backgroundGradient: null,
       strokeWidth: MediaQuery.of(context).size.height / 200,
       strokeCap: StrokeCap.round,
@@ -227,8 +218,7 @@ class _CountDownCircle extends HookConsumerWidget {
       onComplete: () {
         debugPrint('Countdown Ended');
       },
-      onChange: (String timeStamp) {
-      },
+      onChange: (String timeStamp) {},
     );
   }
 }

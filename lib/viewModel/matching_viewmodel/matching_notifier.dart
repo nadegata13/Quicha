@@ -17,7 +17,9 @@ final matchingProvider = StateNotifierProvider.autoDispose<MatchingNotifier, Mat
         if(ref.notifier._timer != null) {
 
           ref.notifier._timer.cancel();
+
         }
+        print("matchingProvider disposed");
       });
       return MatchingNotifier(ref);
     })
